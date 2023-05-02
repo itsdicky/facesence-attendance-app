@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "135690144903",
+    "project_id": "school-attendance-system-e683c",
+    "storage_bucket": "school-attendance-system-e683c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:135690144903:android:252056b5649330282c7c22",
+        "android_client_info": {
+          "package_name": "id.dickysatria.sistem_presensi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "135690144903-0qvifekasr84bm23a9fm0oqku0s0rrdl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDS2ufF06tpg3L-2tS6sbo_P2fXqYufXG0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "135690144903-0qvifekasr84bm23a9fm0oqku0s0rrdl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
