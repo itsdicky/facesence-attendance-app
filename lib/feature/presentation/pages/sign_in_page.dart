@@ -133,7 +133,7 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
-  submitSignIn() {
+  void submitSignIn() {
     print(_emailController.text);
     print(_passwordController.text);
     if (_emailController.text.isNotEmpty && _passwordController.text.isNotEmpty) {

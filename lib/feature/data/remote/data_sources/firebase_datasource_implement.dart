@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:sistem_presensi/feature/data/remote/data_sources/firebase_datasource.dart';
 import 'package:sistem_presensi/feature/data/remote/model/presence_model.dart';
 import 'package:sistem_presensi/feature/data/remote/model/user_model.dart';
@@ -59,7 +58,8 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
 
   @override
   Future<void> signUp(UserEntity userEntity) async {
-    auth.createUserWithEmailAndPassword(email: userEntity.email!, password: userEntity.password!).then((value) {
+    //temporary solution: await
+    await auth.createUserWithEmailAndPassword(email: userEntity.email!, password: userEntity.password!).then((value) {
       firestore.collection('students').doc(value.user?.uid).set({"email": value.user?.email});
     });
   }
@@ -91,9 +91,5 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
   }
 
   @override
-  Future<String> getCurrentUserId() async {
-    final uid = auth.currentUser!.uid;
-    print(uid);
-    return uid;
-  }
+  Future<String> getCurrentUserId() async => auth.currentUser!.uid;
 }
