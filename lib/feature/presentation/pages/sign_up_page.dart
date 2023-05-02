@@ -144,6 +144,7 @@ class _SignUpPageState extends State<SignUpPage> {
   submitSignUp() {
     if (_usernameController.text.isNotEmpty && _emailController.text.isNotEmpty && _passwordController.text.isNotEmpty) {
       BlocProvider.of<UserCubit>(context).submitSignUp(user: UserEntity(
+        name: _usernameController.text,
         email: _emailController.text,
         password: _passwordController.text
       ));

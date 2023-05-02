@@ -32,7 +32,7 @@ class UserCubit extends Cubit<UserState> {
     emit(UserLoading());
     try {
       await signUpUseCase.call(user);
-      // await getCreateCurrentUseCase.call(user);
+      await getCreateCurrentUseCase.call(user);
       emit(UserSuccess());
     } on SocketException catch (_) {
       emit(UserFailure());

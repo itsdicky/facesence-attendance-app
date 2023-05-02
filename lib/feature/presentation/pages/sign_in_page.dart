@@ -113,7 +113,7 @@ class _SignInPageState extends State<SignInPage> {
             ],
           ),
           const SizedBox(
-            height: 80,
+            height: 50,
           ),
           TextButton(
             style: WidgetStyle.textButtonStyle(),
@@ -125,8 +125,16 @@ class _SignInPageState extends State<SignInPage> {
           ),
           OutlinedButton(
             style: WidgetStyle.outlinedButtonStyle(),
-            onPressed: toSignUp,
-            child: const Text('Daftar'),
+            onPressed: toSignUpStudent,
+            child: const Text('Daftar sebagai siswa'),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          OutlinedButton(
+            style: WidgetStyle.outlinedButtonStyle(),
+            onPressed: toSignUpTeacher,
+            child: const Text('Daftar sebagai guru'),
           ),
         ],
       ),
@@ -144,7 +152,10 @@ class _SignInPageState extends State<SignInPage> {
     }
   }
 
-  void toSignUp() {
+  void toSignUpStudent() {
+    Navigator.pushNamedAndRemoveUntil(context, PageConst.signUpPage, (route) => false);
+  }
+  void toSignUpTeacher() {
     Navigator.pushNamedAndRemoveUntil(context, PageConst.signUpPage, (route) => false);
   }
 }

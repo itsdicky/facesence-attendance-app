@@ -59,9 +59,7 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
   @override
   Future<void> signUp(UserEntity userEntity) async {
     //temporary solution: await
-    await auth.createUserWithEmailAndPassword(email: userEntity.email!, password: userEntity.password!).then((value) {
-      firestore.collection('students').doc(value.user?.uid).set({"email": value.user?.email});
-    });
+    await auth.createUserWithEmailAndPassword(email: userEntity.email!, password: userEntity.password!);
   }
 
   @override
@@ -79,6 +77,7 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
     await userCollectionRef.doc(uid).get().then((user){
       //TODO: add user properties
       final newUser = UserModel(
+        name: userEntity.name,
         email: userEntity.email,
         password: userEntity.password
       ).toDocument();
