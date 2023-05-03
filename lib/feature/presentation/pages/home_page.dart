@@ -5,6 +5,7 @@ import 'package:sistem_presensi/feature/presentation/cubit/presence/presence_cub
 import 'package:sistem_presensi/feature/presentation/cubit/presence/presence_state.dart';
 import 'package:sistem_presensi/feature/presentation/widget/main_card_widget.dart';
 import 'package:sistem_presensi/feature/presentation/widget/presence_widget.dart';
+import 'package:sistem_presensi/feature/presentation/widget/schedule_card_widget.dart';
 
 class HomePage extends StatefulWidget {
   final String uid;
@@ -101,7 +102,7 @@ class _HomePageState extends State<HomePage> {
               if(presenceState is PresenceLoaded) {
                 return _bodyWidget();
               }
-              return Center(child: CircularProgressIndicator(),);
+              return const Center(child: CircularProgressIndicator(),);
             });
           }
           if (navbarState is NavbarHistory) {
@@ -153,9 +154,30 @@ class _HomePageState extends State<HomePage> {
                 presence: 24,
                 absence: 1,
               ),
+              SizedBox(
+                height: 32,
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 8),
+                child: Text(
+                  'Jadwal',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              ScheduleCard(),
+              ScheduleCard(),
+              ScheduleCard(),
+              ScheduleCard(),
+              ScheduleCard(),
             ],
           ),
-          Positioned(
+          const Positioned(
             left: 0,
             right: 0,
             bottom: 0,
