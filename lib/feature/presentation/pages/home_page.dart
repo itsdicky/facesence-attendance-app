@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sistem_presensi/feature/presentation/cubit/auth/auth_cubit.dart';
 import 'package:sistem_presensi/feature/presentation/cubit/navbar/navbar_cubit.dart';
 import 'package:sistem_presensi/feature/presentation/cubit/presence/presence_cubit.dart';
 import 'package:sistem_presensi/feature/presentation/cubit/presence/presence_state.dart';
+import 'package:sistem_presensi/feature/presentation/widget/main_card_widget.dart';
+import 'package:sistem_presensi/feature/presentation/widget/presence_widget.dart';
 
 class HomePage extends StatefulWidget {
   final String uid;
@@ -26,18 +27,25 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Flutter Demo Home Page'),
+        title: const Text('Halo!'),
+        backgroundColor: Theme.of(context).canvasColor,
+        elevation: 0,
+        titleTextStyle: TextStyle(color: Theme.of(context).shadowColor, fontWeight: FontWeight.w700),
+        iconTheme: IconThemeData(
+          color: Theme.of(context).shadowColor,
+        ),
+        leading: const Padding(
+          padding: EdgeInsets.fromLTRB(12, 10, 0, 10),
+          child: CircleAvatar(
+            backgroundImage: NetworkImage('https://images.unsplash.com/photo-1682965636199-091797901722?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'),
+            radius: 100,
+          ),
+        ),
+        actions: const [
+          Icon(Icons.notifications_none),
+          SizedBox(width: 24,)
+        ],
       ),
-      persistentFooterButtons: [
-        TextButton(
-          onPressed: (){},
-          child: Icon(Icons.add),
-        ),
-        TextButton(
-          onPressed: (){},
-          child: Icon(Icons.ad_units),
-        ),
-      ],
       bottomNavigationBar: BlocBuilder<NavbarCubit, NavbarState>(
         builder: (context, navbarState) {
           return BottomNavigationBar(
@@ -122,18 +130,40 @@ class _HomePageState extends State<HomePage> {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          BlocProvider.of<AuthCubit>(context).loggedOut();
-        },
-        tooltip: 'logou',
-        child: const Icon(Icons.add),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     BlocProvider.of<AuthCubit>(context).loggedOut();
+      //   },
+      //   tooltip: 'logou',
+      //   child: const Icon(Icons.add),
+      // ),
     );
   }
 
   Widget _bodyWidget() {
-    return Center(child: Text('Home'),);
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Stack(
+        children: [
+          ListView(
+            children: const [
+              MainCard(
+                grade: 'XII Science',
+                name: 'Dicky Satria Gemilang',
+                presence: 24,
+                absence: 1,
+              ),
+            ],
+          ),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: PresenceCard(),
+          ),
+        ],
+      ),
+    );
   }
 
   void onTapNavigate(int index) {
