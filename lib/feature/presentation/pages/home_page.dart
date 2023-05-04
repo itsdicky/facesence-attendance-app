@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sistem_presensi/feature/presentation/cubit/navbar/navbar_cubit.dart';
 import 'package:sistem_presensi/feature/presentation/cubit/presence/presence_cubit.dart';
 import 'package:sistem_presensi/feature/presentation/cubit/presence/presence_state.dart';
+import 'package:sistem_presensi/feature/presentation/widget/calendar_widget.dart';
 import 'package:sistem_presensi/feature/presentation/widget/main_card_widget.dart';
 import 'package:sistem_presensi/feature/presentation/widget/presence_widget.dart';
 import 'package:sistem_presensi/feature/presentation/widget/schedule_card_widget.dart';
@@ -106,13 +107,13 @@ class _HomePageState extends State<HomePage> {
             });
           }
           if (navbarState is NavbarHistory) {
-            return const Center(child: Text('History'),);
+            return _historySection();
           }
           if (navbarState is NavbarPermission) {
-            return const Center(child: Text('Permission'),);
+            return _permissionSection();
           }
           if (navbarState is NavbarProfile) {
-            return const Center(child: Text('Profile'),);
+            return _profileSection();
           }
           return const Text('Default');
         },
@@ -160,7 +161,7 @@ class _HomePageState extends State<HomePage> {
               Padding(
                 padding: EdgeInsets.only(left: 8),
                 child: Text(
-                  'Jadwal',
+                  'Jadwal Hari Ini',
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 16,
@@ -170,11 +171,11 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 height: 16,
               ),
-              ScheduleCard(),
-              ScheduleCard(),
-              ScheduleCard(),
-              ScheduleCard(),
-              ScheduleCard(),
+              ScheduleCard(subject: 'math', time: '07:30-09:10',),
+              ScheduleCard(subject: 'geography', time: '09:10-10:30',),
+              ScheduleCard(subject: 'sociology', time: '10:30-12:00',),
+              ScheduleCard(subject: 'biology', time: '12:00-13:40',),
+              ScheduleCard(subject: 'english', time: '13:40-14:30',),
             ],
           ),
           const Positioned(
@@ -182,6 +183,239 @@ class _HomePageState extends State<HomePage> {
             right: 0,
             bottom: 0,
             child: PresenceCard(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _historySection() {
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: ListView(
+        children: [
+          const Calendar(),
+          const SizedBox(
+            height: 32,
+          ),
+          const Padding(
+            padding: EdgeInsets.only(left: 8),
+            child: Text(
+              'Aktivitas',
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 16,
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        'Hadir',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontSize: 16,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Text(
+                        'Berhasil hadir tepat waktu',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Text(
+                    '07:29',
+                    style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: 14,
+                      color: Colors.black26,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        'Hadir',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontSize: 16,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Text(
+                        'Berhasil hadir tepat waktu',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Text(
+                    '07:29',
+                    style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: 14,
+                      color: Colors.black26,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _permissionSection() {
+    return Padding(
+      padding: EdgeInsets.all(8),
+      child: ListView(
+        children: [
+          Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        'Izin',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontSize: 16,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Text(
+                        'Menunggu izin dikonfirmasi',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Text(
+                    '07:29',
+                    style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: 14,
+                      color: Colors.black26,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _profileSection() {
+    return Padding(
+      padding: EdgeInsets.all(8),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            height: 100,
+            width: 100,
+            child: CircleAvatar(
+              backgroundImage: NetworkImage('https://images.unsplash.com/photo-1682965636199-091797901722?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'),
+              radius: 100,
+            ),
+          ),
+          SizedBox(height: 16,),
+          const Text(
+            'Dicky Satria Gemilang',
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 16,
+            ),
+          ),
+          SizedBox(height: 4,),
+          const Text(
+            'XII Science',
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              fontSize: 16,
+            ),
+          ),
+          SizedBox(height: 32,),
+          Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Column(
+              children: [
+                InkWell(
+                  borderRadius: BorderRadius.circular(20),
+                  onTap: () {},
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.all(24),
+                    child: Text('Setting'),
+                  ),
+                ),
+                const Divider(height: 5.0,),
+                InkWell(
+                  borderRadius: BorderRadius.circular(20),
+                  onTap: () {},
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.all(24),
+                    child: Text('Logout'),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),

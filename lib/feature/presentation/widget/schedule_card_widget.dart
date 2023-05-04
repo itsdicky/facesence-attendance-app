@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ScheduleCard extends StatelessWidget {
+  final String subject;
+  final String time;
 
-  const ScheduleCard({super.key});
+  const ScheduleCard({super.key, required this.subject, required this.time});
 
   @override
   Widget build(BuildContext context) {
@@ -15,17 +17,17 @@ class ScheduleCard extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const [
+          children: [
             Text(
-              'Math',
-              style: TextStyle(
+              subject,
+              style: const TextStyle(
                 fontWeight: FontWeight.w700,
                 fontSize: 14,
               ),
             ),
             Text(
-              '07:30-09:10',
-              style: TextStyle(
+              time,
+              style: const TextStyle(
                 fontWeight: FontWeight.normal,
                 fontSize: 14,
                 color: Colors.black26,
