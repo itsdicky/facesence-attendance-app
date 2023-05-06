@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:sistem_presensi/feature/presentation/styles/color_style.dart';
 
 class MainCard extends StatelessWidget {
@@ -22,9 +21,10 @@ class MainCard extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 18),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Stack(
+            alignment: AlignmentDirectional.centerEnd,
             children: [
+              Image.asset('assets/images/maincard-image.png'),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -33,22 +33,15 @@ class MainCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
+                        name,
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(color: ColorStyle.white),
+                      ),
+                      const SizedBox(height: 4,),
+                      Text(
                         grade,
-                        style: GoogleFonts.montserrat(
-                          textStyle: const TextStyle(color: ColorStyle.white),
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: ColorStyle.white),
                       ),
                       const SizedBox(height: 8,),
-                      Text(
-                        name,
-                        style: GoogleFonts.montserrat(
-                          textStyle: const TextStyle(color: ColorStyle.white),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
                     ],
                   ),
                   Row(
@@ -57,19 +50,11 @@ class MainCard extends StatelessWidget {
                         children: [
                           Text(
                             presence.toString(),
-                            style: GoogleFonts.montserrat(
-                              textStyle: const TextStyle(color: ColorStyle.white),
-                              fontSize: 36,
-                              fontWeight: FontWeight.w700,
-                            ),
+                            style: Theme.of(context).textTheme.displayLarge?.copyWith(color: ColorStyle.white),
                           ),
                           Text(
                             'Hadir',
-                            style: GoogleFonts.montserrat(
-                              textStyle: const TextStyle(color: ColorStyle.white),
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                            ),
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorStyle.white),
                           ),
                         ],
                       ),
@@ -78,19 +63,11 @@ class MainCard extends StatelessWidget {
                         children: [
                           Text(
                             absence.toString(),
-                            style: GoogleFonts.montserrat(
-                              textStyle: const TextStyle(color: ColorStyle.pinkyRed),
-                              fontSize: 36,
-                              fontWeight: FontWeight.w700,
-                            ),
+                            style: Theme.of(context).textTheme.displayLarge?.copyWith(color: ColorStyle.pinkyRed),
                           ),
                           Text(
                             'Absen',
-                            style: GoogleFonts.montserrat(
-                              textStyle: const TextStyle(color: ColorStyle.pinkyRed),
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                            ),
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: ColorStyle.pinkyRed),
                           ),
                         ],
                       )
@@ -98,7 +75,6 @@ class MainCard extends StatelessWidget {
                   ),
                 ],
               ),
-              Image.asset('assets/images/maincard-image.png'),
             ],
           ),
         ),

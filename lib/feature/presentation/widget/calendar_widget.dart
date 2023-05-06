@@ -11,7 +11,7 @@ class Calendar extends StatefulWidget {
 class _CalendarState extends State<Calendar> {
   DateTime? _selectedDay;
   DateTime _focusedDay = DateTime.now();
-  CalendarFormat _calendarFormat = CalendarFormat.month;
+  CalendarFormat _calendarFormat = CalendarFormat.week;
 
   @override
   Widget build(BuildContext context) {

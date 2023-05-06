@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CHomeAppBar extends StatelessWidget {
   const CHomeAppBar({super.key});
@@ -9,7 +10,7 @@ class CHomeAppBar extends StatelessWidget {
       title: const Text('Halo!'),
       backgroundColor: Theme.of(context).canvasColor,
       elevation: 0,
-      titleTextStyle: TextStyle(color: Theme.of(context).shadowColor, fontWeight: FontWeight.w700),
+      titleTextStyle: Theme.of(context).textTheme.titleSmall,
       iconTheme: IconThemeData(
         color: Theme.of(context).shadowColor,
       ),
@@ -20,10 +21,19 @@ class CHomeAppBar extends StatelessWidget {
           radius: 100,
         ),
       ),
-      actions: const [
-        Icon(Icons.notifications_none),
-        SizedBox(width: 24,)
+      actions: [
+        IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.notifications_none_outlined),
+          splashRadius: 28.0,
+        ),
+        const SizedBox(width: 16,)
       ],
+      systemOverlayStyle: SystemUiOverlayStyle(
+        statusBarColor: Theme.of(context).canvasColor,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.light,
+      ),
     );
   }
 }
@@ -39,7 +49,7 @@ class CTitleAppBar extends StatelessWidget {
       backgroundColor: Theme.of(context).canvasColor,
       elevation: 0,
       title: Center(child: Text(title)),
-      titleTextStyle: TextStyle(color: Theme.of(context).shadowColor, fontSize: 16, fontWeight: FontWeight.w700),
+      titleTextStyle: Theme.of(context).textTheme.titleMedium,
     );
   }
 }

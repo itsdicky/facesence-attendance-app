@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sistem_presensi/feature/presentation/styles/color_style.dart';
 import 'package:sistem_presensi/feature/presentation/widget/calendar_widget.dart';
 
 class HistoryMainPage extends StatelessWidget {
@@ -15,14 +16,11 @@ class HistoryMainPage extends StatelessWidget {
           const SizedBox(
             height: 32,
           ),
-          const Padding(
-            padding: EdgeInsets.only(left: 8),
+          Padding(
+            padding: const EdgeInsets.only(left: 8),
             child: Text(
               'Aktivitas',
-              style: TextStyle(
-                fontWeight: FontWeight.w700,
-                fontSize: 16,
-              ),
+              style: Theme.of(context).textTheme.titleMedium,
             ),
           ),
           const SizedBox(
@@ -43,33 +41,23 @@ class HistoryMainPage extends StatelessWidget {
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
+                          children: [
                             Text(
                               'Hadir',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w900,
-                                fontSize: 16,
-                              ),
+                              style: Theme.of(context).textTheme.titleSmall,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 8,
                             ),
                             Text(
                               'Berhasil hadir tepat waktu',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14,
-                              ),
+                              style: Theme.of(context).textTheme.labelLarge,
                             ),
                           ],
                         ),
-                        const Text(
+                        Text(
                           '07:29',
-                          style: TextStyle(
-                            fontWeight: FontWeight.normal,
-                            fontSize: 14,
-                            color: Colors.black26,
-                          ),
+                          style: Theme.of(context).textTheme.labelMedium?.copyWith(color: ColorStyle.darkGrey),
                         ),
                       ],
                     ),
@@ -87,33 +75,23 @@ class HistoryMainPage extends StatelessWidget {
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
+                          children: [
                             Text(
                               'Hadir',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w900,
-                                fontSize: 16,
-                              ),
+                              style: Theme.of(context).textTheme.titleSmall,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 8,
                             ),
                             Text(
                               'Berhasil hadir tepat waktu',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14,
-                              ),
+                              style: Theme.of(context).textTheme.labelLarge,
                             ),
                           ],
                         ),
-                        const Text(
+                        Text(
                           '07:29',
-                          style: TextStyle(
-                            fontWeight: FontWeight.normal,
-                            fontSize: 14,
-                            color: Colors.black26,
-                          ),
+                          style: Theme.of(context).textTheme.labelMedium?.copyWith(color: ColorStyle.darkGrey),
                         ),
                       ],
                     ),

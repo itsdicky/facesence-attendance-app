@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sistem_presensi/feature/presentation/styles/color_style.dart';
 
 class PermissionMainPage extends StatelessWidget {
   const PermissionMainPage({super.key});
@@ -21,33 +22,23 @@ class PermissionMainPage extends StatelessWidget {
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text(
                         'Izin',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w900,
-                          fontSize: 16,
-                        ),
+                        style: Theme.of(context).textTheme.titleSmall,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 8,
                       ),
                       Text(
                         'Menunggu izin dikonfirmasi',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14,
-                        ),
+                        style: Theme.of(context).textTheme.labelLarge,
                       ),
                     ],
                   ),
-                  const Text(
+                  Text(
                     '07:29',
-                    style: TextStyle(
-                      fontWeight: FontWeight.normal,
-                      fontSize: 14,
-                      color: Colors.black26,
-                    ),
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(color: ColorStyle.darkGrey),
                   ),
                 ],
               ),

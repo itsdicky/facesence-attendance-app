@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sistem_presensi/feature/presentation/styles/color_style.dart';
 
 class ProfileMainPage extends StatelessWidget {
   const ProfileMainPage({super.key});
@@ -19,20 +20,14 @@ class ProfileMainPage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16,),
-          const Text(
+          Text(
             'Dicky Satria Gemilang',
-            style: TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: 16,
-            ),
+            style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 4,),
-          const Text(
+          Text(
             'XII Science',
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: 16,
-            ),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: ColorStyle.darkGrey),
           ),
           const SizedBox(height: 32,),
           Card(
@@ -46,8 +41,17 @@ class ProfileMainPage extends StatelessWidget {
                   onTap: () {},
                   child: Container(
                     width: MediaQuery.of(context).size.width,
-                    padding: const EdgeInsets.all(24),
-                    child: const Text('Setting'),
+                    padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 24.0),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.settings_outlined,),
+                        const SizedBox(width: 16,),
+                        Text(
+                          'Setting',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 const Divider(height: 5.0,),
@@ -56,8 +60,17 @@ class ProfileMainPage extends StatelessWidget {
                   onTap: () {},
                   child: Container(
                     width: MediaQuery.of(context).size.width,
-                    padding: const EdgeInsets.all(24),
-                    child: const Text('Logout'),
+                    padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 24.0),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.logout_outlined,),
+                        const SizedBox(width: 16,),
+                        Text(
+                          'Logout',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],

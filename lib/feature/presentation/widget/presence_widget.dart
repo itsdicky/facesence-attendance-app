@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:sistem_presensi/feature/presentation/styles/color_style.dart';
 
@@ -52,29 +51,17 @@ class _PresenceCardState extends State<PresenceCard> {
                     children: [
                       Text(
                         _dayString,
-                        style: GoogleFonts.montserrat(
-                          textStyle: const TextStyle(color: ColorStyle.white),
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                        ),
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(color: ColorStyle.white),
                       ),
                       Text(
                         _dateString,
-                        style: GoogleFonts.montserrat(
-                          textStyle: const TextStyle(color: ColorStyle.white),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                        ),
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(color: ColorStyle.white),
                       ),
                     ],
                   ),
                   Text(
                     _timeString,
-                    style: GoogleFonts.montserrat(
-                      textStyle: const TextStyle(color: ColorStyle.white),
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                    ),
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(color: ColorStyle.white),
                   ),
                 ],
               ),

@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sistem_presensi/feature/presentation/styles/color_style.dart';
 
 class ScheduleCard extends StatelessWidget {
   final String subject;
@@ -20,18 +20,11 @@ class ScheduleCard extends StatelessWidget {
           children: [
             Text(
               subject,
-              style: const TextStyle(
-                fontWeight: FontWeight.w700,
-                fontSize: 14,
-              ),
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
             Text(
               time,
-              style: const TextStyle(
-                fontWeight: FontWeight.normal,
-                fontSize: 14,
-                color: Colors.black26,
-              ),
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(color: ColorStyle.darkGrey),
             ),
           ],
         ),

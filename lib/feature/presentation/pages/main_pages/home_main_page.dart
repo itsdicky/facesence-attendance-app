@@ -16,34 +16,31 @@ class HomeMainPage extends StatelessWidget {
           ScrollConfiguration(
             behavior: NoGlowScrollBehavior(),
             child: ListView(
-              children: const [
-                MainCard(
+              children: [
+                const MainCard(
                   grade: 'XII Science',
                   name: 'Dicky Satria Gemilang',
                   presence: 24,
                   absence: 1,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 32,
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: 8),
                   child: Text(
                     'Jadwal Hari Ini',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16,
-                    ),
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 16,
                 ),
-                ScheduleCard(subject: 'math', time: '07:30-09:10',),
-                ScheduleCard(subject: 'geography', time: '09:10-10:30',),
-                ScheduleCard(subject: 'sociology', time: '10:30-12:00',),
-                ScheduleCard(subject: 'biology', time: '12:00-13:40',),
-                ScheduleCard(subject: 'english', time: '13:40-14:30',),
+                const ScheduleCard(subject: 'math', time: '07:30-09:10',),
+                const ScheduleCard(subject: 'geography', time: '09:10-10:30',),
+                const ScheduleCard(subject: 'sociology', time: '10:30-12:00',),
+                const ScheduleCard(subject: 'biology', time: '12:00-13:40',),
+                const ScheduleCard(subject: 'english', time: '13:40-14:30',),
               ],
             ),
           ),
