@@ -19,12 +19,11 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await di.init();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
-//void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  // const MyApp({Key? key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +53,6 @@ class MyApp extends StatelessWidget {
             });
           }
         },
-        // home: const SignInPage(),
       ),
     );
   }

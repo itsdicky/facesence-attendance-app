@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sistem_presensi/app_const.dart';
 import 'package:sistem_presensi/feature/presentation/pages/sign_in_page.dart';
@@ -12,19 +11,16 @@ class OnGenerateRoute {
 
     switch (settings.name) {
       case PageConst.signInPage: {
-        return materialBuilder(widget: SignInPage());
-        break;
+        return materialBuilder(widget: const SignInPage());
       }
       case PageConst.signUpPage: {
-        return materialBuilder(widget: SignUpPage());
-        break;
+        return materialBuilder(widget: const SignUpPage());
       }
       case PageConst.addPresencePage: {
-        return materialBuilder(widget: ErrorPage());
-        break;
+        return materialBuilder(widget: const ErrorPage());
       }
       default: {
-        return materialBuilder(widget: ErrorPage());
+        return materialBuilder(widget: const ErrorPage());
       }
     }
 
@@ -32,6 +28,8 @@ class OnGenerateRoute {
 }
 
 class ErrorPage extends StatelessWidget {
+  const ErrorPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
