@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
                 return HomePage(uid: authState.uid);
               }
               if (authState is UnAuthenticated) {
-                return SignInPage();
+                return const SignInPage();
               }
               return const Center(child: CircularProgressIndicator(),);
             });

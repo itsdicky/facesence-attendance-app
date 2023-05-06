@@ -3,10 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sistem_presensi/feature/presentation/cubit/navbar/navbar_cubit.dart';
 import 'package:sistem_presensi/feature/presentation/cubit/presence/presence_cubit.dart';
 import 'package:sistem_presensi/feature/presentation/cubit/presence/presence_state.dart';
-import 'package:sistem_presensi/feature/presentation/widget/calendar_widget.dart';
-import 'package:sistem_presensi/feature/presentation/widget/main_card_widget.dart';
-import 'package:sistem_presensi/feature/presentation/widget/presence_widget.dart';
-import 'package:sistem_presensi/feature/presentation/widget/schedule_card_widget.dart';
+import 'package:sistem_presensi/feature/presentation/pages/main_pages/history_main_page.dart';
+import 'package:sistem_presensi/feature/presentation/pages/main_pages/home_main_page.dart';
+import 'package:sistem_presensi/feature/presentation/pages/main_pages/permission_main_page.dart';
+import 'package:sistem_presensi/feature/presentation/pages/main_pages/profile_main_page.dart';
+import 'package:sistem_presensi/feature/presentation/widget/appbar_widget.dart';
+import 'package:sistem_presensi/feature/presentation/widget/bottom_navbar_widget.dart';
 
 class HomePage extends StatefulWidget {
   final String uid;
@@ -19,8 +21,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
 
+  @override
   void initState() {
-    //TODO: what is this?
     BlocProvider.of<PresenceCubit>(context).getPresence(uid: widget.uid);
     super.initState();
   }
@@ -28,108 +30,65 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Halo!'),
-        backgroundColor: Theme.of(context).canvasColor,
-        elevation: 0,
-        titleTextStyle: TextStyle(color: Theme.of(context).shadowColor, fontWeight: FontWeight.w700),
-        iconTheme: IconThemeData(
-          color: Theme.of(context).shadowColor,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: BlocBuilder<NavbarCubit, NavbarState>(
+          builder: (context, navState) {
+            if (navState is NavbarHome) {
+              return const CHomeAppBar();
+            }
+            if (navState is NavbarHistory) {
+              return CTitleAppBar(title: navState.title);
+            }
+            if (navState is NavbarPermission) {
+              return CTitleAppBar(title: navState.title);
+            }
+            if (navState is NavbarProfile) {
+              return CTitleAppBar(title: navState.title);
+            }
+            return AppBar(title: const Text('Title'),);
+          },
         ),
-        leading: const Padding(
-          padding: EdgeInsets.fromLTRB(12, 10, 0, 10),
-          child: CircleAvatar(
-            backgroundImage: NetworkImage('https://images.unsplash.com/photo-1682965636199-091797901722?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'),
-            radius: 100,
-          ),
-        ),
-        actions: const [
-          Icon(Icons.notifications_none),
-          SizedBox(width: 24,)
-        ],
       ),
-      bottomNavigationBar: BlocBuilder<NavbarCubit, NavbarState>(
-        builder: (context, navbarState) {
-          return BottomNavigationBar(
-            currentIndex: _currentIndex,
-            unselectedItemColor: Theme.of(context).shadowColor,
-            selectedItemColor: Theme.of(context).primaryColor,
-            onTap: onTapNavigate,
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.home_outlined,
-                ),
-                activeIcon: Icon(
-                  Icons.home,
-                ),
-                label: 'Beranda',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.history_outlined,
-                ),
-                activeIcon: Icon(
-                  Icons.history,
-                ),
-                label: 'Riwayat',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.document_scanner_outlined,
-                ),
-                activeIcon: Icon(
-                  Icons.document_scanner,
-                ),
-                label: 'Izin',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.person_outline,
-                ),
-                activeIcon: Icon(
-                  Icons.person,
-                ),
-                label: 'Profil',
-              ),
-            ],
-          );
+      bottomNavigationBar: BlocConsumer<NavbarCubit, NavbarState>(
+        builder: (context, navState) {
+          return BottomNavBar(currentIndex: _currentIndex,);
+        },
+        listener: (context, navState) {
+          if (navState is NavbarHome) {
+            _currentIndex = 0;
+          }
+          if (navState is NavbarHistory) {
+            _currentIndex = 1;
+          }
+          if (navState is NavbarPermission) {
+            _currentIndex = 2;
+          }
+          if (navState is NavbarProfile) {
+            _currentIndex = 3;
+          }
         },
       ),
-      body: BlocConsumer<NavbarCubit, NavbarState>(
-        builder: (context, navbarState) {
-          if (navbarState is NavbarHome) {
+      body: BlocBuilder<NavbarCubit, NavbarState>(
+        builder: (context, navState) {
+          if (navState is NavbarHome) {
             return BlocBuilder<PresenceCubit, PresenceState>(builder: (context, presenceState){
               if(presenceState is PresenceLoaded) {
-                return _bodyWidget();
+                return const HomeMainPage();
               }
               return const Center(child: CircularProgressIndicator(),);
             });
           }
-          if (navbarState is NavbarHistory) {
-            return _historySection();
+          if (navState is NavbarHistory) {
+            return const HistoryMainPage();
           }
-          if (navbarState is NavbarPermission) {
-            return _permissionSection();
+          if (navState is NavbarPermission) {
+            return const PermissionMainPage();
           }
-          if (navbarState is NavbarProfile) {
-            return _profileSection();
+          if (navState is NavbarProfile) {
+            return const ProfileMainPage();
           }
-          return const Text('Default');
-        },
-        listener: (context, navbarState) {
-          if (navbarState is NavbarHome) {
-            _currentIndex = 0;
-          }
-          if (navbarState is NavbarHistory) {
-            _currentIndex = 1;
-          }
-          if (navbarState is NavbarPermission) {
-            _currentIndex = 2;
-          }
-          if (navbarState is NavbarProfile) {
-            _currentIndex = 3;
-          }
+          return const Center(child: CircularProgressIndicator(),);
         },
       ),
       // floatingActionButton: FloatingActionButton(
@@ -139,286 +98,6 @@ class _HomePageState extends State<HomePage> {
       //   tooltip: 'logou',
       //   child: const Icon(Icons.add),
       // ),
-    );
-  }
-
-  Widget _bodyWidget() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Stack(
-        children: [
-          ListView(
-            children: const [
-              MainCard(
-                grade: 'XII Science',
-                name: 'Dicky Satria Gemilang',
-                presence: 24,
-                absence: 1,
-              ),
-              SizedBox(
-                height: 32,
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 8),
-                child: Text(
-                  'Jadwal Hari Ini',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              ScheduleCard(subject: 'math', time: '07:30-09:10',),
-              ScheduleCard(subject: 'geography', time: '09:10-10:30',),
-              ScheduleCard(subject: 'sociology', time: '10:30-12:00',),
-              ScheduleCard(subject: 'biology', time: '12:00-13:40',),
-              ScheduleCard(subject: 'english', time: '13:40-14:30',),
-            ],
-          ),
-          const Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: PresenceCard(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _historySection() {
-    return Padding(
-      padding: const EdgeInsets.all(8),
-      child: ListView(
-        children: [
-          const Calendar(),
-          const SizedBox(
-            height: 32,
-          ),
-          const Padding(
-            padding: EdgeInsets.only(left: 8),
-            child: Text(
-              'Aktivitas',
-              style: TextStyle(
-                fontWeight: FontWeight.w700,
-                fontSize: 16,
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        'Hadir',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w900,
-                          fontSize: 16,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Text(
-                        'Berhasil hadir tepat waktu',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Text(
-                    '07:29',
-                    style: TextStyle(
-                      fontWeight: FontWeight.normal,
-                      fontSize: 14,
-                      color: Colors.black26,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        'Hadir',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w900,
-                          fontSize: 16,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Text(
-                        'Berhasil hadir tepat waktu',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Text(
-                    '07:29',
-                    style: TextStyle(
-                      fontWeight: FontWeight.normal,
-                      fontSize: 14,
-                      color: Colors.black26,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _permissionSection() {
-    return Padding(
-      padding: EdgeInsets.all(8),
-      child: ListView(
-        children: [
-          Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        'Izin',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w900,
-                          fontSize: 16,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Text(
-                        'Menunggu izin dikonfirmasi',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Text(
-                    '07:29',
-                    style: TextStyle(
-                      fontWeight: FontWeight.normal,
-                      fontSize: 14,
-                      color: Colors.black26,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _profileSection() {
-    return Padding(
-      padding: EdgeInsets.all(8),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            height: 100,
-            width: 100,
-            child: CircleAvatar(
-              backgroundImage: NetworkImage('https://images.unsplash.com/photo-1682965636199-091797901722?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'),
-              radius: 100,
-            ),
-          ),
-          SizedBox(height: 16,),
-          const Text(
-            'Dicky Satria Gemilang',
-            style: TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: 16,
-            ),
-          ),
-          SizedBox(height: 4,),
-          const Text(
-            'XII Science',
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: 16,
-            ),
-          ),
-          SizedBox(height: 32,),
-          Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Column(
-              children: [
-                InkWell(
-                  borderRadius: BorderRadius.circular(20),
-                  onTap: () {},
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.all(24),
-                    child: Text('Setting'),
-                  ),
-                ),
-                const Divider(height: 5.0,),
-                InkWell(
-                  borderRadius: BorderRadius.circular(20),
-                  onTap: () {},
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.all(24),
-                    child: Text('Logout'),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
     );
   }
 
