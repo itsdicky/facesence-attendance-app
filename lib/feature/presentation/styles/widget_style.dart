@@ -10,10 +10,14 @@ class WidgetStyle {
     return InputDecoration(
       filled: true,
       fillColor: ColorStyle.lightGrey,
-      contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 14),
-      border: const OutlineInputBorder(
-          borderSide: BorderSide.none,
-          borderRadius: BorderRadius.all(Radius.circular(18))
+      contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+      border: OutlineInputBorder(
+          borderSide: BorderSide(color: ColorStyle.indigoPurpleSwatches.shade100, width: 1),
+          borderRadius: const BorderRadius.all(Radius.circular(18))
+      ),
+      enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: ColorStyle.indigoPurpleSwatches.shade100, width: 1),
+          borderRadius: const BorderRadius.all(Radius.circular(18))
       ),
       hintText: hintText
     );

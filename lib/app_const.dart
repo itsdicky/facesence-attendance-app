@@ -8,4 +8,5 @@ class PageConst {
   static const String signUpPage = "signUpPage";
   static const String signInPage = "signInPage";
   static const String addPresencePage = "addPresencePage";
+  static const String askPermissionPage = "askPermissionPage";
 }

@@ -48,7 +48,11 @@ class CTitleAppBar extends StatelessWidget {
     return AppBar(
       backgroundColor: Theme.of(context).canvasColor,
       elevation: 0,
-      title: Center(child: Text(title)),
+      iconTheme: IconThemeData(
+        color: Theme.of(context).shadowColor
+      ),
+      title: Text(title),
+      centerTitle: true,
       titleTextStyle: Theme.of(context).textTheme.titleMedium,
     );
   }

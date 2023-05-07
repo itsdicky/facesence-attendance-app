@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:sistem_presensi/app_const.dart';
 import 'package:sistem_presensi/feature/presentation/styles/color_style.dart';
 
 class PresenceCard extends StatefulWidget {
@@ -76,7 +77,9 @@ class _PresenceCardState extends State<PresenceCard> {
                       ),
                       child: InkWell(
                         borderRadius: BorderRadius.circular(8.0),
-                        onTap: (){},
+                        onTap: (){
+                          Navigator.pushNamed(context, PageConst.askPermissionPage);
+                        },
                         child: const Padding(
                           padding: EdgeInsets.all(16.0),
                           child: Icon(

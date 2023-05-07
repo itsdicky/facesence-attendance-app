@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sistem_presensi/app_const.dart';
+import 'package:sistem_presensi/feature/presentation/pages/permission_form_page.dart';
 import 'package:sistem_presensi/feature/presentation/pages/sign_in_page.dart';
 import 'package:sistem_presensi/feature/presentation/pages/sign_up_page.dart';
 
@@ -18,6 +19,9 @@ class OnGenerateRoute {
       }
       case PageConst.addPresencePage: {
         return materialBuilder(widget: const ErrorPage());
+      }
+      case PageConst.askPermissionPage: {
+        return materialBuilder(widget: const PermissionForm());
       }
       default: {
         return materialBuilder(widget: const ErrorPage());

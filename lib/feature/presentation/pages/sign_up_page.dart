@@ -66,7 +66,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   _bodyWidget() {
     return Container(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
