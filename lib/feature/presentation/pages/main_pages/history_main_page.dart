@@ -24,7 +24,7 @@ class HistoryMainPage extends StatelessWidget {
             ),
           ),
           const SizedBox(
-            height: 16,
+            height: 12,
           ),
           Expanded(
             child: ListView(

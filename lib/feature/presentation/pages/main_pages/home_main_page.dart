@@ -34,7 +34,7 @@ class HomeMainPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(
-                  height: 16,
+                  height: 12,
                 ),
                 const ScheduleCard(subject: 'math', time: '07:30-09:10',),
                 const ScheduleCard(subject: 'geography', time: '09:10-10:30',),

@@ -101,7 +101,9 @@ class _PresenceCardState extends State<PresenceCard> {
                       ),
                       child: InkWell(
                         borderRadius: BorderRadius.circular(8.0),
-                        onTap: (){},
+                        onTap: (){
+                          Navigator.pushNamed(context, PageConst.cameraPage);
+                        },
                         child: const Padding(
                           padding: EdgeInsets.all(16.0),
                           child: Icon(

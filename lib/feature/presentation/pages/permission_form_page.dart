@@ -1,8 +1,10 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:sistem_presensi/app_const.dart';
 import 'package:sistem_presensi/feature/presentation/styles/color_style.dart';
 import 'package:sistem_presensi/feature/presentation/styles/widget_style.dart';
 import 'package:sistem_presensi/feature/presentation/widget/appbar_widget.dart';
+import 'package:sistem_presensi/utils/scroll_behavior.dart';
 
 class PermissionForm extends StatefulWidget {
 
@@ -33,70 +35,75 @@ class _PermissionFormState extends State<PermissionForm> {
       body: Padding(
         padding: const EdgeInsets.all(12),
         child: Center(
-          child: ListView(
-            children: [
-              const SizedBox(height: 32,),
-              Image.asset(
-                'assets/images/permission-form-image.png',
-                height: 114,
-              ),
-              const SizedBox(height: 48,),
-              Center(
-                child: Text(
-                  'Apa alasan anda?',
-                  style: Theme.of(context).textTheme.titleMedium,
+          child: ScrollConfiguration(
+            behavior: NoGlowScrollBehavior(),
+            child: ListView(
+              children: [
+                const SizedBox(height: 32,),
+                Image.asset(
+                  'assets/images/permission-form-image.png',
+                  height: 114,
                 ),
-              ),
-              const SizedBox(height: 64,),
-              DropdownButtonHideUnderline(
-                child: DropdownButton2(
-                  hint: Text('Pilih alasan', style: Theme.of(context).textTheme.bodyMedium,),
-                  items: _addDividersAfterItems(itemsCategory),
-                  value: selectedValue,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedValue = value as String;
-                    });
+                const SizedBox(height: 48,),
+                Center(
+                  child: Text(
+                    'Apa alasan anda?',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ),
+                const SizedBox(height: 64,),
+                DropdownButtonHideUnderline(
+                  child: DropdownButton2(
+                    hint: Text('Pilih alasan', style: Theme.of(context).textTheme.bodyMedium,),
+                    items: _addDividersAfterItems(itemsCategory),
+                    value: selectedValue,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedValue = value as String;
+                      });
+                    },
+                    iconStyleData: const IconStyleData(
+                        icon: Icon(Icons.keyboard_arrow_down)
+                    ),
+                    buttonStyleData: ButtonStyleData(
+                      padding: const EdgeInsets.fromLTRB(8, 4, 24, 4),
+                      decoration: BoxDecoration(
+                        color: ColorStyle.lightGrey,
+                        borderRadius: BorderRadius.circular(18),
+                        border: Border.all(color: Theme.of(context).primaryColorLight, width: 1),
+                      ),
+                    ),
+                    dropdownStyleData: DropdownStyleData(
+                      elevation: 4,
+                      padding: null,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                    ),
+                    menuItemStyleData: MenuItemStyleData(
+                      customHeights: _getCustomItemsHeights(itemsCategory),
+                    ),
+                    isExpanded: true,
+                  ),
+                ),
+                const SizedBox(height: 16,),
+                TextField(
+                  controller: _detailController,
+                  maxLines: 8,
+                  keyboardType: TextInputType.multiline,
+                  decoration: WidgetStyle.textfieldDecoration(hintText: 'Deskripsi'),
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                const SizedBox(height: 36,),
+                TextButton(
+                  style: WidgetStyle.textButtonStyle(),
+                  onPressed: () {
+                    Navigator.pushNamed(context, PageConst.cameraPage);
                   },
-                  iconStyleData: const IconStyleData(
-                      icon: Icon(Icons.keyboard_arrow_down)
-                  ),
-                  buttonStyleData: ButtonStyleData(
-                    padding: const EdgeInsets.fromLTRB(8, 4, 24, 4),
-                    decoration: BoxDecoration(
-                      color: ColorStyle.lightGrey,
-                      borderRadius: BorderRadius.circular(18),
-                      border: Border.all(color: Theme.of(context).primaryColorLight, width: 1),
-                    ),
-                  ),
-                  dropdownStyleData: DropdownStyleData(
-                    elevation: 4,
-                    padding: null,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                  ),
-                  menuItemStyleData: MenuItemStyleData(
-                    customHeights: _getCustomItemsHeights(itemsCategory),
-                  ),
-                  isExpanded: true,
+                  child: Text('Lanjut', style: Theme.of(context).textTheme.titleSmall?.copyWith(color: ColorStyle.white),),
                 ),
-              ),
-              const SizedBox(height: 16,),
-              TextField(
-                controller: _detailController,
-                maxLines: 8,
-                keyboardType: TextInputType.multiline,
-                decoration: WidgetStyle.textfieldDecoration(hintText: 'Deskripsi'),
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              const SizedBox(height: 36,),
-              TextButton(
-                style: WidgetStyle.textButtonStyle(),
-                onPressed: () {},
-                child: Text('Lanjut', style: Theme.of(context).textTheme.titleSmall?.copyWith(color: ColorStyle.white),),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
