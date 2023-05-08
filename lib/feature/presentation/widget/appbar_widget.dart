@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:sistem_presensi/app_const.dart';
 
 class CHomeAppBar extends StatelessWidget {
   const CHomeAppBar({super.key});
@@ -23,7 +24,9 @@ class CHomeAppBar extends StatelessWidget {
       ),
       actions: [
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, PageConst.notificationPage);
+          },
           icon: const Icon(Icons.notifications_none_outlined),
           splashRadius: 28.0,
         ),

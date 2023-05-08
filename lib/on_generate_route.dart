@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sistem_presensi/app_const.dart';
 import 'package:sistem_presensi/feature/presentation/pages/camera_page.dart';
+import 'package:sistem_presensi/feature/presentation/pages/notification_page.dart';
 import 'package:sistem_presensi/feature/presentation/pages/permission_form_page.dart';
 import 'package:sistem_presensi/feature/presentation/pages/permission_preview.dart';
 import 'package:sistem_presensi/feature/presentation/pages/picture_display_page.dart';
@@ -34,6 +35,9 @@ class OnGenerateRoute {
       }
       case PageConst.permissionPreviewPage: {
         return materialBuilder(widget: PermissionPreviewPage(imagePath: args as String));
+      }
+      case PageConst.notificationPage: {
+        return materialBuilder(widget: const NotificationPage());
       }
       default: {
         return materialBuilder(widget: const ErrorPage());
