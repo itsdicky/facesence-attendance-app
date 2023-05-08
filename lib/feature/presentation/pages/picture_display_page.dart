@@ -32,7 +32,7 @@ class PictureDisplayPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   FloatingActionButton(
-                    elevation: 4,
+                    elevation: 0,
                     backgroundColor: Colors.red,
                     onPressed: () {
                       Navigator.pop(context);
@@ -40,7 +40,7 @@ class PictureDisplayPage extends StatelessWidget {
                     child: const Icon(Icons.close),
                   ),
                   FloatingActionButton(
-                    elevation: 4,
+                    elevation: 0,
                     backgroundColor: Colors.green,
                     onPressed: () {
                       Navigator.pushNamed(context, PageConst.permissionPreviewPage, arguments: imagePath);

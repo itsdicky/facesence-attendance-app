@@ -6,46 +6,81 @@ class PermissionMainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8),
-      child: ListView(
-        children: [
-          Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Izin',
-                        style: Theme.of(context).textTheme.titleSmall,
-                      ),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      Text(
-                        'Menunggu izin dikonfirmasi',
-                        style: Theme.of(context).textTheme.labelLarge,
-                      ),
-                    ],
-                  ),
-                  Text(
-                    '07:29',
-                    style: Theme.of(context).textTheme.labelMedium?.copyWith(color: ColorStyle.darkGrey),
-                  ),
-                ],
-              ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          height: 42,
+          decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Text('07:12', style: Theme.of(context).textTheme.titleSmall?.copyWith(color: Theme.of(context).cardColor),),
+                    VerticalDivider(color: Theme.of(context).cardColor, width: 32, thickness: 2,),
+                    Text('Izin', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).cardColor),),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Text('Menunggu...', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).primaryColorLight),),
+                    SizedBox(width: 16,),
+                    Icon(Icons.timer_outlined, color: Theme.of(context).cardColor,)
+                  ],
+                ),
+              ],
             ),
           ),
-        ],
-      ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(8, 32, 8, 8),
+            child: ListView(
+              children: [
+                Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Izin',
+                              style: Theme.of(context).textTheme.titleSmall,
+                            ),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            Text(
+                              'Menunggu izin dikonfirmasi',
+                              style: Theme.of(context).textTheme.labelLarge,
+                            ),
+                          ],
+                        ),
+                        Text(
+                          '07:12',
+                          style: Theme.of(context).textTheme.labelMedium?.copyWith(color: ColorStyle.darkGrey),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

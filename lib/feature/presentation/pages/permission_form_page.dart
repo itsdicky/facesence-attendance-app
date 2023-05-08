@@ -39,19 +39,19 @@ class _PermissionFormState extends State<PermissionForm> {
             behavior: NoGlowScrollBehavior(),
             child: ListView(
               children: [
-                const SizedBox(height: 32,),
+                const SizedBox(height: 42,),
                 Image.asset(
                   'assets/images/permission-form-image.png',
                   height: 114,
                 ),
-                const SizedBox(height: 48,),
+                const SizedBox(height: 86,),
                 Center(
                   child: Text(
-                    'Apa alasan anda?',
+                    'Mengapa mengajukan izin?',
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ),
-                const SizedBox(height: 64,),
+                const SizedBox(height: 16,),
                 DropdownButtonHideUnderline(
                   child: DropdownButton2(
                     hint: Text('Pilih alasan', style: Theme.of(context).textTheme.bodyMedium,),
@@ -62,8 +62,10 @@ class _PermissionFormState extends State<PermissionForm> {
                         selectedValue = value as String;
                       });
                     },
-                    iconStyleData: const IconStyleData(
-                        icon: Icon(Icons.keyboard_arrow_down)
+                    iconStyleData: IconStyleData(
+                      icon: const Icon(Icons.keyboard_arrow_down),
+                      openMenuIcon: const Icon(Icons.keyboard_arrow_up),
+                      iconEnabledColor: Theme.of(context).primaryColorLight
                     ),
                     buttonStyleData: ButtonStyleData(
                       padding: const EdgeInsets.fromLTRB(8, 4, 24, 4),

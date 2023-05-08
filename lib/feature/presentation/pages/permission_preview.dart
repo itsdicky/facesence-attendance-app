@@ -45,7 +45,7 @@ class PermissionPreviewPage extends StatelessWidget {
               onPressed: () {
                 // Navigator.pushNamed(context, PageConst.cameraPage);
               },
-              child: Text('Lanjut', style: Theme.of(context).textTheme.titleSmall?.copyWith(color: ColorStyle.white),),
+              child: Text('Kirim', style: Theme.of(context).textTheme.titleSmall?.copyWith(color: ColorStyle.white),),
             ),
           ],
         ),

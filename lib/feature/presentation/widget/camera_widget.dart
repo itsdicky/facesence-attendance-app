@@ -69,7 +69,7 @@ class _CCameraWidgetState extends State<CCameraWidget> {
             width: 72,
             child: FittedBox(
               child: FloatingActionButton(
-                elevation: 4,
+                elevation: 0,
                 onPressed: () async {
                   try {
                     await _initializeControllerFuture;
