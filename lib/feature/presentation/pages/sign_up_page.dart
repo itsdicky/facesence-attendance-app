@@ -5,7 +5,7 @@ import 'package:sistem_presensi/feature/domain/entities/user_entity.dart';
 import 'package:sistem_presensi/feature/presentation/cubit/auth/auth_cubit.dart';
 import 'package:sistem_presensi/feature/presentation/cubit/auth/auth_state.dart';
 import 'package:sistem_presensi/feature/presentation/cubit/user/user_cubit.dart';
-import 'package:sistem_presensi/feature/presentation/pages/home_page.dart';
+import 'package:sistem_presensi/feature/presentation/pages/main_page.dart';
 import 'package:sistem_presensi/feature/presentation/styles/widget_style.dart';
 
 class SignUpPage extends StatefulWidget {

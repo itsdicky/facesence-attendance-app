@@ -9,8 +9,8 @@ class ProfileMainPage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          const SizedBox(height: 24,),
           const SizedBox(
             height: 100,
             width: 100,
@@ -29,7 +29,7 @@ class ProfileMainPage extends StatelessWidget {
             'XII Science',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: ColorStyle.darkGrey),
           ),
-          const SizedBox(height: 32,),
+          const SizedBox(height: 48,),
           Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),

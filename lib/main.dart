@@ -7,7 +7,7 @@ import 'package:sistem_presensi/feature/presentation/cubit/auth/auth_state.dart'
 import 'package:sistem_presensi/feature/presentation/cubit/navbar/navbar_cubit.dart';
 import 'package:sistem_presensi/feature/presentation/cubit/presence/presence_cubit.dart';
 import 'package:sistem_presensi/feature/presentation/cubit/user/user_cubit.dart';
-import 'package:sistem_presensi/feature/presentation/pages/home_page.dart';
+import 'package:sistem_presensi/feature/presentation/pages/main_page.dart';
 import 'package:sistem_presensi/feature/presentation/pages/sign_in_page.dart';
 import 'package:sistem_presensi/feature/presentation/styles/theme_style.dart';
 import 'package:sistem_presensi/on_generate_route.dart';
