@@ -7,6 +7,8 @@ import 'package:sistem_presensi/feature/presentation/cubit/auth/auth_state.dart'
 import 'package:sistem_presensi/feature/presentation/cubit/user/user_cubit.dart';
 import 'package:sistem_presensi/feature/presentation/pages/main_page.dart';
 import 'package:sistem_presensi/feature/presentation/styles/widget_style.dart';
+import 'package:sistem_presensi/utils/scroll_behavior.dart';
+import 'package:sistem_presensi/utils/validation.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -20,6 +22,7 @@ class _SignInPageState extends State<SignInPage> {
   final TextEditingController _passwordController = TextEditingController();
 
   final GlobalKey<ScaffoldState> _scaffoldGlobalKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<FormState> _formSignInKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -63,88 +66,122 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   _bodyWidget() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          const Text('Masuk',
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 32
-            ),
-          ),
-          const SizedBox(
-            height: 80,
-          ),
-
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Form(
+      key: _formSignInKey,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        child: ScrollConfiguration(
+          behavior: NoGlowScrollBehavior(),
+          child: ListView(
             children: [
-              const Text('Email', textAlign: TextAlign.left,),
-              const SizedBox(height: 8,),
-              TextField(
-                controller: _emailController,
-                decoration: WidgetStyle.textfieldDecoration(hintText: 'contoh@email.com'),
-                style: const TextStyle(
-                    fontSize: 14
-                ),
+              const SizedBox(
+                height: 64,
+              ),
+              Text('Masuk',
+                style: Theme.of(context).textTheme.displayMedium?.copyWith(color: Colors.black),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(
+                height: 92,
+              ),
+
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Email', textAlign: TextAlign.left,),
+                  const SizedBox(height: 8,),
+                  TextFormField(
+                    controller: _emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Masukan email';
+                      }
+                      if (!value.isValidEmail) {
+                        return 'Email tidak valid';
+                      }
+                      return null;
+                    },
+                    decoration: WidgetStyle.textfieldDecoration(hintText: 'contoh@email.com'),
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ],
+              ),
+
+              const SizedBox(
+                height: 20,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Password'),
+                  const SizedBox(height: 8,),
+                  TextFormField(
+                    controller: _passwordController,
+                    obscureText: true,
+                    keyboardType: TextInputType.visiblePassword,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Masukan password';
+                      }
+                      if (!value.isValidPassword) {
+                        return 'Masukan minimal 8 karakter';
+                      }
+                      return null;
+                    },
+                    decoration: WidgetStyle.textfieldDecoration(hintText: 'min. 8 karakter'),
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    maxLength: 16,
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 72,
+              ),
+              TextButton(
+                style: WidgetStyle.textButtonStyle(),
+                onPressed: submitSignIn,
+                child: const Text('Lanjut'),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              // OutlinedButton(
+              //   style: WidgetStyle.outlinedButtonStyle(),
+              //   onPressed: toSignUpStudent,
+              //   child: const Text('Daftar sebagai siswa'),
+              // ),
+              // const SizedBox(
+              //   height: 20,
+              // ),
+              // OutlinedButton(
+              //   style: WidgetStyle.outlinedButtonStyle(),
+              //   onPressed: toSignUpTeacher,
+              //   child: const Text('Daftar sebagai guru'),
+              // ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('Belum memiliki akun?'),
+                  const SizedBox(width: 8,),
+                  TextButton(
+                    onPressed: toSignUpStudent,
+                    child: const Text(
+                      'Daftar',
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-
-          const SizedBox(
-            height: 20,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text('Password'),
-              const SizedBox(height: 8,),
-              TextField(
-                controller: _passwordController,
-                obscureText: true,
-                decoration: WidgetStyle.textfieldDecoration(hintText: 'min. 8 karakter'),
-                style: const TextStyle(
-                    fontSize: 14
-                ),
-                maxLength: 16,
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 50,
-          ),
-          TextButton(
-            style: WidgetStyle.textButtonStyle(),
-            onPressed: submitSignIn,
-            child: const Text('Lanjut'),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          OutlinedButton(
-            style: WidgetStyle.outlinedButtonStyle(),
-            onPressed: toSignUpStudent,
-            child: const Text('Daftar sebagai siswa'),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          OutlinedButton(
-            style: WidgetStyle.outlinedButtonStyle(),
-            onPressed: toSignUpTeacher,
-            child: const Text('Daftar sebagai guru'),
-          ),
-        ],
+        ),
       ),
     );
   }
 
   void submitSignIn() {
-    print(_emailController.text);
-    print(_passwordController.text);
-    if (_emailController.text.isNotEmpty && _passwordController.text.isNotEmpty) {
+    if (_formSignInKey.currentState!.validate()) {
       BlocProvider.of<UserCubit>(context).submitSignIn(user: UserEntity(
         email: _emailController.text,
         password: _passwordController.text,

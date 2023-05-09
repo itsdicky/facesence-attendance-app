@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sistem_presensi/feature/presentation/cubit/auth/auth_cubit.dart';
 import 'package:sistem_presensi/feature/presentation/styles/color_style.dart';
 
 class ProfileMainPage extends StatelessWidget {
@@ -57,7 +59,9 @@ class ProfileMainPage extends StatelessWidget {
                 const Divider(height: 5.0,),
                 InkWell(
                   borderRadius: BorderRadius.circular(20),
-                  onTap: () {},
+                  onTap: () {
+                    BlocProvider.of<AuthCubit>(context).loggedOut();
+                  },
                   child: Container(
                     width: MediaQuery.of(context).size.width,
                     padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 24.0),

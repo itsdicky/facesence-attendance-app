@@ -7,6 +7,8 @@ import 'package:sistem_presensi/feature/presentation/cubit/auth/auth_state.dart'
 import 'package:sistem_presensi/feature/presentation/cubit/user/user_cubit.dart';
 import 'package:sistem_presensi/feature/presentation/pages/main_page.dart';
 import 'package:sistem_presensi/feature/presentation/styles/widget_style.dart';
+import 'package:sistem_presensi/utils/scroll_behavior.dart';
+import 'package:sistem_presensi/utils/validation.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -16,13 +18,13 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-
   // WidgetStyle _widgetStyle = WidgetStyle();
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
-  GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<FormState> _formSignUpKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -65,88 +67,141 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   _bodyWidget() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          const Text('Daftar',
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 32
-            ),
-          ),
-          const SizedBox(
-            height: 50,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Form(
+      key: _formSignUpKey,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        child: ScrollConfiguration(
+          behavior: NoGlowScrollBehavior(),
+          child: ListView(
             children: [
-              const Text('Username'),
-              const SizedBox(height: 8,),
-              TextField(
-                controller: _usernameController,
-                decoration: WidgetStyle.textfieldDecoration(hintText: 'username'),
+              const SizedBox(
+                height: 64,
+              ),
+              Text('Daftar',
+                style: Theme.of(context).textTheme.displayMedium?.copyWith(color: Colors.black),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(
+                height: 50,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Username'),
+                  const SizedBox(height: 8,),
+                  TextFormField(
+                    controller: _usernameController,
+                    keyboardType: TextInputType.name,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Masukan username';
+                      }
+                      if (!value.isValidUsername) {
+                        return 'Masukan minimal 6 karakter';
+                      }
+                      return null;
+                    },
+                    decoration: WidgetStyle.textfieldDecoration(hintText: 'min. 6 karakter, max. 14'),
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Email'),
+                  const SizedBox(height: 8,),
+                  TextFormField(
+                    controller: _emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Masukan email';
+                      }
+                      if (!value.isValidEmail) {
+                        return 'Email tidak valid';
+                      }
+                      return null;
+                    },
+                    decoration: WidgetStyle.textfieldDecoration(hintText: 'contoh@email.com'),
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Password'),
+                  const SizedBox(height: 8,),
+                  TextFormField(
+                    controller: _passwordController,
+                    obscureText: true,
+                    keyboardType: TextInputType.visiblePassword,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Masukan password';
+                      }
+                      if (!value.isValidPassword) {
+                        return 'Invalid password';
+                      }
+                      return null;
+                    },
+                    decoration: WidgetStyle.textfieldDecoration(hintText: 'min. 8 karakter'),
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    maxLength: 16,
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 50,
+              ),
+              TextButton(
+                style: WidgetStyle.textButtonStyle(),
+                onPressed: submitSignUp,
+                child: const Text('Lanjut'),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              // OutlinedButton(
+              //   style: WidgetStyle.outlinedButtonStyle(),
+              //   onPressed: () => Navigator.pushNamedAndRemoveUntil(context, PageConst.signInPage, (route) => false),
+              //   child: const Text('Daftar sebagai Guru'),
+              // ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('Sudah memiliki akun?'),
+                  const SizedBox(width: 8,),
+                  TextButton(
+                    onPressed: () => Navigator.pushNamedAndRemoveUntil(context, PageConst.signInPage, (route) => false),
+                    child: const Text(
+                      'Masuk',
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-          const SizedBox(
-            height: 20,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text('Email'),
-              const SizedBox(height: 8,),
-              TextField(
-                controller: _emailController,
-                decoration: WidgetStyle.textfieldDecoration(hintText: 'contoh@email.com'),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text('Password'),
-              const SizedBox(height: 8,),
-              TextField(
-                controller: _passwordController,
-                obscureText: true,
-                decoration: WidgetStyle.textfieldDecoration(hintText: 'min. 8 karakter'),
-                maxLength: 16,
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 50,
-          ),
-          TextButton(
-            style: WidgetStyle.textButtonStyle(),
-            onPressed: submitSignUp,
-            child: const Text('Lanjut'),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          OutlinedButton(
-            style: WidgetStyle.outlinedButtonStyle(),
-            onPressed: () => Navigator.pushNamedAndRemoveUntil(context, PageConst.signInPage, (route) => false),
-            child: const Text('Masuk'),
-          ),
-        ],
+        ),
       ),
     );
   }
 
   submitSignUp() {
-    if (_usernameController.text.isNotEmpty && _emailController.text.isNotEmpty && _passwordController.text.isNotEmpty) {
+    if (_formSignUpKey.currentState!.validate()) {
       BlocProvider.of<UserCubit>(context).submitSignUp(user: UserEntity(
-        name: _usernameController.text,
-        email: _emailController.text,
-        password: _passwordController.text
+          name: _usernameController.text,
+          email: _emailController.text,
+          password: _passwordController.text
       ));
     }
   }
