@@ -7,8 +7,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sistem_presensi/feature/domain/entities/presence_entity.dart';
-import 'package:sistem_presensi/feature/domain/entities/user_entity.dart';
+import 'package:sistem_presensi/src/domain/entities/presence_entity.dart';
+import 'package:sistem_presensi/src/domain/entities/user_entity.dart';
 
 import 'package:sistem_presensi/main.dart';
 
