@@ -29,6 +29,13 @@ class _PresenceCardState extends State<PresenceCard> {
   }
 
   @override
+  void setState(fn) {
+    if(mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
   Widget build(context) {
     return Card(
       color: ColorStyle.black,

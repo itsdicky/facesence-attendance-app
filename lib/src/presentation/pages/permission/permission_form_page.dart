@@ -23,6 +23,7 @@ class _PermissionFormState extends State<PermissionForm> {
   ];
   String? selectedValue;
 
+  final GlobalKey<FormState> _formPermissionKey = GlobalKey<FormState>();
   final TextEditingController _detailController = TextEditingController();
 
   @override
@@ -34,77 +35,88 @@ class _PermissionFormState extends State<PermissionForm> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(12),
-        child: Center(
-          child: ScrollConfiguration(
-            behavior: NoGlowScrollBehavior(),
-            child: ListView(
-              children: [
-                const SizedBox(height: 42,),
-                Image.asset(
-                  'assets/images/permission-form-image.png',
-                  height: 114,
-                ),
-                const SizedBox(height: 86,),
-                Center(
-                  child: Text(
-                    'Mengapa mengajukan izin?',
-                    style: Theme.of(context).textTheme.titleMedium,
+        child: Form(
+          key: _formPermissionKey,
+          child: Center(
+            child: ScrollConfiguration(
+              behavior: NoGlowScrollBehavior(),
+              child: ListView(
+                children: [
+                  const SizedBox(height: 42,),
+                  Image.asset(
+                    'assets/images/permission-form-image.png',
+                    height: 114,
                   ),
-                ),
-                const SizedBox(height: 16,),
-                DropdownButtonHideUnderline(
-                  child: DropdownButton2(
-                    hint: Text('Pilih alasan', style: Theme.of(context).textTheme.bodyMedium,),
-                    items: _addDividersAfterItems(itemsCategory),
-                    value: selectedValue,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedValue = value as String;
-                      });
+                  const SizedBox(height: 72,),
+                  Center(
+                    child: Text(
+                      'Mengapa mengajukan izin?',
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ),
+                  const SizedBox(height: 24,),
+                  DropdownButtonHideUnderline(
+                    child: DropdownButtonFormField2(
+                      items: _addDividersAfterItems(itemsCategory),
+                      decoration: CWidgetStyle.dropdownButtonDecoration(),
+                      isExpanded: true,
+                      hint: Text('Pilih alasan', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: ColorStyle.darkGrey),),
+                      validator: (value) {
+                        if (value == null) {
+                          return 'Pilih alasan';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          selectedValue = value as String;
+                        });
+                      },
+                      onSaved: (value) {
+                        selectedValue = value.toString();
+                      },
+                      buttonStyleData: const ButtonStyleData(
+                        height: 60,
+                        padding: const EdgeInsets.fromLTRB(8, 4, 20, 4),
+                      ),
+                      iconStyleData: const IconStyleData(
+                        icon: Icon(Icons.keyboard_arrow_down),
+                        openMenuIcon: Icon(Icons.keyboard_arrow_up),
+                        iconEnabledColor: ColorStyle.indigoLight,
+                      ),
+                      dropdownStyleData: DropdownStyleData(
+                        elevation: 4,
+                        padding: EdgeInsets.zero,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(18),
+                        ),
+                      ),
+                      menuItemStyleData: MenuItemStyleData(
+                        customHeights: _getCustomItemsHeights(itemsCategory),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16,),
+                  TextFormField(
+                    controller: _detailController,
+                    maxLines: 8,
+                    keyboardType: TextInputType.multiline,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Masukan deskripsi';
+                      }
                     },
-                    iconStyleData: const IconStyleData(
-                      icon: Icon(Icons.keyboard_arrow_down),
-                      openMenuIcon: Icon(Icons.keyboard_arrow_up),
-                      iconEnabledColor: ColorStyle.indigoLight,
-                    ),
-                    buttonStyleData: ButtonStyleData(
-                      padding: const EdgeInsets.fromLTRB(8, 4, 24, 4),
-                      decoration: BoxDecoration(
-                        color: ColorStyle.lightGrey,
-                        borderRadius: BorderRadius.circular(18),
-                        border: Border.all(color: ColorStyle.indigoLight, width: 1),
-                      ),
-                    ),
-                    dropdownStyleData: DropdownStyleData(
-                      elevation: 4,
-                      padding: null,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                    ),
-                    menuItemStyleData: MenuItemStyleData(
-                      customHeights: _getCustomItemsHeights(itemsCategory),
-                    ),
-                    isExpanded: true,
+                    decoration: CWidgetStyle.textfieldDecoration(hintText: 'Deskripsi'),
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
-                ),
-                const SizedBox(height: 16,),
-                TextField(
-                  controller: _detailController,
-                  maxLines: 8,
-                  keyboardType: TextInputType.multiline,
-                  decoration: CWidgetStyle.textfieldDecoration(hintText: 'Deskripsi'),
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                const SizedBox(height: 36,),
-                TextButton(
-                  style: CWidgetStyle.textButtonStyle(),
-                  onPressed: () {
-                    Navigator.pushNamed(context, PageConst.cameraPage);
-                  },
-                  child: Text('Lanjut', style: Theme.of(context).textTheme.titleSmall?.copyWith(color: ColorStyle.white),),
-                ),
-              ],
+                  const SizedBox(height: 36,),
+                  TextButton(
+                    style: CWidgetStyle.textButtonStyle(),
+                    onPressed: _submitPermissionDetail,
+                    child: Text('Lanjut', style: Theme.of(context).textTheme.titleSmall?.copyWith(color: ColorStyle.white),),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -120,6 +132,13 @@ class _PermissionFormState extends State<PermissionForm> {
   //   }
   // }
 
+  void _submitPermissionDetail() {
+    if (_formPermissionKey.currentState!.validate()) {
+      _formPermissionKey.currentState!.save();
+      Navigator.pushNamed(context, PageConst.cameraPage);
+    }
+  }
+
   List<DropdownMenuItem<String>> _addDividersAfterItems(List<String> items) {
     List<DropdownMenuItem<String>> _menuItems = [];
     for (var item in items) {
@@ -128,7 +147,7 @@ class _PermissionFormState extends State<PermissionForm> {
           DropdownMenuItem<String>(
             value: item,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              padding: EdgeInsets.zero,
               child: Text(item, style: Theme.of(context).textTheme.bodyMedium,),
             ),
           ),
@@ -148,7 +167,7 @@ class _PermissionFormState extends State<PermissionForm> {
     List<double> _itemsHeights = [];
     for (var i = 0; i < (items.length * 2) - 1; i++) {
       if (i.isEven) {
-        _itemsHeights.add(40);
+        _itemsHeights.add(46);
       }
       //Dividers indexes will be the odd indexes
       if (i.isOdd) {

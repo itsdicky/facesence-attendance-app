@@ -6,7 +6,7 @@ class CWidgetStyle {
 
   CWidgetStyle._();
 
-  static InputDecoration textfieldDecoration({required String hintText}) {
+  static InputDecoration textfieldDecoration({String? hintText}) {
     return InputDecoration(
       filled: true,
       fillColor: ColorStyle.lightGrey,
@@ -19,7 +19,27 @@ class CWidgetStyle {
           borderSide: BorderSide(color: ColorStyle.indigoPurpleSwatches.shade100, width: 1),
           borderRadius: const BorderRadius.all(Radius.circular(18))
       ),
-      hintText: hintText
+      hintText: hintText,
+      hintStyle: const TextStyle(
+        color: ColorStyle.darkGrey,
+      ),
+    );
+  }
+
+  static InputDecoration dropdownButtonDecoration() {
+    return InputDecoration(
+      isDense: true,
+      contentPadding: EdgeInsets.zero,
+      border: OutlineInputBorder(
+          borderSide: BorderSide(color: ColorStyle.indigoPurpleSwatches.shade100, width: 1),
+          borderRadius: const BorderRadius.all(Radius.circular(18))
+      ),
+      filled: true,
+      fillColor: ColorStyle.lightGrey,
+      enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: ColorStyle.indigoPurpleSwatches.shade100, width: 1),
+          borderRadius: const BorderRadius.all(Radius.circular(18))
+      ),
     );
   }
 
