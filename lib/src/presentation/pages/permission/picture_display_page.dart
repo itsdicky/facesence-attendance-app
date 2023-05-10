@@ -6,9 +6,11 @@ import 'package:sistem_presensi/src/presentation/styles/color_style.dart';
 import 'package:sistem_presensi/src/presentation/widget/common/appbar_widget.dart';
 
 class PictureDisplayPage extends StatelessWidget {
+  final String category;
+  final String description;
   final String imagePath;
 
-  const PictureDisplayPage({super.key, required this.imagePath});
+  const PictureDisplayPage({super.key, required this.category, required this.description, required this.imagePath});
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +48,7 @@ class PictureDisplayPage extends StatelessWidget {
                     elevation: 0,
                     backgroundColor: ColorStyle.limeGreen,
                     onPressed: () {
-                      Navigator.pushNamed(context, PageConst.permissionPreviewPage, arguments: imagePath);
+                      Navigator.pushNamed(context, PageConst.permissionPreviewPage, arguments: [category, description, imagePath]);
                     },
                     child: const Icon(Icons.check),
                   ),

@@ -1,17 +1,21 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:sistem_presensi/constant/page_const.dart';
+import 'package:sistem_presensi/src/presentation/widget/common/appbar_widget.dart';
+import 'package:sistem_presensi/main.dart';
 
-class CCameraWidget extends StatefulWidget {
-  final CameraDescription camera;
+class PermissionCameraPage extends StatefulWidget {
+  final String category;
+  final String description;
+  final CameraDescription camera = cameras.first;
 
-  const CCameraWidget({super.key, required this.camera});
+  PermissionCameraPage({super.key, required this.category, required this.description});
 
   @override
-  State<CCameraWidget> createState() => _CCameraWidgetState();
+  State<PermissionCameraPage> createState() => _PermissionCameraPageState();
 }
 
-class _CCameraWidgetState extends State<CCameraWidget> {
+class _PermissionCameraPageState extends State<PermissionCameraPage> {
   late CameraController _controller;
   late Future<void> _initializeControllerFuture;
 
@@ -30,15 +34,21 @@ class _CCameraWidgetState extends State<CCameraWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _initializeControllerFuture,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          return _cameraWidget();
-        } else {
-          return const Center(child: CircularProgressIndicator());
-        }
-      },
+    return Scaffold(
+      appBar: const PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: CTitleAppBarLight(title: 'Foto Dokumen',),
+      ),
+      body: FutureBuilder(
+        future: _initializeControllerFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return _cameraWidget();
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
     );
   }
 
@@ -78,7 +88,7 @@ class _CCameraWidgetState extends State<CCameraWidget> {
 
                     if (!mounted) return;
 
-                    await Navigator.pushNamed(context, PageConst.pictureDisplayPage, arguments: image.path);
+                    await Navigator.pushNamed(context, PageConst.pictureDisplayPage, arguments: [widget.category, widget.description ,image.path]);
                   } catch(e) {
                     print(e);
                   }

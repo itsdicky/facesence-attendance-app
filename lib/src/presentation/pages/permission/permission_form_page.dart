@@ -69,7 +69,7 @@ class _PermissionFormState extends State<PermissionForm> {
                       },
                       onChanged: (value) {
                         setState(() {
-                          selectedValue = value as String;
+                          selectedValue = value.toString();
                         });
                       },
                       onSaved: (value) {
@@ -135,7 +135,7 @@ class _PermissionFormState extends State<PermissionForm> {
   void _submitPermissionDetail() {
     if (_formPermissionKey.currentState!.validate()) {
       _formPermissionKey.currentState!.save();
-      Navigator.pushNamed(context, PageConst.cameraPage);
+      Navigator.pushNamed(context, PageConst.permissionCameraPage, arguments: [selectedValue!,_detailController.text]);
     }
   }
 

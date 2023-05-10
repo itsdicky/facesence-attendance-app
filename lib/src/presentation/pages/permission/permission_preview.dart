@@ -6,9 +6,11 @@ import 'package:sistem_presensi/src/presentation/styles/widget_style.dart';
 import 'package:sistem_presensi/src/presentation/widget/common/appbar_widget.dart';
 
 class PermissionPreviewPage extends StatelessWidget {
+  final String category;
+  final String description;
   final String imagePath;
 
-  const PermissionPreviewPage({super.key, required this.imagePath});
+  const PermissionPreviewPage({super.key, required this.category, required this.description, required this.imagePath});
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +35,9 @@ class PermissionPreviewPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 32,),
-                    Text('Keterangan: Izin', style: Theme.of(context).textTheme.titleLarge,),
+                    Text('Keterangan: $category', style: Theme.of(context).textTheme.titleLarge,),
                     const SizedBox(height: 12,),
-                    Text('Ini deskripsi', style: Theme.of(context).textTheme.bodyMedium,),
+                    Text(description, style: Theme.of(context).textTheme.bodyMedium,),
                   ],
                 ),
               ),

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sistem_presensi/constant/page_const.dart';
-import 'package:sistem_presensi/src/presentation/pages/permission/camera_page.dart';
+import 'package:sistem_presensi/src/presentation/pages/permission/permission_camera_page.dart';
 import 'package:sistem_presensi/src/presentation/pages/notification_page.dart';
 import 'package:sistem_presensi/src/presentation/pages/permission/permission_form_page.dart';
 import 'package:sistem_presensi/src/presentation/pages/permission/permission_preview.dart';
 import 'package:sistem_presensi/src/presentation/pages/permission/picture_display_page.dart';
+import 'package:sistem_presensi/src/presentation/pages/presence/presence_camera_page.dart';
 import 'package:sistem_presensi/src/presentation/pages/sign_in_page.dart';
 import 'package:sistem_presensi/src/presentation/pages/sign_up_page.dart';
 
@@ -12,7 +13,7 @@ import 'package:sistem_presensi/src/presentation/pages/sign_up_page.dart';
 
 class OnGenerateRoute {
   static Route<dynamic> route(RouteSettings settings) {
-    final args = settings.arguments;
+    final List<dynamic> args = ((settings.arguments ?? []) as List<dynamic>);
 
     switch (settings.name) {
       case PageConst.signInPage: {
@@ -27,14 +28,17 @@ class OnGenerateRoute {
       case PageConst.askPermissionPage: {
         return materialBuilder(widget: const PermissionForm());
       }
-      case PageConst.cameraPage: {
-        return materialBuilder(widget: const CameraPage());
+      case PageConst.permissionCameraPage: {
+        return materialBuilder(widget: PermissionCameraPage(category: args[0], description: args[1],));
       }
       case PageConst.pictureDisplayPage: {
-        return materialBuilder(widget: PictureDisplayPage(imagePath: args as String));
+        return materialBuilder(widget: PictureDisplayPage(category: args[0], description: args[1], imagePath: args[2]));
       }
       case PageConst.permissionPreviewPage: {
-        return materialBuilder(widget: PermissionPreviewPage(imagePath: args as String));
+        return materialBuilder(widget: PermissionPreviewPage(category: args[0], description: args[1], imagePath: args[2]));
+      }
+      case PageConst.presenceCameraPage: {
+        return materialBuilder(widget: PresenceCameraPage());
       }
       case PageConst.notificationPage: {
         return materialBuilder(widget: const NotificationPage());
