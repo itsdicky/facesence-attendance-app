@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sistem_presensi/src/presentation/cubit/auth/auth_cubit.dart';
 import 'package:sistem_presensi/src/presentation/styles/color_style.dart';
+import 'package:sistem_presensi/src/presentation/widget/common/dialog_widget.dart';
 
 class ProfileMainPage extends StatelessWidget {
   const ProfileMainPage({super.key});
@@ -60,7 +61,14 @@ class ProfileMainPage extends StatelessWidget {
                 InkWell(
                   borderRadius: BorderRadius.circular(20),
                   onTap: () {
-                    BlocProvider.of<AuthCubit>(context).loggedOut();
+                    showDialog(
+                      context: context,
+                      builder: (_) => CAlertDialog(
+                        title: 'Keluar Akun',
+                        content: 'Yakin akan keluar akun?',
+                        onPressed: () => BlocProvider.of<AuthCubit>(context).loggedOut(),
+                      ),
+                    );
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width,
