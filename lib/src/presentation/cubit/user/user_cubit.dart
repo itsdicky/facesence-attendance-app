@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sistem_presensi/src/domain/entities/user_entity.dart';
 import 'package:sistem_presensi/src/domain/use_case/get_create_current_user_usecase.dart';
 import 'package:sistem_presensi/src/domain/use_case/sign_in_usecase.dart';
@@ -21,8 +22,10 @@ class UserCubit extends Cubit<UserState> {
     try {
       await signInUseCase.call(user);
       emit(UserSuccess());
-    } on SocketException catch(_){
-      emit(UserFailure());
+    } on FirebaseAuthException catch(e){
+      emit(UserFailure(message: e.message));
+    } on SocketException catch(e){
+      emit(UserFailure(message: e.message));
     } catch(_){
       emit(UserFailure());
     }
@@ -34,8 +37,10 @@ class UserCubit extends Cubit<UserState> {
       await signUpUseCase.call(user);
       await getCreateCurrentUseCase.call(user);
       emit(UserSuccess());
-    } on SocketException catch (_) {
-      emit(UserFailure());
+    } on FirebaseAuthException catch (e) {
+      emit(UserFailure(message: e.message));
+    } on SocketException catch (e) {
+      emit(UserFailure(message: e.message));
     } catch (_) {
       emit(UserFailure());
     }

@@ -7,6 +7,10 @@ part 'navbar_state.dart';
 class NavbarCubit extends Cubit<NavbarState> {
   NavbarCubit() : super(NavbarHome());
 
+  Future<void> openMainPage() async {
+    emit(NavbarHome());
+  }
+
   Future<void> moveIndex(int index) async {
     switch (index) {
       case 0:

@@ -20,9 +20,9 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   // WidgetStyle _widgetStyle = WidgetStyle();
-  TextEditingController _usernameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formSignUpKey = GlobalKey<FormState>();
@@ -44,11 +44,14 @@ class _SignUpPageState extends State<SignUpPage> {
           if(userState is UserSuccess) {
             return BlocBuilder<AuthCubit, AuthState>(builder: (context, authState){
               if (authState is Authenticated) {
-                return HomePage(uid: authState.uid);
+                return MainPage(uid: authState.uid);
               } else {
                 return _bodyWidget();
               }
             });
+          }
+          if(userState is UserLoading) {
+            return const Center(child: CircularProgressIndicator(),);
           }
           return _bodyWidget();
         },
@@ -56,11 +59,12 @@ class _SignUpPageState extends State<SignUpPage> {
           if (userState is UserSuccess) {
             print(userState);
             BlocProvider.of<AuthCubit>(context).loggedIn();
+            Navigator.pushReplacementNamed(context, PageConst.signInPage);
           }
           if (userState is UserFailure) {
             //TODO: add error message with snackbarError
             ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('User Failed')));
+                SnackBar(content: Text(userState.message ?? 'User Failed')));
           }
         },
       ),
@@ -150,7 +154,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         return 'Masukan password';
                       }
                       if (!value.isValidPassword) {
-                        return 'Invalid password';
+                        return 'Masukan minimal 8 karakter';
                       }
                       return null;
                     },
@@ -197,9 +201,9 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  submitSignUp() {
+  submitSignUp() async {
     if (_formSignUpKey.currentState!.validate()) {
-      BlocProvider.of<UserCubit>(context).submitSignUp(user: UserEntity(
+      await BlocProvider.of<UserCubit>(context).submitSignUp(user: UserEntity(
           name: _usernameController.text,
           email: _emailController.text,
           password: _passwordController.text

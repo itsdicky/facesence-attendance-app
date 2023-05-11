@@ -15,6 +15,10 @@ class UserLoading extends UserState {
 }
 
 class UserFailure extends UserState {
+  final String? message;
+
+  UserFailure({this.message});
+
   @override
   List<Object?> get props => [];
 }

@@ -45,7 +45,7 @@ class PermissionPreviewPage extends StatelessWidget {
             TextButton(
               style: CWidgetStyle.textButtonStyle(),
               onPressed: () {
-                // Navigator.pushNamed(context, PageConst.cameraPage);
+                Navigator.popUntil(context, (route) => route.isFirst);
               },
               child: Text('Kirim', style: Theme.of(context).textTheme.titleSmall?.copyWith(color: ColorStyle.white),),
             ),

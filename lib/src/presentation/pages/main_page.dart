@@ -10,20 +10,21 @@ import 'package:sistem_presensi/src/presentation/pages/main_pages/profile_main_p
 import 'package:sistem_presensi/src/presentation/widget/common/appbar_widget.dart';
 import 'package:sistem_presensi/src/presentation/widget/bottom_navbar_widget.dart';
 
-class HomePage extends StatefulWidget {
+class MainPage extends StatefulWidget {
   final String uid;
-  const HomePage({Key? key, required this.uid}): super(key: key);
+  const MainPage({Key? key, required this.uid}): super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<MainPage> createState() => _MainPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _MainPageState extends State<MainPage> {
   int _currentIndex = 0;
 
   @override
   void initState() {
     BlocProvider.of<PresenceCubit>(context).getPresence(uid: widget.uid);
+    BlocProvider.of<NavbarCubit>(context).openMainPage();
     super.initState();
   }
 

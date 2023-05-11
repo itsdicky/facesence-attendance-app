@@ -48,9 +48,11 @@ class MyApp extends StatelessWidget {
           '/': (context) {
             return BlocBuilder<AuthCubit, AuthState>(builder: (context, authState) {
               if (authState is Authenticated) {
-                return HomePage(uid: authState.uid);
+                print('Authenticated: from main page');
+                return MainPage(uid: authState.uid);
               }
               if (authState is UnAuthenticated) {
+                print('UnAuthenticated: from main page');
                 return const SignInPage();
               }
               return const Center(child: CircularProgressIndicator(),);

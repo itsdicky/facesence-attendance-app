@@ -49,7 +49,7 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
 
   @override
   Future<void> signIn(UserEntity userEntity) async {
-    auth.signInWithEmailAndPassword(email: userEntity.email!, password: userEntity.password!);
+    await auth.signInWithEmailAndPassword(email: userEntity.email!, password: userEntity.password!);
     print(auth.currentUser!.uid);
   }
 
@@ -58,7 +58,6 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
 
   @override
   Future<void> signUp(UserEntity userEntity) async {
-    //temporary solution: await
     await auth.createUserWithEmailAndPassword(email: userEntity.email!, password: userEntity.password!);
   }
 

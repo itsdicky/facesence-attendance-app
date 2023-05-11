@@ -42,12 +42,15 @@ class _SignInPageState extends State<SignInPage> {
             return BlocBuilder<AuthCubit, AuthState>(
                 builder: (context, authState) {
                   if (authState is Authenticated) {
-                    return HomePage(uid: authState.uid);
+                    return MainPage(uid: authState.uid);
                   } else {
                     return _bodyWidget();
                   }
                 }
             );
+          }
+          if(userState is UserLoading) {
+            return const Center(child: CircularProgressIndicator(),);
           }
           return _bodyWidget();
         },
@@ -59,7 +62,7 @@ class _SignInPageState extends State<SignInPage> {
             //TODO: add message login error
             print('User Failed');
             ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('User Failed')));
+                SnackBar(content: Text(userState.message ?? 'User Failed')));
           }
         },
       ),
@@ -168,9 +171,9 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
-  void submitSignIn() {
+  submitSignIn() async {
     if (_formSignInKey.currentState!.validate()) {
-      BlocProvider.of<UserCubit>(context).submitSignIn(user: UserEntity(
+      await BlocProvider.of<UserCubit>(context).submitSignIn(user: UserEntity(
         email: _emailController.text,
         password: _passwordController.text,
       ));
