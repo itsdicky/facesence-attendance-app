@@ -204,8 +204,14 @@ class _SignUpPageState extends State<SignUpPage> {
   submitSignUp() async {
     if (_formSignUpKey.currentState!.validate()) {
       await BlocProvider.of<UserCubit>(context).submitSignUp(user: UserEntity(
-          name: _usernameController.text,
+          username: _usernameController.text,
           email: _emailController.text,
+          role: 'student',
+          userInfo: const {
+            'name:': 'NameData',
+            'student_number': '123456',
+            'grade': 'StudentGrade'
+          },
           password: _passwordController.text
       ));
     }

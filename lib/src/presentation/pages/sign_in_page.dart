@@ -57,6 +57,7 @@ class _SignInPageState extends State<SignInPage> {
         listener:  (context, userState) {
           if (userState is UserSuccess) {
             BlocProvider.of<AuthCubit>(context).loggedIn();
+            _clearTextField();
           }
           if (userState is UserFailure) {
             //TODO: add message login error
@@ -144,7 +145,7 @@ class _SignInPageState extends State<SignInPage> {
               ),
               TextButton(
                 style: CWidgetStyle.textButtonStyle(),
-                onPressed: submitSignIn,
+                onPressed: _submitSignIn,
                 child: Text('Lanjut', style: Theme.of(context).textTheme.titleSmall?.copyWith(color: ColorStyle.white),),
               ),
               const SizedBox(
@@ -156,7 +157,7 @@ class _SignInPageState extends State<SignInPage> {
                   const Text('Belum memiliki akun?'),
                   const SizedBox(width: 8,),
                   TextButton(
-                    onPressed: toSignUpStudent,
+                    onPressed: _toSignUpStudent,
                     child: const Text(
                       'Daftar',
                       style: TextStyle(fontWeight: FontWeight.w600),
@@ -171,7 +172,7 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
-  submitSignIn() async {
+  _submitSignIn() async {
     if (_formSignInKey.currentState!.validate()) {
       await BlocProvider.of<UserCubit>(context).submitSignIn(user: UserEntity(
         email: _emailController.text,
@@ -180,10 +181,15 @@ class _SignInPageState extends State<SignInPage> {
     }
   }
 
-  void toSignUpStudent() {
+  void _clearTextField() {
+    _emailController.clear();
+    _passwordController.clear();
+  }
+
+  void _toSignUpStudent() {
     Navigator.pushNamedAndRemoveUntil(context, PageConst.signUpPage, (route) => false);
   }
-  void toSignUpTeacher() {
+  void _toSignUpTeacher() {
     Navigator.pushNamedAndRemoveUntil(context, PageConst.signUpPage, (route) => false);
   }
 }
