@@ -6,6 +6,8 @@ import 'package:sistem_presensi/src/presentation/widget/common/card_widget.dart'
 import 'package:sistem_presensi/utils/scroll_behavior.dart';
 import 'package:timelines/timelines.dart';
 
+import '../../../data/remote/model/user_model.dart';
+
 class HomeMainPage extends StatelessWidget {
   static const String name = 'Dicky Satria Gemilang';
   static const String grade = 'XI Science';
@@ -18,8 +20,9 @@ class HomeMainPage extends StatelessWidget {
     ['Biologi', '12:00-13:40'],
     ['Bahasa Inggris', '13:40-14:30']
   ];
+  final UserModel user;
 
-  const HomeMainPage({super.key});
+  const HomeMainPage({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +34,9 @@ class HomeMainPage extends StatelessWidget {
             behavior: NoGlowScrollBehavior(),
             child: ListView(
               children: [
-                const MainCard(
-                  grade: grade,
-                  name: name,
+                MainCard(
+                  grade: user.userInfo?['classroom'],
+                  name: user.userInfo?['name'],
                   presence: presence,
                   absence: absence,
                 ),

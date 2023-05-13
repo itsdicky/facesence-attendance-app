@@ -10,9 +10,12 @@ import 'package:sistem_presensi/src/presentation/pages/main_pages/profile_main_p
 import 'package:sistem_presensi/src/presentation/widget/common/appbar_widget.dart';
 import 'package:sistem_presensi/src/presentation/widget/bottom_navbar_widget.dart';
 
+import '../../data/remote/model/user_model.dart';
+
 class MainPage extends StatefulWidget {
   final String uid;
-  const MainPage({Key? key, required this.uid}): super(key: key);
+  final UserModel user;
+  const MainPage({Key? key, required this.uid, required this.user}): super(key: key);
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -75,7 +78,7 @@ class _MainPageState extends State<MainPage> {
           if (navState is NavbarHome) {
             return BlocBuilder<PresenceCubit, PresenceState>(builder: (context, presenceState){
               if(presenceState is PresenceLoaded) {
-                return const HomeMainPage();
+                return HomeMainPage(user: widget.user,);
               }
               return const Center(child: CircularProgressIndicator(),);
             });

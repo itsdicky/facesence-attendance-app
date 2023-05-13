@@ -19,6 +19,8 @@ import 'package:sistem_presensi/src/presentation/cubit/navbar/navbar_cubit.dart'
 import 'package:sistem_presensi/src/presentation/cubit/presence/presence_cubit.dart';
 import 'package:sistem_presensi/src/presentation/cubit/user/user_cubit.dart';
 
+import 'src/domain/use_case/get_current_user_usecase.dart';
+
 // Class for dependency injection
 
 GetIt sl = GetIt.instance;
@@ -29,7 +31,8 @@ Future<void> init() async {
   sl.registerFactory<AuthCubit>(() => AuthCubit(
       getCurrentUidCase: sl.call(),
       isSignInUseCase: sl.call(),
-      signOutUsecase: sl.call()
+      signOutUsecase: sl.call(),
+      getCurrentUserUsecase: sl.call()
   ));
 
   sl.registerFactory<UserCubit>(() => UserCubit(
@@ -53,6 +56,7 @@ Future<void> init() async {
   sl.registerLazySingleton<GetCreateCurrentUseCase>(() => GetCreateCurrentUseCase(repository: sl.call()));
   sl.registerLazySingleton<AddNewPresenceUseCase>(() => AddNewPresenceUseCase(repository: sl.call()));
   sl.registerLazySingleton<GetCurrentUidUsecase>(() => GetCurrentUidUsecase(repository: sl.call()));
+  sl.registerLazySingleton<GetCurrentUserUsecase>(() => GetCurrentUserUsecase(repository: sl.call()));
   sl.registerLazySingleton<GetPresenceUsecase>(() => GetPresenceUsecase(repository: sl.call()));
 
   //repository

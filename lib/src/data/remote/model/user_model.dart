@@ -6,7 +6,7 @@ class UserModel extends UserEntity{
     final String? username,
     final String? email,
     final String? role,
-    final DateTime? createdAt,
+    final Timestamp? createdAt,
     final Map<String, dynamic>? userInfo,
     // final String? uid,
     // final String? status,

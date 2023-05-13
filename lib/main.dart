@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
             return BlocBuilder<AuthCubit, AuthState>(builder: (context, authState) {
               if (authState is Authenticated) {
                 print('Authenticated: from main page');
-                return MainPage(uid: authState.uid);
+                return MainPage(uid: authState.uid, user: authState.user,);
               }
               if (authState is UnAuthenticated) {
                 print('UnAuthenticated: from main page');

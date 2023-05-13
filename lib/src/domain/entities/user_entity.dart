@@ -1,10 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class UserEntity extends Equatable {
   final String? username;
   final String? email;
   final String? role;
-  final DateTime? createdAt;
+  final Timestamp? createdAt;
   final Map<String, dynamic>? userInfo;
   // final String? uid;
   // final String? status;

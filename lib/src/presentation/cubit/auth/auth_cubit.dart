@@ -1,23 +1,28 @@
 import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sistem_presensi/src/data/remote/model/user_model.dart';
 import '../../../domain/use_case/get_current_uid_usecase.dart';
 import '../../../domain/use_case/is_sign_in_usecase.dart';
 import '../../../domain/use_case/sign_out_usecase.dart';
+import '../../../domain/use_case/get_current_user_usecase.dart';
 import 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final GetCurrentUidUsecase getCurrentUidCase;
   final IsSignInUseCase isSignInUseCase;
   final SignOutUsecase signOutUsecase;
-  AuthCubit({required this.getCurrentUidCase, required this.isSignInUseCase, required this.signOutUsecase}) : super(AuthInitial());
+  final GetCurrentUserUsecase getCurrentUserUsecase;
+  AuthCubit({required this.getCurrentUidCase, required this.isSignInUseCase, required this.signOutUsecase, required this.getCurrentUserUsecase}) : super(AuthInitial());
 
   Future<void> appStarted() async {
     try {
       final isSignIn = await isSignInUseCase.call();
       if(isSignIn) {
         final uid = await getCurrentUidCase.call();
-        emit(Authenticated(uid: uid));
+        final user = await getCurrentUserUsecase.call();
+        print(user.userInfo?['name']);
+        emit(Authenticated(uid: uid, user: user as UserModel));
       } else {
         emit(UnAuthenticated());
       }
@@ -29,7 +34,8 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> loggedIn() async {
     try {
       final uid = await getCurrentUidCase.call();
-      emit(Authenticated(uid: uid));
+      final user = await getCurrentUserUsecase.call();
+      emit(Authenticated(uid: uid, user: user as UserModel));
     } on SocketException catch(_) {
       emit(UnAuthenticated());
     }

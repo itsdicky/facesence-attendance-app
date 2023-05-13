@@ -48,4 +48,7 @@ class FireBaseRepositoryImplement extends FirebaseRepository {
   Future<void> getCreateCurrentUser(UserEntity user) async =>
       dataSource.getCreateCurrentUser(user);
 
+  Future<UserEntity> getCurrentUser() async =>
+      dataSource.getCurrentUser();
+
 }

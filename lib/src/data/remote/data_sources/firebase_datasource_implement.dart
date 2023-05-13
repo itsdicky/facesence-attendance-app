@@ -75,8 +75,7 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
     print(uid);
 
     await userCollectionRef.doc(uid).get().then((user){
-      DateTime createdDateTime = DateTime.now();
-
+      Timestamp createdDateTime = Timestamp.now();
       //TODO: add user properties
       final newUser = UserModel(
           username: userEntity.username,
@@ -92,6 +91,19 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
       }
       return;
     });
+  }
+
+  @override
+  Future<UserEntity> getCurrentUser() async {
+    final CollectionReference userCollectionRef = firestore.collection('users');
+    final uid = await getCurrentUserId();
+    late UserModel currentUser;
+
+    await userCollectionRef.doc(uid).get().then((user){
+      currentUser = UserModel.fromSnapshot(user);
+    });
+
+    return currentUser;
   }
 
   @override

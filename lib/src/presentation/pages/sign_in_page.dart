@@ -42,7 +42,7 @@ class _SignInPageState extends State<SignInPage> {
             return BlocBuilder<AuthCubit, AuthState>(
                 builder: (context, authState) {
                   if (authState is Authenticated) {
-                    return MainPage(uid: authState.uid);
+                    return MainPage(uid: authState.uid, user: authState.user,);
                   } else {
                     return _bodyWidget();
                   }
