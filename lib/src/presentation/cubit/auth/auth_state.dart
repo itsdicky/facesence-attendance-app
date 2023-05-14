@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:sistem_presensi/src/data/remote/model/user_model.dart';
 
 abstract class AuthState extends Equatable {
   const AuthState();
@@ -12,11 +11,10 @@ class AuthInitial extends AuthState {
 
 class Authenticated extends AuthState {
   final String uid;
-  final UserModel user;
+  final Map<String,dynamic> userInfo;
 
-  Authenticated({required this.uid, required this.user});
+  Authenticated({required this.uid, required this.userInfo});
 
-  //TODO: add uid?
   @override
   List<Object> get props => [];
 }

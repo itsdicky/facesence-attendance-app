@@ -76,7 +76,7 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
 
     await userCollectionRef.doc(uid).get().then((user){
       Timestamp createdDateTime = Timestamp.now();
-      //TODO: add user properties
+
       final newUser = UserModel(
           username: userEntity.username,
         email: userEntity.email,
@@ -108,4 +108,17 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
 
   @override
   Future<String> getCurrentUserId() async => auth.currentUser!.uid;
+
+  @override
+  Future<List> getTodaySchedule() async {
+    final CollectionReference scheduleCollectionRef = firestore.collection('schedules');
+    late List todaySchedule;
+
+    await scheduleCollectionRef.where('day', isEqualTo: 'monday').get().then((value) {
+      Map map = value.docs.first.get('class');
+      todaySchedule = map['XI Science 2'];
+    });
+
+    return todaySchedule;
+  }
 }

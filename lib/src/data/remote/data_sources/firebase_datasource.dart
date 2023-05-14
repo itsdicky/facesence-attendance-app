@@ -12,5 +12,6 @@ abstract class FirebaseDataSource {
   Future<void> update(PresenceEntity presenceEntity);
   Future<void> delete(PresenceEntity presenceEntity);
   Future<UserEntity> getCurrentUser();
+  Future<List> getTodaySchedule();
   Stream<List<PresenceEntity>> getPresence(String uid);
 }

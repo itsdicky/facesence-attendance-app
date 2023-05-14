@@ -10,6 +10,7 @@ import 'package:sistem_presensi/src/domain/use_case/add_new_presence_usecase.dar
 import 'package:sistem_presensi/src/domain/use_case/get_create_current_user_usecase.dart';
 import 'package:sistem_presensi/src/domain/use_case/get_current_uid_usecase.dart';
 import 'package:sistem_presensi/src/domain/use_case/get_presence_usecase.dart';
+import 'package:sistem_presensi/src/domain/use_case/get_today_schedule_usecase.dart';
 import 'package:sistem_presensi/src/domain/use_case/is_sign_in_usecase.dart';
 import 'package:sistem_presensi/src/domain/use_case/sign_in_usecase.dart';
 import 'package:sistem_presensi/src/domain/use_case/sign_out_usecase.dart';
@@ -17,6 +18,7 @@ import 'package:sistem_presensi/src/domain/use_case/sign_up_usecase.dart';
 import 'package:sistem_presensi/src/presentation/cubit/auth/auth_cubit.dart';
 import 'package:sistem_presensi/src/presentation/cubit/navbar/navbar_cubit.dart';
 import 'package:sistem_presensi/src/presentation/cubit/presence/presence_cubit.dart';
+import 'package:sistem_presensi/src/presentation/cubit/schedule/schedule_cubit.dart';
 import 'package:sistem_presensi/src/presentation/cubit/user/user_cubit.dart';
 
 import 'src/domain/use_case/get_current_user_usecase.dart';
@@ -38,7 +40,12 @@ Future<void> init() async {
   sl.registerFactory<UserCubit>(() => UserCubit(
       signUpUseCase: sl.call(),
       signInUseCase: sl.call(),
-      getCreateCurrentUseCase: sl.call()
+      getCreateCurrentUseCase: sl.call(),
+      getCurrentUserUsecase: sl.call()
+  ));
+
+  sl.registerFactory<ScheduleCubit>(() => ScheduleCubit(
+      getTodayScheduleUsecase: sl.call()
   ));
 
   sl.registerFactory<PresenceCubit>(() => PresenceCubit(
@@ -57,6 +64,7 @@ Future<void> init() async {
   sl.registerLazySingleton<AddNewPresenceUseCase>(() => AddNewPresenceUseCase(repository: sl.call()));
   sl.registerLazySingleton<GetCurrentUidUsecase>(() => GetCurrentUidUsecase(repository: sl.call()));
   sl.registerLazySingleton<GetCurrentUserUsecase>(() => GetCurrentUserUsecase(repository: sl.call()));
+  sl.registerLazySingleton<GetTodayScheduleUsecase>(() => GetTodayScheduleUsecase(repository: sl.call()));
   sl.registerLazySingleton<GetPresenceUsecase>(() => GetPresenceUsecase(repository: sl.call()));
 
   //repository

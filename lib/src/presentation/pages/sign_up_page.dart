@@ -44,7 +44,7 @@ class _SignUpPageState extends State<SignUpPage> {
           if(userState is UserSuccess) {
             return BlocBuilder<AuthCubit, AuthState>(builder: (context, authState){
               if (authState is Authenticated) {
-                return MainPage(uid: authState.uid, user: authState.user,);
+                return MainPage(uid: authState.uid, userInfo: authState.userInfo,);
               } else {
                 return _bodyWidget();
               }
@@ -62,7 +62,6 @@ class _SignUpPageState extends State<SignUpPage> {
             Navigator.pushReplacementNamed(context, PageConst.signInPage);
           }
           if (userState is UserFailure) {
-            //TODO: add error message with snackbarError
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(userState.message ?? 'User Failed')));
           }
@@ -208,9 +207,9 @@ class _SignUpPageState extends State<SignUpPage> {
           email: _emailController.text,
           role: 'student',
           userInfo: const {
-            'name:': 'NameData',
+            'name': 'NameData',
             'student_number': '123456',
-            'grade': 'StudentGrade'
+            'classroom': 'StudentGrade'
           },
           password: _passwordController.text
       ));

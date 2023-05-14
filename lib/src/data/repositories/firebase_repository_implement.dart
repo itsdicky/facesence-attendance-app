@@ -51,4 +51,7 @@ class FireBaseRepositoryImplement extends FirebaseRepository {
   Future<UserEntity> getCurrentUser() async =>
       dataSource.getCurrentUser();
 
+  @override
+      Future<List> getTodaySchedule() async => dataSource.getTodaySchedule();
+
 }

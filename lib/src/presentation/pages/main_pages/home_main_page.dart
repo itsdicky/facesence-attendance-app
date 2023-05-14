@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sistem_presensi/src/presentation/cubit/auth/auth_cubit.dart';
+import 'package:sistem_presensi/src/presentation/cubit/schedule/schedule_cubit.dart';
 import 'package:sistem_presensi/src/presentation/styles/color_style.dart';
 import 'package:sistem_presensi/src/presentation/widget/main_card_widget.dart';
 import 'package:sistem_presensi/src/presentation/widget/presence_widget.dart';
@@ -6,23 +9,15 @@ import 'package:sistem_presensi/src/presentation/widget/common/card_widget.dart'
 import 'package:sistem_presensi/utils/scroll_behavior.dart';
 import 'package:timelines/timelines.dart';
 
-import '../../../data/remote/model/user_model.dart';
+import '../../../../constant/schedule_time_const.dart';
+import '../../cubit/auth/auth_state.dart';
 
 class HomeMainPage extends StatelessWidget {
-  static const String name = 'Dicky Satria Gemilang';
-  static const String grade = 'XI Science';
   static const int presence = 24;
   static const int absence = 1;
-  static const List schedule = [
-    ['Matematika', '07:30-09:10'],
-    ['Geografi', '09:10-10:30'],
-    ['Sosiologi', '10:30-12:00'],
-    ['Biologi', '12:00-13:40'],
-    ['Bahasa Inggris', '13:40-14:30']
-  ];
-  final UserModel user;
+  static const List schTime = ScheduleTime.schTime;
 
-  const HomeMainPage({super.key, required this.user});
+  const HomeMainPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,12 +29,18 @@ class HomeMainPage extends StatelessWidget {
             behavior: NoGlowScrollBehavior(),
             child: ListView(
               children: [
-                MainCard(
-                  grade: user.userInfo?['classroom'],
-                  name: user.userInfo?['name'],
-                  presence: presence,
-                  absence: absence,
-                ),
+                BlocBuilder<AuthCubit, AuthState>(builder: (context, authState) {
+                  if (authState is Authenticated) {
+                    print('log widget: ${authState.userInfo}');
+                    return MainCard(
+                      grade: authState.userInfo['classroom'],
+                      name: authState.userInfo['name'],
+                      presence: presence,
+                      absence: absence,
+                    );
+                  }
+                  return const Center(child: CircularProgressIndicator(),);
+                }),
                 const SizedBox(
                   height: 32,
                 ),
@@ -53,7 +54,15 @@ class HomeMainPage extends StatelessWidget {
                 const SizedBox(
                   height: 16,
                 ),
-                _buildScheduleTimeline(context),
+                BlocBuilder<ScheduleCubit, ScheduleState>(
+                    builder: (context, schState) {
+                      if (schState is ScheduleLoaded) {
+                        return _buildScheduleTimeline(context, schState.schedule, schTime);
+                      }
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                ),
+                // _buildScheduleTimeline(context),
                 const SizedBox(height: 110,),
               ],
             ),
@@ -69,22 +78,22 @@ class HomeMainPage extends StatelessWidget {
     );
   }
 
-  Widget _buildScheduleTimeline(BuildContext context) {
+  Widget _buildScheduleTimeline(BuildContext context, List schedule, List schTime) {
     return FixedTimeline.tileBuilder(
       theme: TimelineThemeData(
-        nodePosition: 0,
-        indicatorPosition: 0,
-        // color: Theme.of(context).primaryColor,
-        indicatorTheme: const IndicatorThemeData(size: 20, color: ColorStyle.indigoPurple,),
-        connectorTheme: const ConnectorThemeData(
-          thickness: 5,
-          space: 46,
-          color: ColorStyle.indigoLight,
-        )
+          nodePosition: 0,
+          indicatorPosition: 0,
+          // color: Theme.of(context).primaryColor,
+          indicatorTheme: const IndicatorThemeData(size: 20, color: ColorStyle.indigoPurple,),
+          connectorTheme: const ConnectorThemeData(
+            thickness: 5,
+            space: 46,
+            color: ColorStyle.indigoLight,
+          )
       ),
       builder: TimelineTileBuilder.fromStyle(
         contentsAlign: ContentsAlign.basic,
-        contentsBuilder: (context, index) => CScheduleCard(subject: schedule[index][0], time: schedule[index][1],),
+        contentsBuilder: (context, index) => CScheduleCard(subject: schedule[index], time: schTime[index],),
         itemCount: schedule.length,
       ),
     );

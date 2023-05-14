@@ -6,6 +6,7 @@ import 'package:sistem_presensi/src/presentation/cubit/auth/auth_cubit.dart';
 import 'package:sistem_presensi/src/presentation/cubit/auth/auth_state.dart';
 import 'package:sistem_presensi/src/presentation/cubit/navbar/navbar_cubit.dart';
 import 'package:sistem_presensi/src/presentation/cubit/presence/presence_cubit.dart';
+import 'package:sistem_presensi/src/presentation/cubit/schedule/schedule_cubit.dart';
 import 'package:sistem_presensi/src/presentation/cubit/user/user_cubit.dart';
 import 'package:sistem_presensi/src/presentation/pages/main_page.dart';
 import 'package:sistem_presensi/src/presentation/pages/sign_in_page.dart';
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider<AuthCubit>(create: (_) => di.sl<AuthCubit>()..appStarted()),
         BlocProvider<UserCubit>(create: (_) => di.sl<UserCubit>()),
+        BlocProvider<ScheduleCubit>(create: (_) => di.sl<ScheduleCubit>()),
         BlocProvider<PresenceCubit>(create: (_) => di.sl<PresenceCubit>()),
         BlocProvider<NavbarCubit>(create: (_) => di.sl<NavbarCubit>())
       ],
@@ -49,7 +51,7 @@ class MyApp extends StatelessWidget {
             return BlocBuilder<AuthCubit, AuthState>(builder: (context, authState) {
               if (authState is Authenticated) {
                 print('Authenticated: from main page');
-                return MainPage(uid: authState.uid, user: authState.user,);
+                return MainPage(uid: authState.uid, userInfo: authState.userInfo,);
               }
               if (authState is UnAuthenticated) {
                 print('UnAuthenticated: from main page');

@@ -8,14 +8,17 @@ import 'package:sistem_presensi/src/domain/use_case/get_create_current_user_usec
 import 'package:sistem_presensi/src/domain/use_case/sign_in_usecase.dart';
 import 'package:sistem_presensi/src/domain/use_case/sign_up_usecase.dart';
 
+import '../../../domain/use_case/get_current_user_usecase.dart';
+
 part 'user_state.dart';
 
 class UserCubit extends Cubit<UserState> {
   final SignUpUseCase signUpUseCase;
   final SignInUseCase signInUseCase;
   final GetCreateCurrentUseCase getCreateCurrentUseCase;
+  final GetCurrentUserUsecase getCurrentUserUsecase;
 
-  UserCubit({required this.signUpUseCase, required this.signInUseCase, required this.getCreateCurrentUseCase}) : super(UserInitial());
+  UserCubit({required this.signUpUseCase, required this.signInUseCase, required this.getCreateCurrentUseCase, required this.getCurrentUserUsecase}) : super(UserInitial());
 
   Future<void> submitSignIn({required UserEntity user})async{
     emit(UserLoading());

@@ -42,7 +42,7 @@ class _SignInPageState extends State<SignInPage> {
             return BlocBuilder<AuthCubit, AuthState>(
                 builder: (context, authState) {
                   if (authState is Authenticated) {
-                    return MainPage(uid: authState.uid, user: authState.user,);
+                    return MainPage(uid: authState.uid, userInfo: authState.userInfo,);
                   } else {
                     return _bodyWidget();
                   }
@@ -60,8 +60,6 @@ class _SignInPageState extends State<SignInPage> {
             _clearTextField();
           }
           if (userState is UserFailure) {
-            //TODO: add message login error
-            print('User Failed');
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(userState.message ?? 'User Failed')));
           }

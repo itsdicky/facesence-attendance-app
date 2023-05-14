@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sistem_presensi/src/presentation/cubit/navbar/navbar_cubit.dart';
-import 'package:sistem_presensi/src/presentation/cubit/presence/presence_cubit.dart';
-import 'package:sistem_presensi/src/presentation/cubit/presence/presence_state.dart';
+import 'package:sistem_presensi/src/presentation/cubit/schedule/schedule_cubit.dart';
 import 'package:sistem_presensi/src/presentation/pages/main_pages/history_main_page.dart';
 import 'package:sistem_presensi/src/presentation/pages/main_pages/home_main_page.dart';
 import 'package:sistem_presensi/src/presentation/pages/main_pages/permission_main_page.dart';
@@ -10,24 +9,23 @@ import 'package:sistem_presensi/src/presentation/pages/main_pages/profile_main_p
 import 'package:sistem_presensi/src/presentation/widget/common/appbar_widget.dart';
 import 'package:sistem_presensi/src/presentation/widget/bottom_navbar_widget.dart';
 
-import '../../data/remote/model/user_model.dart';
-
 class MainPage extends StatefulWidget {
   final String uid;
-  final UserModel user;
-  const MainPage({Key? key, required this.uid, required this.user}): super(key: key);
+  final Map<String, dynamic> userInfo;
+  const MainPage({Key? key, required this.uid, required this.userInfo}): super(key: key);
 
   @override
   State<MainPage> createState() => _MainPageState();
 }
 
 class _MainPageState extends State<MainPage> {
+  //TODO: change to stateless and use blocprovider for call cubit function?
   int _currentIndex = 0;
 
   @override
   void initState() {
-    BlocProvider.of<PresenceCubit>(context).getPresence(uid: widget.uid);
     BlocProvider.of<NavbarCubit>(context).openMainPage();
+    BlocProvider.of<ScheduleCubit>(context).getTodaySchedule();
     super.initState();
   }
 
@@ -76,12 +74,7 @@ class _MainPageState extends State<MainPage> {
       body: BlocBuilder<NavbarCubit, NavbarState>(
         builder: (context, navState) {
           if (navState is NavbarHome) {
-            return BlocBuilder<PresenceCubit, PresenceState>(builder: (context, presenceState){
-              if(presenceState is PresenceLoaded) {
-                return HomeMainPage(user: widget.user,);
-              }
-              return const Center(child: CircularProgressIndicator(),);
-            });
+            return const HomeMainPage();
           }
           if (navState is NavbarHistory) {
             return const HistoryMainPage();

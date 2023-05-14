@@ -4,8 +4,11 @@ import 'package:sistem_presensi/src/presentation/cubit/auth/auth_cubit.dart';
 import 'package:sistem_presensi/src/presentation/styles/color_style.dart';
 import 'package:sistem_presensi/src/presentation/widget/common/dialog_widget.dart';
 
+import '../../cubit/auth/auth_state.dart';
+
 class ProfileMainPage extends StatelessWidget {
   const ProfileMainPage({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -23,15 +26,24 @@ class ProfileMainPage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16,),
-          Text(
-            'Dicky Satria Gemilang',
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          const SizedBox(height: 4,),
-          Text(
-            'XII Science',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: ColorStyle.darkGrey),
-          ),
+          BlocBuilder<AuthCubit, AuthState>(builder: (context, authState) {
+            if (authState is Authenticated) {
+              return Column(
+                children: [
+                  Text(
+                    authState.userInfo['name'],
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 4,),
+                  Text(
+                    authState.userInfo['classroom'],
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: ColorStyle.darkGrey),
+                  ),
+                ],
+              );
+            }
+            return const Center(child: CircularProgressIndicator());
+          }),
           const SizedBox(height: 48,),
           Card(
             shape: RoundedRectangleBorder(
