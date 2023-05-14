@@ -1,6 +1,12 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sistem_presensi/main.dart';
+import 'package:sistem_presensi/src/domain/entities/presence_entity.dart';
+import 'package:sistem_presensi/src/presentation/cubit/presence/presence_cubit.dart';
+import 'package:sistem_presensi/src/presentation/cubit/presence/presence_state.dart';
 import 'package:sistem_presensi/src/presentation/widget/common/appbar_widget.dart';
 
 class PresenceCameraPage extends StatefulWidget {
@@ -31,20 +37,34 @@ class _PresenceCameraPageState extends State<PresenceCameraPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight),
-        child: CTitleAppBarLight(title: 'Foto Presensi',),
-      ),
-      body: FutureBuilder(
-        future: _initializeControllerFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            return _cameraWidget();
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        },
+    return BlocListener<PresenceCubit, PresenceState>(
+      listener: (context, presenceState){
+        if (presenceState is PresenceAdded) {
+          Navigator.popUntil(context, (route) => route.isFirst);
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Presensi berhasil')));
+        }
+        if (presenceState is PresenceFailure) {
+          Navigator.popUntil(context, (route) => route.isFirst);
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Presensi tidak berhasil')));
+        }
+      },
+      child: Scaffold(
+        appBar: const PreferredSize(
+          preferredSize: Size.fromHeight(kToolbarHeight),
+          child: CTitleAppBarLight(title: 'Foto Presensi',),
+        ),
+        body: FutureBuilder(
+          future: _initializeControllerFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return _cameraWidget();
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          },
+        ),
       ),
     );
   }
@@ -85,7 +105,12 @@ class _PresenceCameraPageState extends State<PresenceCameraPage> {
 
                     if (!mounted) return;
 
-                    await null;
+                    print(image.path);
+                    File imageFile = File(image.path);
+
+                    BlocProvider.of<PresenceCubit>(context).addPresence(
+                        presence: PresenceEntity(presenceId: '225', isPresence: true, imageFile: imageFile)
+                    );
                   } catch(e) {
                     print(e);
                   }

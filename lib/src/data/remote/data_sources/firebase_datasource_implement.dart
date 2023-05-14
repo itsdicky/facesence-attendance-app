@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:sistem_presensi/src/data/remote/data_sources/firebase_datasource.dart';
 import 'package:sistem_presensi/src/data/remote/model/presence_model.dart';
 import 'package:sistem_presensi/src/data/remote/model/user_model.dart';
@@ -10,19 +11,35 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
 
   final FirebaseAuth auth;
   final FirebaseFirestore firestore;
+  final FirebaseStorage storage;
 
-  FirebaseDataSourceImplement({required this.auth, required this.firestore});
+  FirebaseDataSourceImplement({required this.auth, required this.firestore, required this.storage});
 
   @override
   Future<void> addNewPresence(PresenceEntity presenceEntity) async {
-    final CollectionReference presenceCollectionRef = firestore.collection('presence');
-    final presenceId = presenceCollectionRef.doc(presenceEntity.uid).id;
-    //get current user id
+    final storageRef = storage.ref().child('images');
+
+    final uid = await getCurrentUserId();
+    final CollectionReference presenceCollectionRef = firestore.collection('users').doc(uid).collection('presences');
+    // final presenceId = presenceCollectionRef.doc(presenceEntity.uid).id;
+    final presenceId = presenceCollectionRef.doc().id;
+
 
     await presenceCollectionRef.doc(presenceId).get().then((presence){
-      final newPresence = PresenceModel(presenceId: presenceId, uid: presenceEntity.uid).toDocument();
+      Timestamp createdDateTime = Timestamp.now();
+
+      final imageRef = storageRef.child('$presenceId.jpg');
+
+      final newPresence = PresenceModel(
+        presenceId: presenceId,
+        isPresence: presenceEntity.isPresence,
+        time: createdDateTime,
+        imageURL: imageRef.fullPath,
+      ).toDocument();
+
       if(!presence.exists) {
         presenceCollectionRef.doc(presenceId).set(newPresence);
+        imageRef.putFile(presenceEntity.imageFile!);
       }
       return;
     });
@@ -36,7 +53,9 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
 
   @override
   Stream<List<PresenceEntity>> getPresence(String uid) {
-    final CollectionReference presenceCollectionRef = firestore.collection('presences');
+    final uid = getCurrentUserId();
+    
+    final CollectionReference presenceCollectionRef = firestore.collection('users').doc(uid as String?).collection('presences');
     final _presencesStream = presenceCollectionRef.snapshots();
 
     return _presencesStream.map((querySnap){

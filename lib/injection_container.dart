@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sistem_presensi/src/data/remote/data_sources/firebase_datasource.dart';
 import 'package:sistem_presensi/src/data/remote/data_sources/firebase_datasource_implement.dart';
@@ -71,12 +72,14 @@ Future<void> init() async {
   sl.registerLazySingleton<FirebaseRepository>(() => FireBaseRepositoryImplement(dataSource: sl.call()));
 
   //data source
-  sl.registerLazySingleton<FirebaseDataSource>(() => FirebaseDataSourceImplement(auth: sl.call(), firestore: sl.call()));
+  sl.registerLazySingleton<FirebaseDataSource>(() => FirebaseDataSourceImplement(auth: sl.call(), firestore: sl.call(), storage: sl.call()));
   
   //external
   final FirebaseAuth auth = await FirebaseAuth.instanceFor(app: Firebase.app());
   final FirebaseFirestore  firestore = await FirebaseFirestore.instance;
+  final FirebaseStorage storage = await FirebaseStorage.instanceFor(app: Firebase.app());
 
   sl.registerLazySingleton<FirebaseAuth>(() => auth);
   sl.registerLazySingleton<FirebaseFirestore>(() => firestore);
+  sl.registerLazySingleton<FirebaseStorage>(() => storage);
 }

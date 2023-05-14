@@ -35,8 +35,8 @@ class HomeMainPage extends StatelessWidget {
                     return MainCard(
                       grade: authState.userInfo['classroom'],
                       name: authState.userInfo['name'],
-                      presence: presence,
-                      absence: absence,
+                      presence: authState.userInfo['total_presence'],
+                      absence: authState.userInfo['total_absence'],
                     );
                   }
                   return const Center(child: CircularProgressIndicator(),);

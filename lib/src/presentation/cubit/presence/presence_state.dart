@@ -15,7 +15,16 @@ class PresenceLoading extends PresenceState {
   List<Object> get props => [];
 }
 
+class PresenceAdded extends PresenceState {
+  @override
+  List<Object> get props => [];
+}
+
 class PresenceFailure extends PresenceState {
+  final String? message;
+
+  PresenceFailure({this.message});
+
   @override
   List<Object> get props => [];
 }
