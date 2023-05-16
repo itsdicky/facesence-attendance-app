@@ -4,7 +4,7 @@ import 'package:sistem_presensi/src/presentation/cubit/auth/auth_cubit.dart';
 import 'package:sistem_presensi/src/presentation/styles/color_style.dart';
 import 'package:sistem_presensi/src/presentation/widget/common/dialog_widget.dart';
 
-import '../../cubit/auth/auth_state.dart';
+import '../../cubit/user/user_cubit.dart';
 
 class ProfileMainPage extends StatelessWidget {
   const ProfileMainPage({super.key});
@@ -26,17 +26,17 @@ class ProfileMainPage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16,),
-          BlocBuilder<AuthCubit, AuthState>(builder: (context, authState) {
-            if (authState is Authenticated) {
+          BlocBuilder<UserCubit, UserState>(builder: (context, userState) {
+            if (userState is UserSuccess) {
               return Column(
                 children: [
                   Text(
-                    authState.userInfo['name'],
+                    userState.userInfo?['name'],
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   const SizedBox(height: 4,),
                   Text(
-                    authState.userInfo['classroom'],
+                    userState.userInfo?['classroom'],
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: ColorStyle.darkGrey),
                   ),
                 ],

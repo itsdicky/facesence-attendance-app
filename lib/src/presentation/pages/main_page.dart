@@ -9,17 +9,19 @@ import 'package:sistem_presensi/src/presentation/pages/main_pages/profile_main_p
 import 'package:sistem_presensi/src/presentation/widget/common/appbar_widget.dart';
 import 'package:sistem_presensi/src/presentation/widget/bottom_navbar_widget.dart';
 import '../../../injection_container.dart' as di;
+import '../cubit/user/user_cubit.dart';
 
 class MainPage extends StatelessWidget {
   final String uid;
-  final Map<String, dynamic> userInfo;
-  const MainPage({Key? key, required this.uid, required this.userInfo}): super(key: key);
+  const MainPage({Key? key, required this.uid}): super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider<NavbarCubit>(create: (_) => di.sl<NavbarCubit>()),
         BlocProvider<ScheduleCubit>(create: (_) => di.sl<ScheduleCubit>()..getTodaySchedule()),
+        BlocProvider<UserCubit>(create: (_) => di.sl<UserCubit>()..getUserInfo()),
       ],
       child: Scaffold(
         appBar: PreferredSize(

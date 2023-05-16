@@ -10,9 +10,9 @@ class FireBaseRepositoryImplement extends FirebaseRepository {
 
   @override
   Future<void> addNewPresence(PresenceEntity presence) async {
-    dataSource.addNewPresence(presence).then((uid) {
+    await dataSource.addNewPresence(presence).then((uid) async {
       if (uid!=null) {
-        dataSource.incrementTotalPresence(uid);
+        await dataSource.incrementTotalPresence(uid);
       }
     });
   }
@@ -26,7 +26,7 @@ class FireBaseRepositoryImplement extends FirebaseRepository {
       dataSource.getCurrentUserId();
 
   @override
-  Stream<List<PresenceEntity>> getPresence(String uid) =>
+  Stream<List<PresenceEntity>> getCurrentUserPresences(String uid) =>
       dataSource.getPresence(uid);
 
   @override
@@ -53,10 +53,11 @@ class FireBaseRepositoryImplement extends FirebaseRepository {
   Future<void> getCreateCurrentUser(UserEntity user) async =>
       dataSource.getCreateCurrentUser(user);
 
+  @override
   Future<UserEntity> getCurrentUser() async =>
       dataSource.getCurrentUser();
 
   @override
-      Future<List> getTodaySchedule() async => dataSource.getTodaySchedule();
+  Future<List> getTodaySchedule() async => dataSource.getTodaySchedule();
 
 }

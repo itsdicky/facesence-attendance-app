@@ -11,9 +11,8 @@ class AuthInitial extends AuthState {
 
 class Authenticated extends AuthState {
   final String uid;
-  final Map<String,dynamic> userInfo;
 
-  Authenticated({required this.uid, required this.userInfo});
+  Authenticated({required this.uid});
 
   @override
   List<Object> get props => [];

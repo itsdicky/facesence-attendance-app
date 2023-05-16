@@ -8,6 +8,6 @@ class GetPresenceUsecase {
   GetPresenceUsecase({required this.repository});
 
   Stream<List<PresenceEntity>> call(String uid) {
-    return repository.getPresence(uid);
+    return repository.getCurrentUserPresences(uid);
   }
 }

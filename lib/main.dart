@@ -4,7 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sistem_presensi/src/presentation/cubit/auth/auth_cubit.dart';
 import 'package:sistem_presensi/src/presentation/cubit/auth/auth_state.dart';
-import 'package:sistem_presensi/src/presentation/cubit/navbar/navbar_cubit.dart';
 import 'package:sistem_presensi/utils/bloc_observer.dart';
 import 'package:sistem_presensi/src/presentation/cubit/presence/presence_cubit.dart';
 import 'package:sistem_presensi/src/presentation/cubit/user/user_cubit.dart';
@@ -38,7 +37,6 @@ class MyApp extends StatelessWidget {
         BlocProvider<AuthCubit>(create: (_) => di.sl<AuthCubit>()..appStarted()),
         BlocProvider<UserCubit>(create: (_) => di.sl<UserCubit>()),
         BlocProvider<PresenceCubit>(create: (_) => di.sl<PresenceCubit>()),
-        BlocProvider<NavbarCubit>(create: (_) => di.sl<NavbarCubit>())
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -51,7 +49,7 @@ class MyApp extends StatelessWidget {
             return BlocBuilder<AuthCubit, AuthState>(builder: (context, authState) {
               if (authState is Authenticated) {
                 print('Authenticated: from main page');
-                return MainPage(uid: authState.uid, userInfo: authState.userInfo,);
+                return MainPage(uid: authState.uid);
               }
               if (authState is UnAuthenticated) {
                 print('UnAuthenticated: from main page');

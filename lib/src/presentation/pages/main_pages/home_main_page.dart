@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sistem_presensi/src/presentation/cubit/auth/auth_cubit.dart';
 import 'package:sistem_presensi/src/presentation/cubit/presence/presence_cubit.dart';
 import 'package:sistem_presensi/src/presentation/cubit/presence/presence_state.dart';
 import 'package:sistem_presensi/src/presentation/cubit/schedule/schedule_cubit.dart';
+import 'package:sistem_presensi/src/presentation/cubit/user/user_cubit.dart';
 import 'package:sistem_presensi/src/presentation/styles/color_style.dart';
 import 'package:sistem_presensi/src/presentation/widget/main_card_widget.dart';
 import 'package:sistem_presensi/src/presentation/widget/presence_widget.dart';
@@ -12,7 +12,6 @@ import 'package:sistem_presensi/utils/scroll_behavior.dart';
 import 'package:timelines/timelines.dart';
 
 import '../../../../constant/schedule_time_const.dart';
-import '../../cubit/auth/auth_state.dart';
 
 class HomeMainPage extends StatelessWidget {
   static const int presence = 24;
@@ -31,25 +30,13 @@ class HomeMainPage extends StatelessWidget {
             behavior: NoGlowScrollBehavior(),
             child: ListView(
               children: [
-                BlocBuilder<AuthCubit, AuthState>(builder: (context, authState) {
-                  if (authState is Authenticated) {
-                    return BlocBuilder<PresenceCubit, PresenceState>(
-                      builder: (context, presenceState) {
-                        if (presenceState is PresenceAdded) {
-                          return MainCard(
-                            grade: authState.userInfo['classroom'],
-                            name: authState.userInfo['name'],
-                            presence: authState.userInfo['total_presence'],
-                            absence: authState.userInfo['total_absence'],
-                          );
-                        }
-                        return MainCard(
-                          grade: authState.userInfo['classroom'],
-                          name: authState.userInfo['name'],
-                          presence: authState.userInfo['total_presence'],
-                          absence: authState.userInfo['total_absence'],
-                        );
-                      }
+                BlocBuilder<UserCubit, UserState>(builder: (context, userState) {
+                  if (userState is UserSuccess) {
+                    return MainCard(
+                      grade: userState.userInfo?['classroom'],
+                      name: userState.userInfo?['name'],
+                      presence: userState.userInfo?['total_presence'],
+                      absence: userState.userInfo?['total_absence'],
                     );
                   }
                   return const Center(child: CircularProgressIndicator(),);
@@ -80,11 +67,18 @@ class HomeMainPage extends StatelessWidget {
               ],
             ),
           ),
-          const Positioned(
+          Positioned(
             left: 0,
             right: 0,
             bottom: 0,
-            child: PresenceCard(),
+            child: BlocListener<PresenceCubit, PresenceState>(
+              listener: (context, state) {
+                if(state is PresenceAdded) {
+                  BlocProvider.of<UserCubit>(context).getUserInfo();
+                }
+              },
+              child: const PresenceCard(),
+            ),
           ),
         ],
       ),

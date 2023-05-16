@@ -50,5 +50,17 @@ class UserCubit extends Cubit<UserState> {
   }
 
   Future<void> getUserInfo() async {
+    emit(UserLoading());
+    try {
+      final user = await getCurrentUserUsecase.call();
+      print(user);
+      emit(UserSuccess(userInfo: user.userInfo));
+    } on FirebaseAuthException catch (e) {
+      emit(UserFailure(message: e.message));
+    } on SocketException catch (e) {
+      emit(UserFailure(message: e.message));
+    } catch (_) {
+      emit(UserFailure());
+    }
   }
 }

@@ -120,6 +120,7 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
 
     await userCollectionRef.doc(uid).get().then((user){
       currentUser = UserModel.fromSnapshot(user);
+      print('from repo: $currentUser');
     });
 
     return currentUser;

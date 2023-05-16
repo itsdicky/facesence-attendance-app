@@ -25,6 +25,7 @@ class PresenceCubit extends Cubit<PresenceState> {
       emit(PresenceFailure());
     }
   }
+
   Future<void> getPresence({required String uid}) async {
     emit(PresenceLoading());
     try {
