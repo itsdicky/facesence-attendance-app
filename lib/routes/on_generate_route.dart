@@ -6,6 +6,7 @@ import 'package:sistem_presensi/src/presentation/pages/permission/permission_for
 import 'package:sistem_presensi/src/presentation/pages/permission/permission_preview.dart';
 import 'package:sistem_presensi/src/presentation/pages/permission/picture_display_page.dart';
 import 'package:sistem_presensi/src/presentation/pages/presence/presence_camera_page.dart';
+import 'package:sistem_presensi/src/presentation/pages/presence/presence_preview_page.dart';
 import 'package:sistem_presensi/src/presentation/pages/sign_in_page.dart';
 import 'package:sistem_presensi/src/presentation/pages/sign_up_page.dart';
 
@@ -39,6 +40,9 @@ class OnGenerateRoute {
       }
       case PageConst.presenceCameraPage: {
         return materialBuilder(widget: PresenceCameraPage());
+      }
+      case PageConst.presencePreviewPage: {
+        return materialBuilder(widget: PresencePreviewPage(imagePath: args[0], timestamp: args[1]));
       }
       case PageConst.notificationPage: {
         return materialBuilder(widget: const NotificationPage());

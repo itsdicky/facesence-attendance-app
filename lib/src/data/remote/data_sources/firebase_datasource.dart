@@ -8,10 +8,11 @@ abstract class FirebaseDataSource {
   Future<void> getCreateCurrentUser(UserEntity userEntity);
   Future<void> signOut();
   Future<String> getCurrentUserId();
-  Future<void> addNewPresence(PresenceEntity presenceEntity);
+  Future<String?> addNewPresence(PresenceEntity presenceEntity);
   Future<void> update(PresenceEntity presenceEntity);
   Future<void> delete(PresenceEntity presenceEntity);
   Future<UserEntity> getCurrentUser();
   Future<List> getTodaySchedule();
+  Future<void> incrementTotalPresence(String uid);
   Stream<List<PresenceEntity>> getPresence(String uid);
 }

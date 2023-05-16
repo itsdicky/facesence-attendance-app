@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sistem_presensi/src/presentation/cubit/auth/auth_cubit.dart';
+import 'package:sistem_presensi/src/presentation/cubit/presence/presence_cubit.dart';
+import 'package:sistem_presensi/src/presentation/cubit/presence/presence_state.dart';
 import 'package:sistem_presensi/src/presentation/cubit/schedule/schedule_cubit.dart';
 import 'package:sistem_presensi/src/presentation/styles/color_style.dart';
 import 'package:sistem_presensi/src/presentation/widget/main_card_widget.dart';
@@ -31,12 +33,23 @@ class HomeMainPage extends StatelessWidget {
               children: [
                 BlocBuilder<AuthCubit, AuthState>(builder: (context, authState) {
                   if (authState is Authenticated) {
-                    print('log widget: ${authState.userInfo}');
-                    return MainCard(
-                      grade: authState.userInfo['classroom'],
-                      name: authState.userInfo['name'],
-                      presence: authState.userInfo['total_presence'],
-                      absence: authState.userInfo['total_absence'],
+                    return BlocBuilder<PresenceCubit, PresenceState>(
+                      builder: (context, presenceState) {
+                        if (presenceState is PresenceAdded) {
+                          return MainCard(
+                            grade: authState.userInfo['classroom'],
+                            name: authState.userInfo['name'],
+                            presence: authState.userInfo['total_presence'],
+                            absence: authState.userInfo['total_absence'],
+                          );
+                        }
+                        return MainCard(
+                          grade: authState.userInfo['classroom'],
+                          name: authState.userInfo['name'],
+                          presence: authState.userInfo['total_presence'],
+                          absence: authState.userInfo['total_absence'],
+                        );
+                      }
                     );
                   }
                   return const Center(child: CircularProgressIndicator(),);

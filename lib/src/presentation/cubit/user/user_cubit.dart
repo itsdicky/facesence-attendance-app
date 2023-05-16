@@ -48,4 +48,7 @@ class UserCubit extends Cubit<UserState> {
       emit(UserFailure());
     }
   }
+
+  Future<void> getUserInfo() async {
+  }
 }

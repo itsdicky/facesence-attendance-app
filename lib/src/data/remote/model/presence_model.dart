@@ -3,7 +3,7 @@ import 'package:sistem_presensi/src/domain/entities/presence_entity.dart';
 
 class PresenceModel extends PresenceEntity {
   const PresenceModel({
-    required final String presenceId,
+    final String? presenceId,
     final bool? isPresence,
     final Timestamp? time,
     final GeoPoint? location,

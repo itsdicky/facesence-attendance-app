@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sistem_presensi/src/presentation/cubit/auth/auth_cubit.dart';
 import 'package:sistem_presensi/src/presentation/cubit/auth/auth_state.dart';
 import 'package:sistem_presensi/src/presentation/cubit/navbar/navbar_cubit.dart';
+import 'package:sistem_presensi/utils/bloc_observer.dart';
 import 'package:sistem_presensi/src/presentation/cubit/presence/presence_cubit.dart';
-import 'package:sistem_presensi/src/presentation/cubit/schedule/schedule_cubit.dart';
 import 'package:sistem_presensi/src/presentation/cubit/user/user_cubit.dart';
 import 'package:sistem_presensi/src/presentation/pages/main_page.dart';
 import 'package:sistem_presensi/src/presentation/pages/sign_in_page.dart';
@@ -24,6 +24,7 @@ void main() async {
   );
   cameras = await availableCameras();
   await di.init();
+  Bloc.observer = di.sl<LogObserver>();
   runApp(const MyApp());
 }
 
@@ -36,7 +37,6 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider<AuthCubit>(create: (_) => di.sl<AuthCubit>()..appStarted()),
         BlocProvider<UserCubit>(create: (_) => di.sl<UserCubit>()),
-        BlocProvider<ScheduleCubit>(create: (_) => di.sl<ScheduleCubit>()),
         BlocProvider<PresenceCubit>(create: (_) => di.sl<PresenceCubit>()),
         BlocProvider<NavbarCubit>(create: (_) => di.sl<NavbarCubit>())
       ],

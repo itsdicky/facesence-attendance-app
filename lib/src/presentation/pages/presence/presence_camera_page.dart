@@ -1,10 +1,9 @@
-import 'dart:io';
-
 import 'package:camera/camera.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sistem_presensi/constant/page_const.dart';
 import 'package:sistem_presensi/main.dart';
-import 'package:sistem_presensi/src/domain/entities/presence_entity.dart';
 import 'package:sistem_presensi/src/presentation/cubit/presence/presence_cubit.dart';
 import 'package:sistem_presensi/src/presentation/cubit/presence/presence_state.dart';
 import 'package:sistem_presensi/src/presentation/widget/common/appbar_widget.dart';
@@ -102,15 +101,11 @@ class _PresenceCameraPageState extends State<PresenceCameraPage> {
                     await _initializeControllerFuture;
 
                     final image = await _controller.takePicture();
+                    final timestamp = Timestamp.now();
 
                     if (!mounted) return;
 
-                    print(image.path);
-                    File imageFile = File(image.path);
-
-                    BlocProvider.of<PresenceCubit>(context).addPresence(
-                        presence: PresenceEntity(presenceId: '225', isPresence: true, imageFile: imageFile)
-                    );
+                    await Navigator.pushNamed(context, PageConst.presencePreviewPage, arguments: [image.path, timestamp]);
                   } catch(e) {
                     print(e);
                   }

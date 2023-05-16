@@ -9,8 +9,13 @@ class FireBaseRepositoryImplement extends FirebaseRepository {
   FireBaseRepositoryImplement({required this.dataSource});
 
   @override
-  Future<void> addNewPresence(PresenceEntity presence) async =>
-      dataSource.addNewPresence(presence);
+  Future<void> addNewPresence(PresenceEntity presence) async {
+    dataSource.addNewPresence(presence).then((uid) {
+      if (uid!=null) {
+        dataSource.incrementTotalPresence(uid);
+      }
+    });
+  }
 
   @override
   Future<void> delete(PresenceEntity presence) async =>

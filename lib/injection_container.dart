@@ -18,6 +18,7 @@ import 'package:sistem_presensi/src/domain/use_case/sign_out_usecase.dart';
 import 'package:sistem_presensi/src/domain/use_case/sign_up_usecase.dart';
 import 'package:sistem_presensi/src/presentation/cubit/auth/auth_cubit.dart';
 import 'package:sistem_presensi/src/presentation/cubit/navbar/navbar_cubit.dart';
+import 'package:sistem_presensi/utils/bloc_observer.dart';
 import 'package:sistem_presensi/src/presentation/cubit/presence/presence_cubit.dart';
 import 'package:sistem_presensi/src/presentation/cubit/schedule/schedule_cubit.dart';
 import 'package:sistem_presensi/src/presentation/cubit/user/user_cubit.dart';
@@ -55,6 +56,8 @@ Future<void> init() async {
   ));
 
   sl.registerFactory<NavbarCubit>(() => NavbarCubit());
+
+  sl.registerFactory<LogObserver>(() => LogObserver());
   
   //usecase
   sl.registerLazySingleton<SignUpUseCase>(() => SignUpUseCase(repository: sl.call()));

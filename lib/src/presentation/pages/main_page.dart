@@ -8,90 +8,76 @@ import 'package:sistem_presensi/src/presentation/pages/main_pages/permission_mai
 import 'package:sistem_presensi/src/presentation/pages/main_pages/profile_main_page.dart';
 import 'package:sistem_presensi/src/presentation/widget/common/appbar_widget.dart';
 import 'package:sistem_presensi/src/presentation/widget/bottom_navbar_widget.dart';
+import '../../../injection_container.dart' as di;
 
-class MainPage extends StatefulWidget {
+class MainPage extends StatelessWidget {
   final String uid;
   final Map<String, dynamic> userInfo;
   const MainPage({Key? key, required this.uid, required this.userInfo}): super(key: key);
 
   @override
-  State<MainPage> createState() => _MainPageState();
-}
-
-class _MainPageState extends State<MainPage> {
-  //TODO: change to stateless and use blocprovider for call cubit function?
-  int _currentIndex = 0;
-
-  @override
-  void initState() {
-    BlocProvider.of<NavbarCubit>(context).openMainPage();
-    BlocProvider.of<ScheduleCubit>(context).getTodaySchedule();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(kToolbarHeight),
-        child: BlocBuilder<NavbarCubit, NavbarState>(
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ScheduleCubit>(create: (_) => di.sl<ScheduleCubit>()..getTodaySchedule()),
+      ],
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(kToolbarHeight),
+          child: BlocBuilder<NavbarCubit, NavbarState>(
+            builder: (context, navState) {
+              if (navState is NavbarHome) {
+                return const CHomeAppBar();
+              }
+              if (navState is NavbarHistory) {
+                return CTitleAppBarLight(title: navState.title);
+              }
+              if (navState is NavbarPermission) {
+                return CTitleAppBarLight(title: navState.title);
+              }
+              if (navState is NavbarProfile) {
+                return CTitleAppBarLight(title: navState.title);
+              }
+              return AppBar(title: const Text(''),);
+            },
+          ),
+        ),
+        bottomNavigationBar: BlocSelector<NavbarCubit, NavbarState, int>(
+          selector: (state) => state.index,
+          builder: (context, state) {
+            if (state == 0) {
+              return BottomNavBar(currentIndex: state);
+            }
+            if (state == 1) {
+              return BottomNavBar(currentIndex: state);
+            }
+            if (state == 2) {
+              return BottomNavBar(currentIndex: state);
+            }
+            if (state == 3) {
+              return BottomNavBar(currentIndex: state);
+            }
+            return const BottomNavBar(currentIndex: 0);
+          },
+        ),
+        body: BlocBuilder<NavbarCubit, NavbarState>(
           builder: (context, navState) {
             if (navState is NavbarHome) {
-              return const CHomeAppBar();
+              return const HomeMainPage();
             }
             if (navState is NavbarHistory) {
-              return CTitleAppBarLight(title: navState.title);
+              return const HistoryMainPage();
             }
             if (navState is NavbarPermission) {
-              return CTitleAppBarLight(title: navState.title);
+              return const PermissionMainPage();
             }
             if (navState is NavbarProfile) {
-              return CTitleAppBarLight(title: navState.title);
+              return const ProfileMainPage();
             }
-            return AppBar(title: const Text(''),);
+            return const Center(child: CircularProgressIndicator(),);
           },
         ),
       ),
-      bottomNavigationBar: BlocConsumer<NavbarCubit, NavbarState>(
-        builder: (context, navState) {
-          return BottomNavBar(currentIndex: _currentIndex,);
-        },
-        listener: (context, navState) {
-          if (navState is NavbarHome) {
-            _currentIndex = 0;
-          }
-          if (navState is NavbarHistory) {
-            _currentIndex = 1;
-          }
-          if (navState is NavbarPermission) {
-            _currentIndex = 2;
-          }
-          if (navState is NavbarProfile) {
-            _currentIndex = 3;
-          }
-        },
-      ),
-      body: BlocBuilder<NavbarCubit, NavbarState>(
-        builder: (context, navState) {
-          if (navState is NavbarHome) {
-            return const HomeMainPage();
-          }
-          if (navState is NavbarHistory) {
-            return const HistoryMainPage();
-          }
-          if (navState is NavbarPermission) {
-            return const PermissionMainPage();
-          }
-          if (navState is NavbarProfile) {
-            return const ProfileMainPage();
-          }
-          return const Center(child: CircularProgressIndicator(),);
-        },
-      ),
     );
-  }
-
-  void onTapNavigate(int index) {
-    BlocProvider.of<NavbarCubit>(context).moveIndex(index);
   }
 }

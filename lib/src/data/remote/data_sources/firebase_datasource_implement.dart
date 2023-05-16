@@ -16,7 +16,7 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
   FirebaseDataSourceImplement({required this.auth, required this.firestore, required this.storage});
 
   @override
-  Future<void> addNewPresence(PresenceEntity presenceEntity) async {
+  Future<String?> addNewPresence(PresenceEntity presenceEntity) async {
     final storageRef = storage.ref().child('images');
 
     final uid = await getCurrentUserId();
@@ -26,23 +26,23 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
 
 
     await presenceCollectionRef.doc(presenceId).get().then((presence){
-      Timestamp createdDateTime = Timestamp.now();
 
       final imageRef = storageRef.child('$presenceId.jpg');
 
       final newPresence = PresenceModel(
         presenceId: presenceId,
         isPresence: presenceEntity.isPresence,
-        time: createdDateTime,
+        time: presenceEntity.time,
         imageURL: imageRef.fullPath,
       ).toDocument();
 
       if(!presence.exists) {
         presenceCollectionRef.doc(presenceId).set(newPresence);
         imageRef.putFile(presenceEntity.imageFile!);
+        // incrementTotalPresence(uid);
       }
-      return;
     });
+    return uid;
   }
 
   @override
@@ -139,5 +139,20 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
     });
 
     return todaySchedule;
+  }
+
+  @override
+  Future<void> incrementTotalPresence(String uid) async {
+    final UserEntity user  = await getCurrentUser();
+    final DocumentReference userRef = firestore.collection('users').doc(uid);
+
+    final userInfo = user.userInfo!;
+    userInfo['total_presence'] = userInfo['total_presence'] + 1;
+
+    await userRef.update({
+      'user_info': userInfo
+    }).then(
+            (value) => print("DocumentSnapshot successfully updated!"),
+        onError: (e) => print("Error updating document $e"));
   }
 }

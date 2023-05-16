@@ -56,8 +56,4 @@ class BottomNavBar extends StatelessWidget {
       ],
     );
   }
-
-  // void onTapNavigate(int index) {
-  //   BlocProvider.of<NavbarCubit>(context).moveIndex(index);
-  // }
 }

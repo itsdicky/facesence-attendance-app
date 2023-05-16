@@ -9,4 +9,5 @@ class PageConst {
   static const String notificationPage = "notificationPage";
   static const String permissionCameraPage = "permissionPage";
   static const String presenceCameraPage = "presencePage";
+  static const String presencePreviewPage = "presencePreviewPage";
 }
