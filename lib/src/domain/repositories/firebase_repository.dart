@@ -14,5 +14,5 @@ abstract class FirebaseRepository {
   Future<UserEntity> getCurrentUser();
   Future<List> getTodaySchedule();
   // Stream<List> activity();
-  Stream<List<PresenceEntity>> getCurrentUserPresences(String uid);
+  Stream<List<PresenceEntity>> getCurrentUserPresences();
 }

@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sistem_presensi/constant/page_const.dart';
 import 'package:sistem_presensi/main.dart';
-import 'package:sistem_presensi/src/presentation/cubit/presence/presence_cubit.dart';
-import 'package:sistem_presensi/src/presentation/cubit/presence/presence_state.dart';
+import 'package:sistem_presensi/src/presentation/cubit/presence/add_presence/add_presence_cubit.dart';
+import 'package:sistem_presensi/src/presentation/cubit/presence/add_presence/add_presence_state.dart';
 import 'package:sistem_presensi/src/presentation/widget/common/appbar_widget.dart';
 
 class PresenceCameraPage extends StatefulWidget {
@@ -36,14 +36,14 @@ class _PresenceCameraPageState extends State<PresenceCameraPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<PresenceCubit, PresenceState>(
+    return BlocListener<AddPresenceCubit, AddPresenceState>(
       listener: (context, presenceState){
-        if (presenceState is PresenceAdded) {
+        if (presenceState is AddPresenceSuccess) {
           Navigator.popUntil(context, (route) => route.isFirst);
           ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Presensi berhasil')));
         }
-        if (presenceState is PresenceFailure) {
+        if (presenceState is AddPresenceFailure) {
           Navigator.popUntil(context, (route) => route.isFirst);
           ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Presensi tidak berhasil')));

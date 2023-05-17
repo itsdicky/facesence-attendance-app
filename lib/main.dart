@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sistem_presensi/src/presentation/cubit/auth/auth_cubit.dart';
 import 'package:sistem_presensi/src/presentation/cubit/auth/auth_state.dart';
 import 'package:sistem_presensi/utils/bloc_observer.dart';
-import 'package:sistem_presensi/src/presentation/cubit/presence/presence_cubit.dart';
+import 'package:sistem_presensi/src/presentation/cubit/presence/add_presence/add_presence_cubit.dart';
 import 'package:sistem_presensi/src/presentation/cubit/user/user_cubit.dart';
 import 'package:sistem_presensi/src/presentation/pages/main_page.dart';
 import 'package:sistem_presensi/src/presentation/pages/sign_in_page.dart';
@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider<AuthCubit>(create: (_) => di.sl<AuthCubit>()..appStarted()),
         BlocProvider<UserCubit>(create: (_) => di.sl<UserCubit>()),
-        BlocProvider<PresenceCubit>(create: (_) => di.sl<PresenceCubit>()),
+        BlocProvider<AddPresenceCubit>(create: (_) => di.sl<AddPresenceCubit>()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

@@ -9,6 +9,7 @@ import 'package:sistem_presensi/src/presentation/pages/main_pages/profile_main_p
 import 'package:sistem_presensi/src/presentation/widget/common/appbar_widget.dart';
 import 'package:sistem_presensi/src/presentation/widget/bottom_navbar_widget.dart';
 import '../../../injection_container.dart' as di;
+import '../cubit/presence/load_presence/load_presence_cubit.dart';
 import '../cubit/user/user_cubit.dart';
 
 class MainPage extends StatelessWidget {
@@ -22,6 +23,7 @@ class MainPage extends StatelessWidget {
         BlocProvider<NavbarCubit>(create: (_) => di.sl<NavbarCubit>()),
         BlocProvider<ScheduleCubit>(create: (_) => di.sl<ScheduleCubit>()..getTodaySchedule()),
         BlocProvider<UserCubit>(create: (_) => di.sl<UserCubit>()..getUserInfo()),
+        BlocProvider<LoadPresenceCubit>(create: (context) => di.sl<LoadPresenceCubit>()..getCurrentUserPresences(),),
       ],
       child: Scaffold(
         appBar: PreferredSize(

@@ -14,5 +14,5 @@ abstract class FirebaseDataSource {
   Future<UserEntity> getCurrentUser();
   Future<List> getTodaySchedule();
   Future<void> incrementTotalPresence(String uid);
-  Stream<List<PresenceEntity>> getPresence(String uid);
+  Stream<List<PresenceEntity>> getUserPresences(String uid);
 }

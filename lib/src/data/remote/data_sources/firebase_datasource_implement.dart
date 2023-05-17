@@ -39,7 +39,6 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
       if(!presence.exists) {
         presenceCollectionRef.doc(presenceId).set(newPresence);
         imageRef.putFile(presenceEntity.imageFile!);
-        // incrementTotalPresence(uid);
       }
     });
     return uid;
@@ -52,13 +51,14 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
   }
 
   @override
-  Stream<List<PresenceEntity>> getPresence(String uid) {
-    final uid = getCurrentUserId();
+  Stream<List<PresenceEntity>> getUserPresences(String uid) {
+    // final uid = getCurrentUserId();
     
-    final CollectionReference presenceCollectionRef = firestore.collection('users').doc(uid as String?).collection('presences');
+    final CollectionReference presenceCollectionRef = firestore.collection('users').doc(uid).collection('presences');
     final _presencesStream = presenceCollectionRef.snapshots();
 
     return _presencesStream.map((querySnap){
+      print('STREAM PRESENCE: new data (((1)))');
       return querySnap.docs.map((docSnap) => PresenceModel.fromSnapshot(docSnap)).toList();
     });
   }

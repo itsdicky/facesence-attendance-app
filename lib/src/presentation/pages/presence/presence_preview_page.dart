@@ -7,7 +7,7 @@ import 'package:sistem_presensi/src/presentation/styles/color_style.dart';
 import 'package:sistem_presensi/src/presentation/widget/common/appbar_widget.dart';
 
 import '../../../domain/entities/presence_entity.dart';
-import '../../cubit/presence/presence_cubit.dart';
+import '../../cubit/presence/add_presence/add_presence_cubit.dart';
 
 class PresencePreviewPage extends StatelessWidget {
   final String imagePath;
@@ -54,7 +54,7 @@ class PresencePreviewPage extends StatelessWidget {
                     onPressed: () {
                       File imageFile = File(imagePath);
 
-                      BlocProvider.of<PresenceCubit>(context).addPresence(
+                      BlocProvider.of<AddPresenceCubit>(context).addPresence(
                           presence: PresenceEntity(isPresence: true, imageFile: imageFile, time: timestamp)
                       );
                     },

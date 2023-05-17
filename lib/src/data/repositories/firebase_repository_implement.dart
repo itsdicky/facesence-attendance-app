@@ -26,8 +26,10 @@ class FireBaseRepositoryImplement extends FirebaseRepository {
       dataSource.getCurrentUserId();
 
   @override
-  Stream<List<PresenceEntity>> getCurrentUserPresences(String uid) =>
-      dataSource.getPresence(uid);
+  Stream<List<PresenceEntity>> getCurrentUserPresences() async* {
+    final uid = await getCurrentUserId();
+    yield* dataSource.getUserPresences(uid);
+  }
 
   @override
   Future<bool> isSignIn() async =>

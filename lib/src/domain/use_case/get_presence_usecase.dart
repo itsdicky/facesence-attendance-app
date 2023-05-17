@@ -7,7 +7,8 @@ class GetPresenceUsecase {
 
   GetPresenceUsecase({required this.repository});
 
-  Stream<List<PresenceEntity>> call(String uid) {
-    return repository.getCurrentUserPresences(uid);
+  Stream<List<PresenceEntity>> call() {
+    print('STREAM PRESENCE: new data (((3)))');
+    return repository.getCurrentUserPresences();
   }
 }

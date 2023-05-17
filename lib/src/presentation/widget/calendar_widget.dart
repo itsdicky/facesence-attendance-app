@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sistem_presensi/src/presentation/cubit/calendar/calendar_cubit.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class Calendar extends StatefulWidget {
+
   const Calendar({super.key});
 
   @override
@@ -23,9 +26,12 @@ class _CalendarState extends State<Calendar> {
         return isSameDay(_selectedDay, day);
       },
       onDaySelected: (selectedDay, focusedDay) {
+        final now = DateTime.now();
         setState(() {
           _selectedDay = selectedDay;
           _focusedDay = focusedDay;
+          print(selectedDay.day == now.day && selectedDay.month == now.month && selectedDay.year == now.year);
+          BlocProvider.of<CalendarCubit>(context).changeDate(selectedDay);
         });
       },
       calendarFormat: _calendarFormat,

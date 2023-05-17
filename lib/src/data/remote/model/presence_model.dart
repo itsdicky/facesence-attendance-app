@@ -21,14 +21,15 @@ class PresenceModel extends PresenceEntity {
   );
 
   factory PresenceModel.fromSnapshot(DocumentSnapshot documentSnapshot) {
+    final data = documentSnapshot.data().toString();
     return PresenceModel(
         presenceId: documentSnapshot.id,
         isPresence: documentSnapshot.get('is_presence'),
         time: documentSnapshot.get('timestamp'),
         location: documentSnapshot.get('location'),
-        permissionId: documentSnapshot.get('permission'),
+        permissionId: documentSnapshot.get('permissionId'),
         imageURL: documentSnapshot.get('image_url'),
-        detail: documentSnapshot.get('detail')
+        detail: data.contains('detail') ? documentSnapshot.get('detail') : 'detail not exist'
     );
   }
 

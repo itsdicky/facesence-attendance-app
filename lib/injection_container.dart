@@ -17,13 +17,15 @@ import 'package:sistem_presensi/src/domain/use_case/sign_in_usecase.dart';
 import 'package:sistem_presensi/src/domain/use_case/sign_out_usecase.dart';
 import 'package:sistem_presensi/src/domain/use_case/sign_up_usecase.dart';
 import 'package:sistem_presensi/src/presentation/cubit/auth/auth_cubit.dart';
+import 'package:sistem_presensi/src/presentation/cubit/calendar/calendar_cubit.dart';
 import 'package:sistem_presensi/src/presentation/cubit/navbar/navbar_cubit.dart';
 import 'package:sistem_presensi/utils/bloc_observer.dart';
-import 'package:sistem_presensi/src/presentation/cubit/presence/presence_cubit.dart';
+import 'package:sistem_presensi/src/presentation/cubit/presence/add_presence/add_presence_cubit.dart';
 import 'package:sistem_presensi/src/presentation/cubit/schedule/schedule_cubit.dart';
 import 'package:sistem_presensi/src/presentation/cubit/user/user_cubit.dart';
 
 import 'src/domain/use_case/get_current_user_usecase.dart';
+import 'src/presentation/cubit/presence/load_presence/load_presence_cubit.dart';
 
 // Class for dependency injection
 
@@ -50,10 +52,11 @@ Future<void> init() async {
       getTodayScheduleUsecase: sl.call()
   ));
 
-  sl.registerFactory<PresenceCubit>(() => PresenceCubit(
-      addNewPresenceUseCase: sl.call(),
-      getPresenceUsecase: sl.call()
-  ));
+  sl.registerFactory<CalendarCubit>(() => CalendarCubit());
+
+  sl.registerFactory<AddPresenceCubit>(() => AddPresenceCubit(addNewPresenceUseCase: sl.call(),));
+
+  sl.registerFactory<LoadPresenceCubit>(() => LoadPresenceCubit(getPresenceUsecase: sl.call(),));
 
   sl.registerFactory<NavbarCubit>(() => NavbarCubit());
 

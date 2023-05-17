@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sistem_presensi/src/presentation/cubit/presence/presence_cubit.dart';
-import 'package:sistem_presensi/src/presentation/cubit/presence/presence_state.dart';
+import 'package:sistem_presensi/src/presentation/cubit/presence/add_presence/add_presence_cubit.dart';
+import 'package:sistem_presensi/src/presentation/cubit/presence/add_presence/add_presence_state.dart';
 import 'package:sistem_presensi/src/presentation/cubit/schedule/schedule_cubit.dart';
 import 'package:sistem_presensi/src/presentation/cubit/user/user_cubit.dart';
 import 'package:sistem_presensi/src/presentation/styles/color_style.dart';
@@ -71,9 +71,9 @@ class HomeMainPage extends StatelessWidget {
             left: 0,
             right: 0,
             bottom: 0,
-            child: BlocListener<PresenceCubit, PresenceState>(
+            child: BlocListener<AddPresenceCubit, AddPresenceState>(
               listener: (context, state) {
-                if(state is PresenceAdded) {
+                if(state is AddPresenceSuccess) {
                   BlocProvider.of<UserCubit>(context).getUserInfo();
                 }
               },

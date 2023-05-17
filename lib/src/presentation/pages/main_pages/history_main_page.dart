@@ -1,107 +1,108 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sistem_presensi/src/domain/entities/presence_entity.dart';
+import 'package:sistem_presensi/src/presentation/cubit/calendar/calendar_cubit.dart';
 import 'package:sistem_presensi/src/presentation/styles/color_style.dart';
 import 'package:sistem_presensi/src/presentation/widget/calendar_widget.dart';
+import '../../../../injection_container.dart' as di;
+import '../../../../utils/date_util.dart';
+import '../../cubit/presence/load_presence/load_presence_cubit.dart';
 
 class HistoryMainPage extends StatelessWidget {
   const HistoryMainPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Calendar(),
-          const SizedBox(
-            height: 32,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 8),
-            child: Text(
-              'Aktivitas',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          Expanded(
-            child: ListView(
-              children: [
-                Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<CalendarCubit>(create: (context) => di.sl<CalendarCubit>(),),
+      ],
+      child: BlocListener<CalendarCubit, DateTime>(
+            listener: (context, calendarState) {
+              if (calendarState.day == DateTime.now().day) {
+                print(calendarState);
+              }
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Calendar(),
+                  const SizedBox(
+                    height: 32,
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Hadir',
-                              style: Theme.of(context).textTheme.titleSmall,
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            Text(
-                              'Berhasil hadir tepat waktu',
-                              style: Theme.of(context).textTheme.labelLarge,
-                            ),
-                          ],
-                        ),
-                        Text(
-                          '07:29',
-                          style: Theme.of(context).textTheme.labelMedium?.copyWith(color: ColorStyle.darkGrey),
-                        ),
-                      ],
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8),
+                    child: Text(
+                      'Aktivitas',
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
-                ),
-                Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
+                  const SizedBox(
+                    height: 16,
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Hadir',
-                              style: Theme.of(context).textTheme.titleSmall,
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            Text(
-                              'Berhasil hadir tepat waktu',
-                              style: Theme.of(context).textTheme.labelLarge,
-                            ),
-                          ],
-                        ),
-                        Text(
-                          '07:29',
-                          style: Theme.of(context).textTheme.labelMedium?.copyWith(color: ColorStyle.darkGrey),
-                        ),
-                      ],
+                  Expanded(
+                    child: BlocBuilder<LoadPresenceCubit, LoadPresenceState>(
+                      buildWhen: (previous, current) => previous != current && current is LoadPresenceSuccess,
+                      builder: (context, presenceState) {
+                        if (presenceState is LoadPresenceSuccess) {
+                          return BlocBuilder<CalendarCubit, DateTime>(
+                            builder: (context, calendarState) {
+                              List<PresenceEntity> selectedList = CDateUtil.filterPresenceDateList(presenceState.presences, calendarState).toList();
+                              if (selectedList.isNotEmpty) {
+                                return ListView.builder(
+                                  itemBuilder: (context, index) {
+                                    return Card(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  selectedList[index].isPresence! ? 'Hadir':'Tidak hadir',
+                                                  style: Theme.of(context).textTheme.titleSmall,
+                                                ),
+                                                const SizedBox(
+                                                  height: 8,
+                                                ),
+                                                Text(
+                                                  selectedList[index].presenceId.toString(),
+                                                  style: Theme.of(context).textTheme.labelLarge,
+                                                ),
+                                              ],
+                                            ),
+                                            Text(
+                                              '07:29',
+                                              style: Theme.of(context).textTheme.labelMedium?.copyWith(color: ColorStyle.darkGrey),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  itemCount: selectedList.length,
+                                );
+                              }
+                              return const Center(child: Text('Belum ada aktivitas'));
+                            },
+                          );
+                        }
+                        return const Center(child: CircularProgressIndicator(),);
+                      },
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ],
-      ),
     );
   }
 }
