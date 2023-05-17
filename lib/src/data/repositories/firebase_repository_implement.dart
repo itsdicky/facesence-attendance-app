@@ -1,4 +1,5 @@
 import 'package:sistem_presensi/src/data/remote/data_sources/firebase_datasource.dart';
+import 'package:sistem_presensi/src/domain/entities/permission_entity.dart';
 import 'package:sistem_presensi/src/domain/entities/presence_entity.dart';
 import 'package:sistem_presensi/src/domain/entities/user_entity.dart';
 import 'package:sistem_presensi/src/domain/repositories/firebase_repository.dart';
@@ -61,5 +62,16 @@ class FireBaseRepositoryImplement extends FirebaseRepository {
 
   @override
   Future<List> getTodaySchedule() async => dataSource.getTodaySchedule();
+
+  @override
+  Future<void> addNewPermission(PermissionEntity permissionEntity) {
+    return dataSource.addNewPermission(permissionEntity);
+  }
+
+  @override
+  Stream<List<PermissionEntity>> getCurrentUserWaitingPermission() async* {
+    final uid = await dataSource.getCurrentUserId();
+    yield* dataSource.getUserWaitingPermission(uid);
+  }
 
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sistem_presensi/constant/app_config.dart';
 import 'package:sistem_presensi/src/domain/entities/presence_entity.dart';
 import 'package:sistem_presensi/src/presentation/cubit/calendar/calendar_cubit.dart';
 import 'package:sistem_presensi/src/presentation/styles/color_style.dart';
@@ -49,7 +50,7 @@ class HistoryMainPage extends StatelessWidget {
                         if (presenceState is LoadPresenceSuccess) {
                           return BlocBuilder<CalendarCubit, DateTime>(
                             builder: (context, calendarState) {
-                              List<PresenceEntity> selectedList = CDateUtil.filterPresenceDateList(presenceState.presences, calendarState).toList();
+                              final List<PresenceEntity> selectedList = CDateUtil.filterPresenceDateList(presenceState.presences, calendarState).toList();
                               if (selectedList.isNotEmpty) {
                                 return ListView.builder(
                                   itemBuilder: (context, index) {
@@ -74,13 +75,17 @@ class HistoryMainPage extends StatelessWidget {
                                                   height: 8,
                                                 ),
                                                 Text(
-                                                  selectedList[index].presenceId.toString(),
+                                                  CDateUtil.isTimeAfter(
+                                                      dateTime: selectedList[index].time!.toDate(),
+                                                      hour: AppConfig.schoolStart['hour']!,
+                                                      minute: AppConfig.schoolStart['minute']!
+                                                  ) ? 'Hadir terlambat' : 'Hadir tepat waktu',
                                                   style: Theme.of(context).textTheme.labelLarge,
                                                 ),
                                               ],
                                             ),
                                             Text(
-                                              '07:29',
+                                              CDateUtil.getTimeString(selectedList[index].time!.toDate()),
                                               style: Theme.of(context).textTheme.labelMedium?.copyWith(color: ColorStyle.darkGrey),
                                             ),
                                           ],

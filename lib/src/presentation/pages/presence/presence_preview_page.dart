@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sistem_presensi/src/presentation/styles/color_style.dart';
 import 'package:sistem_presensi/src/presentation/widget/common/appbar_widget.dart';
+import 'package:sistem_presensi/utils/date_util.dart';
 
 import '../../../domain/entities/presence_entity.dart';
 import '../../cubit/presence/add_presence/add_presence_cubit.dart';
@@ -20,7 +21,7 @@ class PresencePreviewPage extends StatelessWidget {
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
-        child: CTitleAppBarLight(title: 'Gunakan gambar ini?',),
+        child: CTitleAppBarLight(title: 'Kirim presensi?',),
       ),
       // The image is stored as a file on the device. Use the `Image.file`
       // constructor with the given path to display the image.
@@ -32,8 +33,8 @@ class PresencePreviewPage extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               child: Image.file(File(imagePath)),
             ),
-            const SizedBox(height: 16,),
-            Text(timestamp.toString()),
+            const SizedBox(height: 32,),
+            Text(CDateUtil.getFormattedDateTimeString(timestamp.toDate()), style: Theme.of(context).textTheme.bodyLarge,),
             Expanded(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -47,18 +48,30 @@ class PresencePreviewPage extends StatelessWidget {
                     },
                     child: const Icon(Icons.close),
                   ),
-                  FloatingActionButton(
-                    heroTag: 'Accept',
-                    elevation: 0,
-                    backgroundColor: ColorStyle.limeGreen,
-                    onPressed: () {
-                      File imageFile = File(imagePath);
+                  SizedBox(
+                    height: 56,
+                    child: FittedBox(
+                      child: FloatingActionButton.extended(
+                        heroTag: 'Accept',
+                        isExtended: true,
+                        elevation: 0,
+                        backgroundColor: ColorStyle.limeGreen,
+                        onPressed: () {
+                          File imageFile = File(imagePath);
 
-                      BlocProvider.of<AddPresenceCubit>(context).addPresence(
-                          presence: PresenceEntity(isPresence: true, imageFile: imageFile, time: timestamp)
-                      );
-                    },
-                    child: const Icon(Icons.check),
+                          BlocProvider.of<AddPresenceCubit>(context).addPresence(
+                              presence: PresenceEntity(isPresence: true, imageFile: imageFile, time: timestamp)
+                          );
+                        },
+                        label: Row(
+                          children: const [
+                            Icon(Icons.send),
+                            SizedBox(width: 12,),
+                            Text('Kirim'),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),

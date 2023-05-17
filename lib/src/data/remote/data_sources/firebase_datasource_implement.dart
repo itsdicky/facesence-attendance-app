@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:sistem_presensi/src/data/remote/data_sources/firebase_datasource.dart';
+import 'package:sistem_presensi/src/data/remote/model/permission_model.dart';
 import 'package:sistem_presensi/src/data/remote/model/presence_model.dart';
 import 'package:sistem_presensi/src/data/remote/model/user_model.dart';
+import 'package:sistem_presensi/src/domain/entities/permission_entity.dart';
 import 'package:sistem_presensi/src/domain/entities/presence_entity.dart';
 import 'package:sistem_presensi/src/domain/entities/user_entity.dart';
 
@@ -52,13 +54,10 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
 
   @override
   Stream<List<PresenceEntity>> getUserPresences(String uid) {
-    // final uid = getCurrentUserId();
-    
     final CollectionReference presenceCollectionRef = firestore.collection('users').doc(uid).collection('presences');
     final _presencesStream = presenceCollectionRef.snapshots();
 
     return _presencesStream.map((querySnap){
-      print('STREAM PRESENCE: new data (((1)))');
       return querySnap.docs.map((docSnap) => PresenceModel.fromSnapshot(docSnap)).toList();
     });
   }
@@ -155,5 +154,49 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
     }).then(
             (value) => print("DocumentSnapshot successfully updated!"),
         onError: (e) => print("Error updating document $e"));
+  }
+
+  @override
+  Future<String?> addNewPermission(PermissionEntity permissionEntity) async {
+    final storageRef = storage.ref().child('images').child('permission');
+
+    final uid = await getCurrentUserId();
+    final user = await getCurrentUser();
+
+    final CollectionReference presenceCollectionRef = firestore.collection('permissions');
+    final permissionId = presenceCollectionRef.doc().id;
+
+
+    await presenceCollectionRef.doc(permissionId).get().then((permission){
+
+      final imageRef = storageRef.child('$permissionId.jpg');
+
+      final newPermission = PermissionModel(
+          studentId: uid,
+          category: permissionEntity.category,
+          description: permissionEntity.description,
+          grade: user.userInfo?['classroom'],
+          status: 'menunggu',
+          imageURL: imageRef.fullPath,
+          isConfirmed: false,
+          time: Timestamp.now()
+      ).toDocument();
+
+      if(!permission.exists) {
+        presenceCollectionRef.doc(permissionId).set(newPermission);
+        imageRef.putFile(permissionEntity.imageFile!);
+      }
+    });
+    return uid;
+  }
+
+  @override
+  Stream<List<PermissionEntity>> getUserWaitingPermission(String uid) {
+    final Query permissionCollectionRef = firestore.collection('permissions').where('student_id', isEqualTo: uid).orderBy('time', descending: true);
+    final _presencesStream = permissionCollectionRef.snapshots();
+
+    return _presencesStream.map((querySnap){
+      return querySnap.docs.map((docSnap) => PermissionModel.fromSnapshot(docSnap)).toList();
+    });
   }
 }

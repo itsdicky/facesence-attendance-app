@@ -19,12 +19,16 @@ import 'package:sistem_presensi/src/domain/use_case/sign_up_usecase.dart';
 import 'package:sistem_presensi/src/presentation/cubit/auth/auth_cubit.dart';
 import 'package:sistem_presensi/src/presentation/cubit/calendar/calendar_cubit.dart';
 import 'package:sistem_presensi/src/presentation/cubit/navbar/navbar_cubit.dart';
+import 'package:sistem_presensi/src/presentation/cubit/permission/add_permission/add_permission_cubit.dart';
 import 'package:sistem_presensi/utils/bloc_observer.dart';
 import 'package:sistem_presensi/src/presentation/cubit/presence/add_presence/add_presence_cubit.dart';
 import 'package:sistem_presensi/src/presentation/cubit/schedule/schedule_cubit.dart';
 import 'package:sistem_presensi/src/presentation/cubit/user/user_cubit.dart';
 
+import 'src/domain/use_case/add_new_permission_usecase.dart';
 import 'src/domain/use_case/get_current_user_usecase.dart';
+import 'src/domain/use_case/get_permission_usecase.dart';
+import 'src/presentation/cubit/permission/load_permission/load_permission_cubit.dart';
 import 'src/presentation/cubit/presence/load_presence/load_presence_cubit.dart';
 
 // Class for dependency injection
@@ -58,6 +62,10 @@ Future<void> init() async {
 
   sl.registerFactory<LoadPresenceCubit>(() => LoadPresenceCubit(getPresenceUsecase: sl.call(),));
 
+  sl.registerFactory<AddPermissionCubit>(() => AddPermissionCubit(addNewPermissionUseCase: sl.call(),));
+
+  sl.registerFactory<LoadPermissionCubit>(() => LoadPermissionCubit(getPermissionUsecase: sl.call(),));
+
   sl.registerFactory<NavbarCubit>(() => NavbarCubit());
 
   sl.registerFactory<LogObserver>(() => LogObserver());
@@ -69,10 +77,12 @@ Future<void> init() async {
   sl.registerLazySingleton<SignOutUsecase>(() => SignOutUsecase(repository: sl.call()));
   sl.registerLazySingleton<GetCreateCurrentUseCase>(() => GetCreateCurrentUseCase(repository: sl.call()));
   sl.registerLazySingleton<AddNewPresenceUseCase>(() => AddNewPresenceUseCase(repository: sl.call()));
+  sl.registerLazySingleton<AddNewPermissionUseCase>(() => AddNewPermissionUseCase(repository: sl.call()));
   sl.registerLazySingleton<GetCurrentUidUsecase>(() => GetCurrentUidUsecase(repository: sl.call()));
   sl.registerLazySingleton<GetCurrentUserUsecase>(() => GetCurrentUserUsecase(repository: sl.call()));
   sl.registerLazySingleton<GetTodayScheduleUsecase>(() => GetTodayScheduleUsecase(repository: sl.call()));
   sl.registerLazySingleton<GetPresenceUsecase>(() => GetPresenceUsecase(repository: sl.call()));
+  sl.registerLazySingleton<GetPermissionUsecase>(() => GetPermissionUsecase(repository: sl.call()));
 
   //repository
   sl.registerLazySingleton<FirebaseRepository>(() => FireBaseRepositoryImplement(dataSource: sl.call()));
