@@ -1,3 +1,4 @@
+import 'package:geolocator/geolocator.dart';
 import 'package:sistem_presensi/src/domain/entities/permission_entity.dart';
 import 'package:sistem_presensi/src/domain/entities/presence_entity.dart';
 import 'package:sistem_presensi/src/domain/entities/user_entity.dart';
@@ -15,6 +16,7 @@ abstract class FirebaseRepository {
   Future<void> delete(PresenceEntity presence);
   Future<UserEntity> getCurrentUser();
   Future<List> getTodaySchedule();
+  Future<Position> getCurrentPosition();
   // Stream<List> activity();
   Stream<List<PresenceEntity>> getCurrentUserPresences();
   Stream<List<PermissionEntity>> getCurrentUserWaitingPermission();

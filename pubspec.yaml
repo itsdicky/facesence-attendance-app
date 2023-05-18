@@ -52,6 +52,7 @@ dependencies:
   flow_builder: ^0.0.9
   localization: ^2.1.0
   firebase_storage: ^11.2.0
+  geolocator: ^9.0.2
 
 dev_dependencies:
   flutter_test:

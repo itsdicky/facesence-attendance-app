@@ -6,13 +6,17 @@ class PresenceEntity {
   final String? presenceId;
   final bool? isPresence;
   final Timestamp? time;
-  final GeoPoint? location;
+  GeoPoint? location;
   final String? permissionId;
   final File? imageFile;
   final String? imageURL;
   final String? detail;
 
-  const PresenceEntity({
+  void set setLocation(GeoPoint geoPoint) {
+    location = geoPoint;
+  }
+
+  PresenceEntity({
     this.presenceId,
     this.isPresence,
     this.time,

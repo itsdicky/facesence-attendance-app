@@ -45,8 +45,9 @@ class _PresenceCameraPageState extends State<PresenceCameraPage> {
         }
         if (presenceState is AddPresenceFailure) {
           Navigator.popUntil(context, (route) => route.isFirst);
+          final failMessage = presenceState.message;
           ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Presensi tidak berhasil')));
+              SnackBar(content: Text('Terjadi kesalahan: $failMessage')));
         }
       },
       child: Scaffold(

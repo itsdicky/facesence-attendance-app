@@ -34,6 +34,7 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
       final newPresence = PresenceModel(
         presenceId: presenceId,
         isPresence: presenceEntity.isPresence,
+        location: presenceEntity.location,
         time: presenceEntity.time,
         imageURL: imageRef.fullPath,
       ).toDocument();

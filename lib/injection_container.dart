@@ -6,9 +6,11 @@ import 'package:get_it/get_it.dart';
 import 'package:sistem_presensi/src/data/remote/data_sources/firebase_datasource.dart';
 import 'package:sistem_presensi/src/data/remote/data_sources/firebase_datasource_implement.dart';
 import 'package:sistem_presensi/src/data/repositories/firebase_repository_implement.dart';
+import 'package:sistem_presensi/src/data/service/geolocator.dart';
 import 'package:sistem_presensi/src/domain/repositories/firebase_repository.dart';
 import 'package:sistem_presensi/src/domain/use_case/add_new_presence_usecase.dart';
 import 'package:sistem_presensi/src/domain/use_case/get_create_current_user_usecase.dart';
+import 'package:sistem_presensi/src/domain/use_case/get_current_position_usecase.dart';
 import 'package:sistem_presensi/src/domain/use_case/get_current_uid_usecase.dart';
 import 'package:sistem_presensi/src/domain/use_case/get_presence_usecase.dart';
 import 'package:sistem_presensi/src/domain/use_case/get_today_schedule_usecase.dart';
@@ -58,7 +60,7 @@ Future<void> init() async {
 
   sl.registerFactory<CalendarCubit>(() => CalendarCubit());
 
-  sl.registerFactory<AddPresenceCubit>(() => AddPresenceCubit(addNewPresenceUseCase: sl.call(),));
+  sl.registerFactory<AddPresenceCubit>(() => AddPresenceCubit(addNewPresenceUseCase: sl.call(), getCurrentPositionUseCase: sl.call()));
 
   sl.registerFactory<LoadPresenceCubit>(() => LoadPresenceCubit(getPresenceUsecase: sl.call(),));
 
@@ -83,12 +85,16 @@ Future<void> init() async {
   sl.registerLazySingleton<GetTodayScheduleUsecase>(() => GetTodayScheduleUsecase(repository: sl.call()));
   sl.registerLazySingleton<GetPresenceUsecase>(() => GetPresenceUsecase(repository: sl.call()));
   sl.registerLazySingleton<GetPermissionUsecase>(() => GetPermissionUsecase(repository: sl.call()));
+  sl.registerLazySingleton<GetCurrentPositionUseCase>(() => GetCurrentPositionUseCase(repository: sl.call()));
 
   //repository
-  sl.registerLazySingleton<FirebaseRepository>(() => FireBaseRepositoryImplement(dataSource: sl.call()));
+  sl.registerLazySingleton<FirebaseRepository>(() => FireBaseRepositoryImplement(dataSource: sl.call(), geoLoc: sl.call()));
 
   //data source
   sl.registerLazySingleton<FirebaseDataSource>(() => FirebaseDataSourceImplement(auth: sl.call(), firestore: sl.call(), storage: sl.call()));
+
+  //service
+  sl.registerLazySingleton<GeoLoc>(() => GeoLoc());
   
   //external
   final FirebaseAuth auth = await FirebaseAuth.instanceFor(app: Firebase.app());

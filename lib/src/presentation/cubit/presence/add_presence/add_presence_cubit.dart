@@ -7,14 +7,22 @@ import 'package:sistem_presensi/src/domain/entities/presence_entity.dart';
 import 'package:sistem_presensi/src/domain/use_case/add_new_presence_usecase.dart';
 import 'package:sistem_presensi/src/presentation/cubit/presence/add_presence/add_presence_state.dart';
 
+import '../../../../../utils/geo_util.dart';
+import '../../../../domain/use_case/get_current_position_usecase.dart';
+
 class AddPresenceCubit extends Cubit<AddPresenceState> {
   final AddNewPresenceUseCase addNewPresenceUseCase;
+  final GetCurrentPositionUseCase getCurrentPositionUseCase;
   // final GetPresenceUsecase getPresenceUsecase;
-  AddPresenceCubit({required this.addNewPresenceUseCase}) : super(AddPresenceInitial());
+  AddPresenceCubit({required this.addNewPresenceUseCase, required this.getCurrentPositionUseCase}) : super(AddPresenceInitial());
 
   Future<void> addPresence({required PresenceEntity presence}) async {
     emit(AddPresenceLoading());
     try {
+      final location = await getCurrentPositionUseCase.call();
+      final geoPoint = CGeoUtil.toGeoPoint(location);
+      presence.setLocation = geoPoint;
+
       await addNewPresenceUseCase.call(presence);
       emit(AddPresenceSuccess());
     } on FirebaseException catch(e){

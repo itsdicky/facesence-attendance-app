@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sistem_presensi/src/domain/entities/presence_entity.dart';
 
 class PresenceModel extends PresenceEntity {
-  const PresenceModel({
+  PresenceModel({
     final String? presenceId,
     final bool? isPresence,
     final Timestamp? time,

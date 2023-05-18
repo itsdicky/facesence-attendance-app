@@ -1,4 +1,6 @@
+import 'package:geolocator_platform_interface/src/models/position.dart';
 import 'package:sistem_presensi/src/data/remote/data_sources/firebase_datasource.dart';
+import 'package:sistem_presensi/src/data/service/geolocator.dart';
 import 'package:sistem_presensi/src/domain/entities/permission_entity.dart';
 import 'package:sistem_presensi/src/domain/entities/presence_entity.dart';
 import 'package:sistem_presensi/src/domain/entities/user_entity.dart';
@@ -6,8 +8,9 @@ import 'package:sistem_presensi/src/domain/repositories/firebase_repository.dart
 
 class FireBaseRepositoryImplement extends FirebaseRepository {
   final FirebaseDataSource dataSource;
+  final GeoLoc geoLoc;
 
-  FireBaseRepositoryImplement({required this.dataSource});
+  FireBaseRepositoryImplement({required this.dataSource, required this.geoLoc});
 
   @override
   Future<void> addNewPresence(PresenceEntity presence) async {
@@ -72,6 +75,11 @@ class FireBaseRepositoryImplement extends FirebaseRepository {
   Stream<List<PermissionEntity>> getCurrentUserWaitingPermission() async* {
     final uid = await dataSource.getCurrentUserId();
     yield* dataSource.getUserWaitingPermission(uid);
+  }
+
+  @override
+  Future<Position> getCurrentPosition() {
+    return geoLoc.determinePosition();
   }
 
 }
