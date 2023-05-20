@@ -1,6 +1,8 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sistem_presensi/constant/page_const.dart';
+import 'package:sistem_presensi/src/presentation/cubit/permission/add_permission/add_permission_cubit.dart';
 import 'package:sistem_presensi/src/presentation/widget/common/appbar_widget.dart';
 import 'package:sistem_presensi/main.dart';
 
@@ -84,11 +86,12 @@ class _PermissionCameraPageState extends State<PermissionCameraPage> {
                   try {
                     await _initializeControllerFuture;
 
-                    final image = await _controller.takePicture();
+                    final image = _controller.takePicture();
 
                     if (!mounted) return;
 
-                    await Navigator.pushNamed(context, PageConst.pictureDisplayPage, arguments: [widget.category, widget.description ,image.path]);
+                    BlocProvider.of<AddPermissionCubit>(context).capturePermissionPreview(category: widget.category, desc: widget.description, xfile: image);
+                    await Navigator.pushNamed(context, PageConst.pictureDisplayPage);
                   } catch(e) {
                     print(e);
                   }

@@ -33,16 +33,16 @@ class OnGenerateRoute {
         return materialBuilder(widget: PermissionCameraPage(category: args[0], description: args[1],));
       }
       case PageConst.pictureDisplayPage: {
-        return materialBuilder(widget: PictureDisplayPage(category: args[0], description: args[1], imagePath: args[2]));
+        return materialBuilder(widget: const PictureDisplayPage());
       }
       case PageConst.permissionPreviewPage: {
-        return materialBuilder(widget: PermissionPreviewPage(category: args[0], description: args[1], imagePath: args[2]));
+        return materialBuilder(widget: PermissionPreviewPage(category: args[0], description: args[1], image: args[2],));
       }
       case PageConst.presenceCameraPage: {
         return materialBuilder(widget: PresenceCameraPage());
       }
       case PageConst.presencePreviewPage: {
-        return materialBuilder(widget: PresencePreviewPage(imagePath: args[0], timestamp: args[1]));
+        return materialBuilder(widget: const PresencePreviewPage());
       }
       case PageConst.notificationPage: {
         return materialBuilder(widget: const NotificationPage());

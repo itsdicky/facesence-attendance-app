@@ -6,7 +6,10 @@ import 'package:sistem_presensi/src/presentation/styles/widget_style.dart';
 import 'package:sistem_presensi/src/presentation/widget/common/appbar_widget.dart';
 import 'package:sistem_presensi/utils/scroll_behavior.dart';
 
+import '../../../../constant/app_config.dart';
+
 class PermissionForm extends StatefulWidget {
+  final List<String> itemsCategory = AppConfig.permissionCategory;
 
   const PermissionForm({super.key});
 
@@ -15,12 +18,6 @@ class PermissionForm extends StatefulWidget {
 }
 
 class _PermissionFormState extends State<PermissionForm> {
-  final List<String> itemsCategory = [
-    'Izin',
-    'Sakit',
-    'Kegiatan sekolah',
-    'Lain-lain',
-  ];
   String? selectedValue;
 
   final GlobalKey<FormState> _formPermissionKey = GlobalKey<FormState>();
@@ -57,7 +54,7 @@ class _PermissionFormState extends State<PermissionForm> {
                   const SizedBox(height: 24,),
                   DropdownButtonHideUnderline(
                     child: DropdownButtonFormField2(
-                      items: _addDividersAfterItems(itemsCategory),
+                      items: _addDividersAfterItems(widget.itemsCategory),
                       decoration: CWidgetStyle.dropdownButtonDecoration(),
                       isExpanded: true,
                       hint: Text('Pilih alasan', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: ColorStyle.darkGrey),),
@@ -77,7 +74,7 @@ class _PermissionFormState extends State<PermissionForm> {
                       },
                       buttonStyleData: const ButtonStyleData(
                         height: 60,
-                        padding: const EdgeInsets.fromLTRB(8, 4, 20, 4),
+                        padding: EdgeInsets.fromLTRB(8, 4, 20, 4),
                       ),
                       iconStyleData: const IconStyleData(
                         icon: Icon(Icons.keyboard_arrow_down),
@@ -92,7 +89,7 @@ class _PermissionFormState extends State<PermissionForm> {
                         ),
                       ),
                       menuItemStyleData: MenuItemStyleData(
-                        customHeights: _getCustomItemsHeights(itemsCategory),
+                        customHeights: _getCustomItemsHeights(widget.itemsCategory),
                       ),
                     ),
                   ),
@@ -105,6 +102,7 @@ class _PermissionFormState extends State<PermissionForm> {
                       if (value == null || value.isEmpty) {
                         return 'Masukan deskripsi';
                       }
+                      return null;
                     },
                     decoration: CWidgetStyle.textfieldDecoration(hintText: 'Deskripsi'),
                     style: Theme.of(context).textTheme.bodyMedium,
@@ -123,14 +121,6 @@ class _PermissionFormState extends State<PermissionForm> {
       ),
     );
   }
-
-  // void dropDownCallBack(String? selectedValue) {
-  //   if (selectedValue is String) {
-  //     setState(() {
-  //       _dropdownValue = selectedValue;
-  //     });
-  //   }
-  // }
 
   void _submitPermissionDetail() {
     if (_formPermissionKey.currentState!.validate()) {

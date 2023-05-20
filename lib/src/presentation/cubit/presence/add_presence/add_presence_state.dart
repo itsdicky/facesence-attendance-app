@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class AddPresenceState extends Equatable {
@@ -5,6 +8,19 @@ abstract class AddPresenceState extends Equatable {
 }
 
 class AddPresenceInitial extends AddPresenceState {
+  @override
+  List<Object> get props => [];
+}
+
+class AddPresencePreview extends AddPresenceState {
+  // final Position position;
+  final Timestamp timestamp;
+  final GeoPoint geoPoint;
+  final String dateTimeString;
+  final File image;
+
+  const AddPresencePreview({required this.timestamp, required this.geoPoint, required this.dateTimeString, required this.image});
+
   @override
   List<Object> get props => [];
 }

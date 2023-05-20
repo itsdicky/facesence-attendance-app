@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:camera/camera.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:sistem_presensi/src/domain/entities/permission_entity.dart';
@@ -27,4 +28,14 @@ class AddPermissionCubit extends Cubit<AddPermissionState> {
       emit(const AddPermissionFailure());
     }
   }
+
+  Future<void> capturePermissionPreview({required String category, required String desc, required Future<XFile> xfile}) async {
+    emit(AddPermissionLoading());
+    final file = await xfile;
+    emit(AddPermissionPreview(category: category, desc: desc, file: File(file.path)));
+  }
+
+  // Future<void> getPermissionPreview({required }) async {
+  //   emit(AddPermissionLoading());
+  // }
 }

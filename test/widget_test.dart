@@ -7,7 +7,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sistem_presensi/src/domain/entities/presence_entity.dart';
 
 import 'package:sistem_presensi/main.dart';
 
@@ -28,13 +27,4 @@ void main() async {
     expect(find.text('0'), findsNothing);
     expect(find.text('1'), findsOneWidget);
   });
-
-  PresenceEntity presenceOne = PresenceEntity(presenceId: '123');
-  PresenceEntity presenceTwo = PresenceEntity(presenceId: '456');
-
-  if(presenceOne == presenceTwo) {
-    print('equals');
-  } else {
-    print('not equals');
-  }
 }

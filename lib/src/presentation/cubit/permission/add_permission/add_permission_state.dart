@@ -9,6 +9,27 @@ class AddPermissionInitial extends AddPermissionState {
   List<Object> get props => [];
 }
 
+class AddPermissionForm extends AddPermissionState {
+  final String category;
+  final String desc;
+
+  const AddPermissionForm({required this.category, required this.desc});
+
+  @override
+  List<Object> get props => [];
+}
+
+class AddPermissionPreview extends AddPermissionState {
+  final String category;
+  final String desc;
+  final File file;
+
+  const AddPermissionPreview({required this.category, required this.desc, required this.file});
+
+  @override
+  List<Object> get props => [];
+}
+
 class AddPermissionLoading extends AddPermissionState {
   @override
   List<Object> get props => [];

@@ -20,6 +20,15 @@ class CDateUtil {
     return result;
   }
 
+  static String getFormattedDateTimeStringWIB(DateTime dateTime) {
+    DateTime dateTimeWIB = dateTime.add(Duration(hours: 7)); //UTC to WIB (+7)
+    DateFormat format = new DateFormat("dd MMMM yyyy");
+    String formattedDate = format.format(dateTimeWIB);
+    String time = getTimeString(dateTimeWIB);
+    String result = '$formattedDate, $time WIB';
+    return result;
+  }
+
   static String getTimeString(DateTime dateTime) {
     String hour = dateTime.hour.checkLength(1) ? dateTime.hour.addZeroPrefix(2):dateTime.hour.toString();
     String minute = dateTime.minute.checkLength(1) ? dateTime.minute.addZeroPrefix(2):dateTime.minute.toString();

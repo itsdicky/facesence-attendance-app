@@ -12,9 +12,9 @@ import '../../cubit/permission/add_permission/add_permission_cubit.dart';
 class PermissionPreviewPage extends StatelessWidget {
   final String category;
   final String description;
-  final String imagePath;
+  final File image;
 
-  const PermissionPreviewPage({super.key, required this.category, required this.description, required this.imagePath});
+  const PermissionPreviewPage({super.key, required this.category, required this.description, required this.image});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,7 @@ class PermissionPreviewPage extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12),
-                  child: Image.file(File(imagePath), height: 320, width: MediaQuery.of(context).size.width, fit: BoxFit.cover,),
+                  child: Image.file(image, height: 320, width: MediaQuery.of(context).size.width, fit: BoxFit.cover,),
                 ),
                 Expanded(
                   child: Padding(
@@ -62,12 +62,11 @@ class PermissionPreviewPage extends StatelessWidget {
                 TextButton(
                   style: CWidgetStyle.textButtonStyle(),
                   onPressed: () {
-                    File imageFile = File(imagePath);
                     BlocProvider.of<AddPermissionCubit>(context).addPermission(
                         permission: PermissionEntity(
                           category: category,
                           description: description,
-                          imageFile: imageFile
+                          imageFile: image
                         ),
                     );
                   },

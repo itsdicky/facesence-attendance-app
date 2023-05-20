@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sistem_presensi/constant/app_config.dart';
 import 'package:sistem_presensi/src/presentation/cubit/presence/add_presence/add_presence_cubit.dart';
 import 'package:sistem_presensi/src/presentation/cubit/presence/add_presence/add_presence_state.dart';
 import 'package:sistem_presensi/src/presentation/cubit/schedule/schedule_cubit.dart';
@@ -11,12 +12,10 @@ import 'package:sistem_presensi/src/presentation/widget/common/card_widget.dart'
 import 'package:sistem_presensi/utils/scroll_behavior.dart';
 import 'package:timelines/timelines.dart';
 
-import '../../../../constant/schedule_time_const.dart';
-
 class HomeMainPage extends StatelessWidget {
   static const int presence = 24;
   static const int absence = 1;
-  static const List schTime = ScheduleTime.schTime;
+  static const List schTime = AppConfig.schTime;
 
   const HomeMainPage({super.key});
 
