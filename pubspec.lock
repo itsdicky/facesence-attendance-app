@@ -9,6 +9,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.0"
+  archive:
+    dependency: transitive
+    description:
+      name: archive
+      sha256: "0c8368c9b3f0abbc193b9d6133649a614204b528982bebc7026372d61677ce3a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.3.7"
   async:
     dependency: transitive
     description:
@@ -129,6 +137,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.17.0"
+  convert:
+    dependency: transitive
+    description:
+      name: convert
+      sha256: "0f08b14755d163f6e2134cb58222dd25ea2a2ee8a195e53983d57c075324d592"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.1"
   cross_file:
     dependency: transitive
     description:
@@ -169,14 +185,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.5"
-  fade_shimmer:
-    dependency: "direct main"
-    description:
-      name: fade_shimmer
-      sha256: "7410220ba0ccfa3abef630ec64e2398b9e136fbeb6fe2f8ce86d939f46b3491e"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.2.0"
   fake_async:
     dependency: transitive
     description:
@@ -186,13 +194,13 @@ packages:
     source: hosted
     version: "1.3.1"
   ffi:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: ffi
-      sha256: a38574032c5f1dd06c4aee541789906c12ccaab8ba01446e800d9c5b79c4a978
+      sha256: ed5337a5660c506388a9f012be0288fb38b49020ce2b45fe1f8b8323fe429f99
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.1"
+    version: "2.0.2"
   file:
     dependency: transitive
     description:
@@ -273,14 +281,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.6.0"
-  flow_builder:
-    dependency: "direct main"
-    description:
-      name: flow_builder
-      sha256: "212a5c6575e87bec2003fa3f31dd7d80f0d89f6152db54f43fb0b6f45943e955"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.9"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -416,6 +416,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.3"
+  google_mlkit_commons:
+    dependency: transitive
+    description:
+      name: google_mlkit_commons
+      sha256: "68429fa2e17686819dbaf2344790e3daa59924ef8625dd24f97f9deaaed42767"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.0"
+  google_mlkit_face_detection:
+    dependency: "direct main"
+    description:
+      name: google_mlkit_face_detection
+      sha256: e3b42f93fb5918a7de4795befd715caeb9f770a0a257bb4a9b00a87246197d19
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.6.0"
   http:
     dependency: transitive
     description:
@@ -432,6 +448,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
+  image:
+    dependency: "direct main"
+    description:
+      name: image
+      sha256: a72242c9a0ffb65d03de1b7113bc4e189686fc07c7147b8b41811d0dd0e0d9bf
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.17"
   intl:
     dependency: "direct main"
     description:
@@ -552,6 +576,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.5"
+  petitparser:
+    dependency: transitive
+    description:
+      name: petitparser
+      sha256: "49392a45ced973e8d94a85fdb21293fbb40ba805fc49f2965101ae748a3683b4"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.1.0"
   platform:
     dependency: transitive
     description:
@@ -568,6 +600,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
+  pointycastle:
+    dependency: transitive
+    description:
+      name: pointycastle
+      sha256: "7c1e5f0d23c9016c5bbd8b1473d0d3fb3fc851b876046039509e18e0c7485f2c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.7.3"
   process:
     dependency: transitive
     description:
@@ -709,6 +749,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
+  xml:
+    dependency: transitive
+    description:
+      name: xml
+      sha256: "979ee37d622dec6365e2efa4d906c37470995871fe9ae080d967e192d88286b5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.2.2"
 sdks:
   dart: ">=2.19.2 <3.0.0"
   flutter: ">=3.3.0"

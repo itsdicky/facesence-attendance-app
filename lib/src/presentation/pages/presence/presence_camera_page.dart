@@ -103,3 +103,21 @@ class _PresenceCameraPageState extends State<PresenceCameraPage> {
     );
   }
 }
+
+class Sky extends CustomPainter {
+  final Rect _rect;
+  Sky(this._rect);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    canvas.drawRect(
+      _rect,
+      Paint()..color = Color(0xFF0099FF),
+    );
+  }
+
+  @override
+  bool shouldRepaint(Sky oldDelegate) {
+    return false;
+  }
+}

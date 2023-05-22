@@ -13,7 +13,6 @@ class AddPresenceInitial extends AddPresenceState {
 }
 
 class AddPresencePreview extends AddPresenceState {
-  // final Position position;
   final Timestamp timestamp;
   final GeoPoint geoPoint;
   final String dateTimeString;

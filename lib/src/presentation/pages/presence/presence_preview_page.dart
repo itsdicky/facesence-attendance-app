@@ -22,7 +22,7 @@ class PresencePreviewPage extends StatelessWidget {
               const SnackBar(content: Text('Presensi berhasil')));
         }
         if (presenceState is AddPresenceFailure) {
-          Navigator.popUntil(context, (route) => route.isFirst);
+          Navigator.pop(context);
           final failMessage = presenceState.message;
           ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('Terjadi kesalahan: $failMessage')));
