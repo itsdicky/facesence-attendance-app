@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sistem_presensi/constant/app_config.dart';
 import 'package:sistem_presensi/src/presentation/cubit/presence/add_presence/add_presence_cubit.dart';
 import 'package:sistem_presensi/src/presentation/cubit/presence/add_presence/add_presence_state.dart';
+import 'package:sistem_presensi/src/presentation/cubit/presence/load_presence/load_presence_cubit.dart';
 import 'package:sistem_presensi/src/presentation/cubit/schedule/schedule_cubit.dart';
 import 'package:sistem_presensi/src/presentation/cubit/user/user_cubit.dart';
 import 'package:sistem_presensi/src/presentation/styles/color_style.dart';
@@ -40,6 +41,12 @@ class HomeMainPage extends StatelessWidget {
                   }
                   return const Center(child: CircularProgressIndicator(),);
                 }),
+                TextButton(
+                  onPressed: () {
+                    BlocProvider.of<LoadPresenceCubit>(context).deleteAll('presences');
+                  },
+                  child: Text('Delete'),
+                ),
                 const SizedBox(
                   height: 32,
                 ),

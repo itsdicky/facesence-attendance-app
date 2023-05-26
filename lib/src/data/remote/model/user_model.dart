@@ -3,6 +3,7 @@ import 'package:sistem_presensi/src/domain/entities/user_entity.dart';
 
 class UserModel extends UserEntity{
   const UserModel({
+    final String? userId,
     final String? username,
     final String? email,
     final String? role,
@@ -12,6 +13,7 @@ class UserModel extends UserEntity{
     // final String? status,
     final String? password,
   }): super(
+    userId: userId,
     username: username,
     email: email,
     role: role,
@@ -24,6 +26,7 @@ class UserModel extends UserEntity{
 
   factory UserModel.fromSnapshot(DocumentSnapshot snapshot){
     return UserModel(
+        userId: snapshot.get('user_id'),
         username: snapshot.get('username'),
         email: snapshot.get('email'),
         role: snapshot.get('role'),
@@ -37,6 +40,7 @@ class UserModel extends UserEntity{
 
   Map<String, dynamic> toDocument(){
     return {
+      'user_id': userId,
       'username': username,
       'email': email,
       'role': role,

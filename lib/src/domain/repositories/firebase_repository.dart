@@ -12,11 +12,10 @@ abstract class FirebaseRepository {
   Future<String> getCurrentUserId();
   Future<void> addNewPresence(PresenceEntity presence);
   Future<void> addNewPermission(PermissionEntity permission);
-  Future<void> update(PresenceEntity presence);
-  Future<void> delete(PresenceEntity presence);
   Future<UserEntity> getCurrentUser();
   Future<List> getTodaySchedule();
   Future<Position> getCurrentPosition();
+  Future<void> deleteAll(String collectionName);
   // Stream<List> activity();
   Stream<List<PresenceEntity>> getCurrentUserPresences();
   Stream<List<PermissionEntity>> getCurrentUserWaitingPermission();

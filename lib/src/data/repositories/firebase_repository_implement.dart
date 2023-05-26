@@ -22,10 +22,6 @@ class FireBaseRepositoryImplement extends FirebaseRepository {
   }
 
   @override
-  Future<void> delete(PresenceEntity presence) async =>
-      dataSource.delete(presence);
-
-  @override
   Future<String> getCurrentUserId() async =>
       dataSource.getCurrentUserId();
 
@@ -52,10 +48,6 @@ class FireBaseRepositoryImplement extends FirebaseRepository {
       dataSource.signUp(user);
 
   @override
-  Future<void> update(PresenceEntity presence) async =>
-      dataSource.update(presence);
-
-  @override
   Future<void> getCreateCurrentUser(UserEntity user) async =>
       dataSource.getCreateCurrentUser(user);
 
@@ -80,6 +72,11 @@ class FireBaseRepositoryImplement extends FirebaseRepository {
   @override
   Future<Position> getCurrentPosition() {
     return geoLoc.determinePosition();
+  }
+
+  @override
+  Future<void> deleteAll(String collectionName) {
+    return dataSource.deleteAll(collectionName);
   }
 
 }

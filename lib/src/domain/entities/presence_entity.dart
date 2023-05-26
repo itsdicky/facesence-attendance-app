@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PresenceEntity {
   final String? presenceId;
+  final String? name;
+  final String? grade;
   final bool? isPresence;
   final Timestamp? time;
   GeoPoint? location;
@@ -18,6 +20,8 @@ class PresenceEntity {
 
   PresenceEntity({
     this.presenceId,
+    this.name,
+    this.grade,
     this.isPresence,
     this.time,
     this.location,

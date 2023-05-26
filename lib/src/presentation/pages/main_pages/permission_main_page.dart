@@ -16,7 +16,7 @@ class PermissionMainPage extends StatelessWidget {
         // const PermissionStatusBar(),
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(8, 32, 8, 8),
+            padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
             child: BlocBuilder<LoadPermissionCubit, LoadPermissionState>(
               builder: (context, permissionState) {
                 if (permissionState is LoadPermissionSuccess) {

@@ -19,20 +19,20 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
 
   @override
   Future<String?> addNewPresence(PresenceEntity presenceEntity) async {
-    final storageRef = storage.ref().child('images');
-
+    final UserEntity user = await getCurrentUser();
     final uid = await getCurrentUserId();
+
     final CollectionReference presenceCollectionRef = firestore.collection('users').doc(uid).collection('presences');
-    // final presenceId = presenceCollectionRef.doc(presenceEntity.uid).id;
     final presenceId = presenceCollectionRef.doc().id;
 
-
     await presenceCollectionRef.doc(presenceId).get().then((presence){
-
-      final imageRef = storageRef.child('$presenceId.jpg');
+      final folderRef = storage.ref().child('images').child('presence').child(user.userId!);
+      final imageRef = folderRef.child('$presenceId.jpg');
 
       final newPresence = PresenceModel(
         presenceId: presenceId,
+        name: user.userInfo!['name'],
+        grade: user.userInfo!['classroom'],
         isPresence: presenceEntity.isPresence,
         location: presenceEntity.location,
         time: presenceEntity.time,
@@ -45,12 +45,6 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
       }
     });
     return uid;
-  }
-
-  @override
-  Future<void> delete(PresenceEntity presenceEntity) {
-    // TODO: implement delete
-    throw UnimplementedError();
   }
 
   @override
@@ -82,12 +76,6 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
   }
 
   @override
-  Future<void> update(PresenceEntity presenceEntity) {
-    // TODO: implement update
-    throw UnimplementedError();
-  }
-
-  @override
   Future<void> getCreateCurrentUser(UserEntity userEntity) async {
     final CollectionReference userCollectionRef = firestore.collection('users');
     final uid = await getCurrentUserId();
@@ -97,6 +85,7 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
       Timestamp createdDateTime = Timestamp.now();
 
       final newUser = UserModel(
+        userId: uid,
           username: userEntity.username,
         email: userEntity.email,
         role: userEntity.role,
@@ -120,7 +109,6 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
 
     await userCollectionRef.doc(uid).get().then((user){
       currentUser = UserModel.fromSnapshot(user);
-      print('from repo: $currentUser');
     });
 
     return currentUser;
@@ -173,10 +161,12 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
       final imageRef = storageRef.child('$permissionId.jpg');
 
       final newPermission = PermissionModel(
+          permissionId: permissionId,
           studentId: uid,
+          name: user.userInfo!['name'],
           category: permissionEntity.category,
           description: permissionEntity.description,
-          grade: user.userInfo?['classroom'],
+          grade: user.userInfo!['classroom'],
           status: 'menunggu',
           imageURL: imageRef.fullPath,
           isConfirmed: false,
@@ -199,5 +189,14 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
     return _presencesStream.map((querySnap){
       return querySnap.docs.map((docSnap) => PermissionModel.fromSnapshot(docSnap)).toList();
     });
+  }
+
+  Future<void> deleteAll(String collectionName) async {
+    // final uid = await getCurrentUserId();
+    // var collection = firestore.collection('users').doc(uid).collection('presences');
+    // var snapshots = await collection.get();
+    // for (var doc in snapshots.docs) {
+    //   await doc.reference.delete();
+    // }
   }
 }

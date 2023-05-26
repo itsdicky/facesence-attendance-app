@@ -11,11 +11,10 @@ abstract class FirebaseDataSource {
   Future<String> getCurrentUserId();
   Future<String?> addNewPresence(PresenceEntity presenceEntity);
   Future<String?> addNewPermission(PermissionEntity permissionEntity);
-  Future<void> update(PresenceEntity presenceEntity);
-  Future<void> delete(PresenceEntity presenceEntity);
   Future<UserEntity> getCurrentUser();
   Future<List> getTodaySchedule();
   Future<void> incrementTotalPresence(String uid);
+  Future<void> deleteAll(String collectionName);
   Stream<List<PresenceEntity>> getUserPresences(String uid);
   Stream<List<PermissionEntity>> getUserWaitingPermission(String uid);
 }
