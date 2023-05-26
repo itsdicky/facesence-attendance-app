@@ -28,8 +28,8 @@ class PresenceModel extends PresenceEntity {
     final data = documentSnapshot.data().toString();
     return PresenceModel(
         presenceId: documentSnapshot.id,
-        name: documentSnapshot.get('name_student'),
-        grade: documentSnapshot.get('classroom_student'),
+        name: documentSnapshot.get('name'),
+        grade: documentSnapshot.get('classroom'),
         isPresence: documentSnapshot.get('is_presence'),
         time: documentSnapshot.get('timestamp'),
         location: documentSnapshot.get('location'),
@@ -42,8 +42,8 @@ class PresenceModel extends PresenceEntity {
   Map<String, dynamic> toDocument(){
     return {
       'presenceId': presenceId,
-      'name_student': name,
-      'classroom_student': grade,
+      'name': name,
+      'classroom': grade,
       'is_presence': isPresence,
       'timestamp': time,
       'location': location,
