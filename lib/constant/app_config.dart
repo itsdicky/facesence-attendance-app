@@ -18,4 +18,11 @@ class AppConfig {
     'Kegiatan sekolah',
     'Lain-lain',
   ];
+
+  static const Map<String, double> validLoc = {
+    'lat': -7.787484772491008,
+    'lng': 110.27771262374408
+  };
+
+  static const double presenceRadius = 50;
 }

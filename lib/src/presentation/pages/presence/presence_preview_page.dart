@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sistem_presensi/src/presentation/cubit/presence/add_presence/add_presence_state.dart';
 import 'package:sistem_presensi/src/presentation/styles/color_style.dart';
 import 'package:sistem_presensi/src/presentation/widget/common/appbar_widget.dart';
+import 'package:sistem_presensi/utils/geo_util.dart';
 
 import '../../../domain/entities/presence_entity.dart';
 import '../../cubit/presence/add_presence/add_presence_cubit.dart';
@@ -54,7 +55,7 @@ class PresencePreviewPage extends StatelessWidget {
                     }
                   },
                 ),
-                const SizedBox(height: 32,),
+                const SizedBox(height: 20,),
                 BlocBuilder<AddPresenceCubit, AddPresenceState>(
                   buildWhen: (prev, next) => prev is AddPresenceLoading && next is AddPresencePreview,
                   builder: (context, presenceState) {
@@ -66,10 +67,15 @@ class PresencePreviewPage extends StatelessWidget {
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
                           const SizedBox(height: 4,),
-                          Text(
-                            '${presenceState.geoPoint.latitude}, ${presenceState.geoPoint.longitude}',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
+                          FutureBuilder(
+                            builder: (context, snapshot) {
+                              return SizedBox(
+                                width: 300,
+                                child: Text(snapshot.data.toString(), textAlign: TextAlign.center,),
+                              );
+                            },
+                            future: CGeoUtil.getAddress(presenceState.geoPoint),
+                          )
                         ],
                       );
                     } else {
@@ -80,10 +86,10 @@ class PresencePreviewPage extends StatelessWidget {
                             width: 200,
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          const SizedBox(height: 4,),
+                          const SizedBox(height: 8,),
                           CardLoading(
-                            height: 20,
-                            width: 200,
+                            height: 18,
+                            width: 300,
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ],
@@ -91,6 +97,8 @@ class PresencePreviewPage extends StatelessWidget {
                     }
                   },
                 ),
+                const SizedBox(height: 16,),
+                const Divider(),
                 Expanded(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,

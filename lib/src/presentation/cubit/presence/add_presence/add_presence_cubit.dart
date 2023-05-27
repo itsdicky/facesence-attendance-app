@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sistem_presensi/constant/app_config.dart';
 import 'package:sistem_presensi/src/domain/entities/presence_entity.dart';
 import 'package:sistem_presensi/src/domain/use_case/add_new_presence_usecase.dart';
 import 'package:sistem_presensi/src/presentation/cubit/presence/add_presence/add_presence_state.dart';
@@ -42,10 +43,22 @@ class AddPresenceCubit extends Cubit<AddPresenceState> {
 
     try {
       Future.wait([getCurrentPositionUseCase.call(), file, faceDetector.isContainFaceFromFuture(file)]).then((List responses) {
+        final location = CGeoUtil.toGeoPoint(responses[0]);
+        final validLocation = CGeoUtil.isInsideArea(
+          location,
+          GeoPoint(AppConfig.validLoc['lat']!, AppConfig.validLoc['lng']!),
+          AppConfig.presenceRadius,
+        );
+
+        if (!validLocation) {
+          emit(AddPresenceFailure(message: 'Lokasi diluar jangkauan'));
+          return;
+        }
+        
         if(responses[2]) {
           emit(AddPresencePreview(
             timestamp: Timestamp.fromDate(responses[0].timestamp!),
-            geoPoint: CGeoUtil.toGeoPoint(responses[0]),
+            geoPoint: location,
             dateTimeString: CDateUtil.getFormattedDateTimeStringWIB(responses[0].timestamp!),
             image: responses[1],
           ));
