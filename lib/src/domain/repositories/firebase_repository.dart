@@ -15,6 +15,7 @@ abstract class FirebaseRepository {
   Future<UserEntity> getCurrentUser();
   Future<List> getTodaySchedule();
   Future<Position> getCurrentPosition();
+  Future<bool> isAlreadyPresence();
   Future<void> deleteAll(String collectionName);
   // Stream<List> activity();
   Stream<List<PresenceEntity>> getCurrentUserPresences();

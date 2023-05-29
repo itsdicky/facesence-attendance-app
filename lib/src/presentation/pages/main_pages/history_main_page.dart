@@ -69,18 +69,24 @@ class HistoryMainPage extends StatelessWidget {
                                               children: [
                                                 Text(
                                                   selectedList[index].isPresence! ? 'Hadir':'Tidak hadir',
-                                                  style: Theme.of(context).textTheme.titleSmall,
+                                                  style: selectedList[index].isPresence! == false && selectedList[index].permissionId == null ?
+                                                  Theme.of(context).textTheme.titleSmall?.copyWith(color: ColorStyle.offRed)
+                                                      : Theme.of(context).textTheme.titleSmall,
                                                 ),
                                                 const SizedBox(
                                                   height: 8,
                                                 ),
                                                 Text(
+                                                  selectedList[index].isPresence! ?
                                                   CDateUtil.isTimeAfter(
                                                       dateTime: selectedList[index].time!.toDate(),
                                                       hour: AppConfig.schoolStart['hour']!,
                                                       minute: AppConfig.schoolStart['minute']!
-                                                  ) ? 'Hadir terlambat' : 'Hadir tepat waktu',
-                                                  style: Theme.of(context).textTheme.labelLarge,
+                                                  ) ? 'Hadir terlambat' : 'Hadir tepat waktu'
+                                                      : selectedList[index].permissionId != null ? 'Izin':'Alpha',
+                                                  style: selectedList[index].isPresence! == false && selectedList[index].permissionId == null ?
+                                                        Theme.of(context).textTheme.labelLarge?.copyWith(color: ColorStyle.offRed)
+                                                      : Theme.of(context).textTheme.labelLarge,
                                                 ),
                                               ],
                                             ),

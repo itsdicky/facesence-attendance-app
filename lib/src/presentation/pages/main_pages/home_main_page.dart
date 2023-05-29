@@ -1,3 +1,4 @@
+import 'package:card_loading/card_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sistem_presensi/constant/app_config.dart';
@@ -39,7 +40,17 @@ class HomeMainPage extends StatelessWidget {
                       absence: userState.userInfo?['total_absence'],
                     );
                   }
-                  return const Center(child: CircularProgressIndicator(),);
+                  if (userState is UserFailure) {
+                    return SizedBox(
+                      height: 174,
+                      width: MediaQuery.of(context).size.width,
+                      child: const Center(child: Text('Gagal memuat'),),
+                    );
+                  }
+                  return CardLoading(
+                    height: 174,
+                    borderRadius: BorderRadius.circular(20),
+                  );
                 }),
                 TextButton(
                   onPressed: () {
@@ -65,10 +76,22 @@ class HomeMainPage extends StatelessWidget {
                       if (schState is ScheduleLoaded) {
                         return _buildScheduleTimeline(context, schState.schedule, schTime);
                       }
-                      return const Center(child: CircularProgressIndicator());
+                      if (schState is ScheduleFailure) {
+                        return Column(
+                          children: const [
+                            SizedBox(height: 58,),
+                            Icon(Icons.error_outline),
+                            SizedBox(height: 8,),
+                            Text('Terjadi kesalahan saat memuat jadwal'),
+                          ],
+                        );
+                      }
+                      return const SizedBox(
+                        height: 200,
+                        child: Center(child: CircularProgressIndicator()),
+                      );
                     }
                 ),
-                // _buildScheduleTimeline(context),
                 const SizedBox(height: 110,),
               ],
             ),
@@ -81,9 +104,22 @@ class HomeMainPage extends StatelessWidget {
               listener: (context, state) {
                 if(state is AddPresenceSuccess) {
                   BlocProvider.of<UserCubit>(context).getUserInfo();
+                  //TODO: optimize
+                  BlocProvider.of<LoadPresenceCubit>(context).getCurrentUserPresences();
                 }
               },
-              child: const PresenceCard(),
+              child: BlocBuilder<LoadPresenceCubit, LoadPresenceState>(
+                builder: (context, presenceState) {
+                  if (presenceState is LoadPresenceSuccess) {
+                    if (presenceState.isAlreadyPresence) {
+                      return const SizedBox();
+                    } else {
+                      return PresenceCard();
+                    }
+                  }
+                  return const SizedBox();
+                },
+              ),
             ),
           ),
         ],

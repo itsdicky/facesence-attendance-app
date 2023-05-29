@@ -25,8 +25,9 @@ class LoadPresenceFailure extends LoadPresenceState {
 
 class LoadPresenceSuccess extends LoadPresenceState {
   final List<PresenceEntity> presences;
+  final bool isAlreadyPresence;
 
-  const LoadPresenceSuccess({required this.presences});
+  const LoadPresenceSuccess({required this.presences, required this.isAlreadyPresence});
 
   @override
   List<Object> get props => [];

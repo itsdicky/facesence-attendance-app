@@ -6,10 +6,9 @@ class UserEntity extends Equatable {
   final String? username;
   final String? email;
   final String? role;
+  final String? grade;
   final Timestamp? createdAt;
   final Map<String, dynamic>? userInfo;
-  // final String? uid;
-  // final String? status;
   final String? password;
 
   const UserEntity({
@@ -17,10 +16,9 @@ class UserEntity extends Equatable {
     this.username,
     this.email,
     this.role,
+    this.grade,
     this.createdAt,
     this.userInfo,
-    // this.uid,
-    // this.status,
     this.password,
   });
 
@@ -30,6 +28,7 @@ class UserEntity extends Equatable {
     username,
     email,
     role,
+    grade,
     createdAt,
     userInfo,
     // uid,

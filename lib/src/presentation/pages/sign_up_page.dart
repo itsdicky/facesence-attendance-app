@@ -1,3 +1,4 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sistem_presensi/constant/page_const.dart';
@@ -11,7 +12,11 @@ import 'package:sistem_presensi/src/presentation/styles/widget_style.dart';
 import 'package:sistem_presensi/utils/scroll_behavior.dart';
 import 'package:sistem_presensi/utils/validation.dart';
 
+import '../../../constant/app_config.dart';
+
 class SignUpPage extends StatefulWidget {
+  final List<String> classroom = AppConfig.classroom;
+
   const SignUpPage({Key? key}) : super(key: key);
 
   @override
@@ -23,6 +28,8 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  String? selectedValue;
 
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formSignUpKey = GlobalKey<FormState>();
@@ -32,6 +39,7 @@ class _SignUpPageState extends State<SignUpPage> {
     _usernameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _nameController.dispose();
     super.dispose();
   }
 
@@ -87,7 +95,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(
-                height: 50,
+                height: 20,
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,6 +118,75 @@ class _SignUpPageState extends State<SignUpPage> {
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Nama'),
+                  const SizedBox(height: 8,),
+                  TextFormField(
+                    controller: _nameController,
+                    keyboardType: TextInputType.name,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Masukan nama lengkap';
+                      }
+                      //TODO:validation
+                      return null;
+                    },
+                    decoration: CWidgetStyle.textfieldDecoration(hintText: 'Nama lengkap'),
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              const Text('Kelas'),
+              const SizedBox(height: 8,),
+              DropdownButtonHideUnderline(
+                child: DropdownButtonFormField2(
+                  items: _addDividersAfterItems(widget.classroom),
+                  decoration: CWidgetStyle.dropdownButtonDecoration(),
+                  isExpanded: true,
+                  hint: Text('Pilih alasan', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: ColorStyle.darkGrey),),
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Pilih alasan';
+                    }
+                    return null;
+                  },
+                  onChanged: (value) {
+                    setState(() {
+                      selectedValue = value.toString();
+                    });
+                  },
+                  onSaved: (value) {
+                    selectedValue = value.toString();
+                  },
+                  buttonStyleData: const ButtonStyleData(
+                    height: 48,
+                    padding: EdgeInsets.fromLTRB(8, 4, 20, 4),
+                  ),
+                  iconStyleData: const IconStyleData(
+                    icon: Icon(Icons.keyboard_arrow_down),
+                    openMenuIcon: Icon(Icons.keyboard_arrow_up),
+                    iconEnabledColor: ColorStyle.indigoLight,
+                  ),
+                  dropdownStyleData: DropdownStyleData(
+                    elevation: 4,
+                    padding: EdgeInsets.zero,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                  ),
+                  menuItemStyleData: MenuItemStyleData(
+                    customHeights: _getCustomItemsHeights(widget.classroom),
+                  ),
+                ),
               ),
               const SizedBox(
                 height: 20,
@@ -163,8 +240,11 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ],
               ),
+              // const SizedBox(
+              //   height: 20,
+              // ),
               const SizedBox(
-                height: 50,
+                height: 100,
               ),
               TextButton(
                 style: CWidgetStyle.textButtonStyle(),
@@ -206,13 +286,54 @@ class _SignUpPageState extends State<SignUpPage> {
           username: _usernameController.text,
           email: _emailController.text,
           role: 'student',
-          userInfo: const {
-            'name': 'NameData',
-            'student_number': '123456',
-            'classroom': 'StudentGrade'
+          grade: selectedValue,
+          userInfo: {
+            'name': _nameController.text,
+            // 'student_number': '123456',
+            'classroom': selectedValue,
+            'total_absence': 0,
+            'total_presence': 0
           },
           password: _passwordController.text
       ));
     }
+  }
+
+  List<DropdownMenuItem<String>> _addDividersAfterItems(List<String> items) {
+    List<DropdownMenuItem<String>> _menuItems = [];
+    for (var item in items) {
+      _menuItems.addAll(
+        [
+          DropdownMenuItem<String>(
+            value: item,
+            child: Padding(
+              padding: EdgeInsets.zero,
+              child: Text(item, style: Theme.of(context).textTheme.bodyMedium,),
+            ),
+          ),
+          //If it's last item, we will not add Divider after it.
+          if (item != items.last)
+            const DropdownMenuItem<String>(
+              enabled: false,
+              child: Divider(),
+            ),
+        ],
+      );
+    }
+    return _menuItems;
+  }
+
+  List<double> _getCustomItemsHeights(List<String> items) {
+    List<double> _itemsHeights = [];
+    for (var i = 0; i < (items.length * 2) - 1; i++) {
+      if (i.isEven) {
+        _itemsHeights.add(46);
+      }
+      //Dividers indexes will be the odd indexes
+      if (i.isOdd) {
+        _itemsHeights.add(4);
+      }
+    }
+    return _itemsHeights;
   }
 }

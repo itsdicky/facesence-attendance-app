@@ -2,18 +2,23 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:sistem_presensi/constant/app_config.dart';
 import 'package:sistem_presensi/constant/page_const.dart';
 import 'package:sistem_presensi/src/presentation/styles/color_style.dart';
+import 'package:sistem_presensi/utils/date_util.dart';
 
 class PresenceCard extends StatefulWidget {
+  final int hour = AppConfig.presenceStart['hour']!;
+  final int minute = AppConfig.presenceStart['minute']!;
 
-  const PresenceCard({super.key});
+  PresenceCard({super.key});
 
   @override
   State<PresenceCard> createState() => _PresenceCardState();
 }
 
 class _PresenceCardState extends State<PresenceCard> {
+  bool _isActive = false;
   late String _dayString;
   late String _dateString;
   late String _timeString;
@@ -21,6 +26,15 @@ class _PresenceCardState extends State<PresenceCard> {
   @override
   void initState() {
     DateTime now = DateTime.now();
+
+    if (_isActive == false && CDateUtil.isTimeAfter(
+        dateTime: now,
+        hour: AppConfig.presenceStart['hour']!,
+        minute: AppConfig.presenceStart['minute']!))
+    {
+      _isActive = true;
+    }
+
     _dayString = _formatDay(now);
     _dateString = _formatDate(now);
     _timeString = _formatTime(now);
@@ -73,7 +87,7 @@ class _PresenceCardState extends State<PresenceCard> {
                   ),
                 ],
               ),
-              Row(
+              _isActive ? Row(
                 children: [
                   Material(
                     type: MaterialType.transparency,
@@ -123,7 +137,15 @@ class _PresenceCardState extends State<PresenceCard> {
                     ),
                   ),
                 ],
-              ),
+                //TODO:styling
+              ) : Center(
+                child: Text(
+                  'Presensi dimulai pada\npukul '
+                      '${CDateUtil.getTimeString(DateTime(1, 0,0,widget.hour,widget.minute))}',
+                  style: const TextStyle(color: ColorStyle.white),
+                  textAlign: TextAlign.center,
+                ),
+              )
             ],
           ),
         ),

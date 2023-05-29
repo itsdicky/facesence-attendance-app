@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:intl/intl.dart';
 import 'package:sistem_presensi/src/data/remote/data_sources/firebase_datasource.dart';
 import 'package:sistem_presensi/src/data/remote/model/permission_model.dart';
 import 'package:sistem_presensi/src/data/remote/model/presence_model.dart';
@@ -8,6 +9,7 @@ import 'package:sistem_presensi/src/data/remote/model/user_model.dart';
 import 'package:sistem_presensi/src/domain/entities/permission_entity.dart';
 import 'package:sistem_presensi/src/domain/entities/presence_entity.dart';
 import 'package:sistem_presensi/src/domain/entities/user_entity.dart';
+import 'package:sistem_presensi/utils/date_util.dart';
 
 class FirebaseDataSourceImplement extends FirebaseDataSource {
 
@@ -84,9 +86,12 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
     await userCollectionRef.doc(uid).get().then((user){
       Timestamp createdDateTime = Timestamp.now();
 
+      userEntity.userInfo!['student_number'] = uid;
+
       final newUser = UserModel(
         userId: uid,
           username: userEntity.username,
+        grade: userEntity.grade,
         email: userEntity.email,
         role: userEntity.role,
         createdAt: createdDateTime,
@@ -121,10 +126,12 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
   Future<List> getTodaySchedule() async {
     final CollectionReference scheduleCollectionRef = firestore.collection('schedules');
     late List todaySchedule;
+    final day = DateFormat('EEEE').format(DateTime.now());
+    final user = await getCurrentUser();
 
-    await scheduleCollectionRef.where('day', isEqualTo: 'monday').get().then((value) {
+    await scheduleCollectionRef.where('day', isEqualTo: day).get().then((value) {
       Map map = value.docs.first.get('class');
-      todaySchedule = map['XI Science 2'];
+      todaySchedule = map[user.grade];
     });
 
     return todaySchedule;
@@ -198,5 +205,22 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
     // for (var doc in snapshots.docs) {
     //   await doc.reference.delete();
     // }
+  }
+
+  //TODO:convert to stream
+
+  @override
+  Future<bool> isAlreadyPresence() async {
+    final uid = await getCurrentUserId();
+
+    final presenceCollectionRef = firestore.collection('users').doc(uid).collection('presences');
+    final query = presenceCollectionRef.where('timestamp', isGreaterThan: CDateUtil.getStartOfToday()).count();
+
+    final presenceCount = await query.get().then((value) =>
+        value.count
+    );
+
+    // ignore: unrelated_type_equality_checks
+    return presenceCount != 0 ? true : false;
   }
 }

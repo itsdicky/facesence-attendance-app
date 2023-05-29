@@ -79,4 +79,8 @@ class FireBaseRepositoryImplement extends FirebaseRepository {
     return dataSource.deleteAll(collectionName);
   }
 
+  @override
+  Future<bool> isAlreadyPresence() {
+    return dataSource.isAlreadyPresence();
+  }
 }

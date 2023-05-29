@@ -4,6 +4,11 @@ class AppConfig {
     'minute': 0
   };
 
+  static const Map<String, int> presenceStart = {
+    'hour': 6,
+    'minute': 0
+  };
+
   static const List<String> schTime = [
     '07:30-09:10',
     '09:10-10:30',
@@ -17,6 +22,13 @@ class AppConfig {
     'Sakit',
     'Kegiatan sekolah',
     'Lain-lain',
+  ];
+
+  static const List<String> classroom = [
+    'XI IPA 1',
+    'XI IPA 2',
+    'XI IPS 1',
+    'XI IPS 2'
   ];
 
   static const Map<String, double> validLoc = {

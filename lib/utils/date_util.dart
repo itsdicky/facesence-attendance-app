@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:sistem_presensi/src/domain/entities/presence_entity.dart';
 
@@ -43,6 +44,20 @@ class CDateUtil {
     } else {
       return dateTime.hour >= hour && dateTime.minute >= minute;
     }
+  }
+
+  static bool isTimeBefore({required DateTime dateTime, required int hour, required int minute}) {
+    if (minute == 0) {
+      return dateTime.hour <= hour;
+    } else {
+      return dateTime.hour <= hour && dateTime.minute >= minute;
+    }
+  }
+
+  static Timestamp getStartOfToday() {
+    DateTime today = DateTime.now().copyWith(hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0);
+    Timestamp todayTimestamp = Timestamp.fromDate(today);
+    return todayTimestamp;
   }
 }
 
