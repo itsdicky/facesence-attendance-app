@@ -9,7 +9,6 @@ import 'package:sistem_presensi/src/data/repositories/firebase_repository_implem
 import 'package:sistem_presensi/src/data/service/geolocator.dart';
 import 'package:sistem_presensi/src/domain/repositories/firebase_repository.dart';
 import 'package:sistem_presensi/src/domain/use_case/add_new_presence_usecase.dart';
-import 'package:sistem_presensi/src/domain/use_case/delete_all_usecase.dart';
 import 'package:sistem_presensi/src/domain/use_case/get_create_current_user_usecase.dart';
 import 'package:sistem_presensi/src/domain/use_case/get_current_position_usecase.dart';
 import 'package:sistem_presensi/src/domain/use_case/get_current_uid_usecase.dart';
@@ -64,7 +63,7 @@ Future<void> init() async {
 
   sl.registerFactory<AddPresenceCubit>(() => AddPresenceCubit(addNewPresenceUseCase: sl.call(), getCurrentPositionUseCase: sl.call()));
 
-  sl.registerFactory<LoadPresenceCubit>(() => LoadPresenceCubit(getPresenceUsecase: sl.call(), deleteAllUseCase: sl.call(), isAlreadyPresenceUseCase: sl.call()));
+  sl.registerFactory<LoadPresenceCubit>(() => LoadPresenceCubit(getPresenceUsecase: sl.call(), isAlreadyPresenceUseCase: sl.call()));
 
   sl.registerFactory<AddPermissionCubit>(() => AddPermissionCubit(addNewPermissionUseCase: sl.call(),));
 
@@ -88,7 +87,6 @@ Future<void> init() async {
   sl.registerLazySingleton<GetPresenceUsecase>(() => GetPresenceUsecase(repository: sl.call()));
   sl.registerLazySingleton<GetPermissionUsecase>(() => GetPermissionUsecase(repository: sl.call()));
   sl.registerLazySingleton<GetCurrentPositionUseCase>(() => GetCurrentPositionUseCase(repository: sl.call()));
-  sl.registerLazySingleton<DeleteAllUseCase>(() => DeleteAllUseCase(repository: sl.call()));
   sl.registerLazySingleton<IsAlreadyPresenceUseCase>(() => IsAlreadyPresenceUseCase(repository: sl.call()));
 
   //repository

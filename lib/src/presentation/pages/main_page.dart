@@ -33,7 +33,15 @@ class MainPage extends StatelessWidget {
           child: BlocBuilder<NavbarCubit, NavbarState>(
             builder: (context, navState) {
               if (navState is NavbarHome) {
-                return const CHomeAppBar();
+                return BlocBuilder<UserCubit, UserState>(
+                  builder: (context, userState) {
+                    if (userState is UserSuccess) {
+                      return CHomeAppBar(name: userState.userInfo!['name'],);
+                    } else {
+                      return const CTitleAppBarLight(title: '');
+                    }
+                  },
+                );
               }
               if (navState is NavbarHistory) {
                 return CTitleAppBarLight(title: navState.title);

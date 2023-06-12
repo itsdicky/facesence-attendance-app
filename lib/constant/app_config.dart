@@ -32,8 +32,8 @@ class AppConfig {
   ];
 
   static const Map<String, double> validLoc = {
-    'lat': -7.787484772491008,
-    'lng': 110.27771262374408
+    'lat': -7.730793854206757,
+    'lng': 110.38655934062481
   };
 
   static const double presenceRadius = 50;

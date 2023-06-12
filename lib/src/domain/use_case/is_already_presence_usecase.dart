@@ -5,7 +5,7 @@ class IsAlreadyPresenceUseCase {
 
   IsAlreadyPresenceUseCase({required this.repository});
 
-  Future<bool> call() async {
-    return repository.isAlreadyPresence();
+  Stream<bool> call() {
+    return repository.isAlreadyPresenceStream();
   }
 }

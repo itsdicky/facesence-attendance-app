@@ -36,6 +36,7 @@ class HomeMainPage extends StatelessWidget {
                     return MainCard(
                       grade: userState.userInfo?['classroom'],
                       name: userState.userInfo?['name'],
+                      idNumber: userState.userInfo?['student_number'],
                       presence: userState.userInfo?['total_presence'],
                       absence: userState.userInfo?['total_absence'],
                     );
@@ -52,12 +53,6 @@ class HomeMainPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                   );
                 }),
-                TextButton(
-                  onPressed: () {
-                    BlocProvider.of<LoadPresenceCubit>(context).deleteAll('presences');
-                  },
-                  child: Text('Delete'),
-                ),
                 const SizedBox(
                   height: 32,
                 ),

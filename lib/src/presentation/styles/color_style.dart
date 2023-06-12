@@ -8,6 +8,7 @@ class ColorStyle {
   static const white = Colors.white;
   static const black = Colors.black;
   static const indigoPurple = Color(0xFF4537ED);
+  static const indigoPurpleDark = Color(0xFF3126B0);
   static const indigoLight = Color(0xFFa29bf6);
   static const darkGrey = Color(0xFF969696);
   static const lightGrey = Color(0xFFF1F1F9);

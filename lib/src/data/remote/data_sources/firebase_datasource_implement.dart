@@ -52,9 +52,9 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
   @override
   Stream<List<PresenceEntity>> getUserPresences(String uid) {
     final CollectionReference presenceCollectionRef = firestore.collection('users').doc(uid).collection('presences');
-    final _presencesStream = presenceCollectionRef.snapshots();
+    final presencesStream = presenceCollectionRef.snapshots();
 
-    return _presencesStream.map((querySnap){
+    return presencesStream.map((querySnap){
       return querySnap.docs.map((docSnap) => PresenceModel.fromSnapshot(docSnap)).toList();
     });
   }
@@ -64,8 +64,12 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
 
   @override
   Future<void> signIn(UserEntity userEntity) async {
-    await auth.signInWithEmailAndPassword(email: userEntity.email!, password: userEntity.password!);
-    print(auth.currentUser!.uid);
+    final user = await auth.signInWithEmailAndPassword(email: userEntity.email!, password: userEntity.password!);
+    final claims = await user.user!.getIdTokenResult().then((token) => token.claims);
+    if (claims?['teacher'] != null) {
+      auth.signOut();
+      throw FirebaseAuthException(code: 'user-not-found', message: 'User not found');
+    }
   }
 
   @override
@@ -81,16 +85,12 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
   Future<void> getCreateCurrentUser(UserEntity userEntity) async {
     final CollectionReference userCollectionRef = firestore.collection('users');
     final uid = await getCurrentUserId();
-    print(uid);
 
     await userCollectionRef.doc(uid).get().then((user){
       Timestamp createdDateTime = Timestamp.now();
 
-      userEntity.userInfo!['student_number'] = uid;
-
       final newUser = UserModel(
         userId: uid,
-          username: userEntity.username,
         grade: userEntity.grade,
         email: userEntity.email,
         role: userEntity.role,
@@ -198,29 +198,13 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
     });
   }
 
-  Future<void> deleteAll(String collectionName) async {
-    // final uid = await getCurrentUserId();
-    // var collection = firestore.collection('users').doc(uid).collection('presences');
-    // var snapshots = await collection.get();
-    // for (var doc in snapshots.docs) {
-    //   await doc.reference.delete();
-    // }
-  }
-
-  //TODO:convert to stream
-
   @override
-  Future<bool> isAlreadyPresence() async {
+  Stream<bool> isAlreadyPresenceStream() async* {
     final uid = await getCurrentUserId();
 
     final presenceCollectionRef = firestore.collection('users').doc(uid).collection('presences');
-    final query = presenceCollectionRef.where('timestamp', isGreaterThan: CDateUtil.getStartOfToday()).count();
+    final query = presenceCollectionRef.where('timestamp', isGreaterThan: CDateUtil.getStartOfToday()).snapshots();
 
-    final presenceCount = await query.get().then((value) =>
-        value.count
-    );
-
-    // ignore: unrelated_type_equality_checks
-    return presenceCount != 0 ? true : false;
+    yield* query.map((event) => event.size == 0 ? false : true);
   }
 }

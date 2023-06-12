@@ -51,7 +51,9 @@ class PermissionMainPage extends StatelessWidget {
                                   ],
                                 ),
                                 Text(
-                                  CDateUtil.getTimeString(permissionList[index].time!.toDate()),
+                                  permissionList[index].time!.toDate().isAfter(CDateUtil.getStartOfToday().toDate())
+                                      ? CDateUtil.getTimeString(permissionList[index].time!.toDate())
+                                      : CDateUtil.getFormattedSimpleDate(permissionList[index].time!.toDate()),
                                   style: Theme.of(context).textTheme.labelMedium?.copyWith(color: ColorStyle.darkGrey),
                                 ),
                               ],

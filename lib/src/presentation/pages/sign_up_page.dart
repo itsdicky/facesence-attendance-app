@@ -1,5 +1,6 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sistem_presensi/constant/page_const.dart';
 import 'package:sistem_presensi/src/domain/entities/user_entity.dart';
@@ -29,6 +30,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _idController = TextEditingController();
   String? selectedValue;
 
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
@@ -40,6 +42,7 @@ class _SignUpPageState extends State<SignUpPage> {
     _emailController.dispose();
     _passwordController.dispose();
     _nameController.dispose();
+    _idController.dispose();
     super.dispose();
   }
 
@@ -100,31 +103,6 @@ class _SignUpPageState extends State<SignUpPage> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Username'),
-                  const SizedBox(height: 8,),
-                  TextFormField(
-                    controller: _usernameController,
-                    keyboardType: TextInputType.name,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Masukan username';
-                      }
-                      if (!value.isValidUsername) {
-                        return 'Masukan minimal 6 karakter';
-                      }
-                      return null;
-                    },
-                    decoration: CWidgetStyle.textfieldDecoration(hintText: 'min. 6 karakter, max. 14'),
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
                   const Text('Nama'),
                   const SizedBox(height: 8,),
                   TextFormField(
@@ -152,10 +130,10 @@ class _SignUpPageState extends State<SignUpPage> {
                   items: _addDividersAfterItems(widget.classroom),
                   decoration: CWidgetStyle.dropdownButtonDecoration(),
                   isExpanded: true,
-                  hint: Text('Pilih alasan', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: ColorStyle.darkGrey),),
+                  hint: Text('Pilih kelas', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: ColorStyle.darkGrey),),
                   validator: (value) {
                     if (value == null) {
-                      return 'Pilih alasan';
+                      return 'Pilih kelas';
                     }
                     return null;
                   },
@@ -187,6 +165,32 @@ class _SignUpPageState extends State<SignUpPage> {
                     customHeights: _getCustomItemsHeights(widget.classroom),
                   ),
                 ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Nomor Siswa'),
+                  const SizedBox(height: 8,),
+                  TextFormField(
+                    controller: _idController,
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Masukan nomor siswa';
+                      }
+                      return null;
+                    },
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
+                    decoration: CWidgetStyle.textfieldDecoration(hintText: '3283747932'),
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ],
               ),
               const SizedBox(
                 height: 20,
@@ -283,13 +287,12 @@ class _SignUpPageState extends State<SignUpPage> {
   submitSignUp() async {
     if (_formSignUpKey.currentState!.validate()) {
       await BlocProvider.of<UserCubit>(context).submitSignUp(user: UserEntity(
-          username: _usernameController.text,
           email: _emailController.text,
           role: 'student',
           grade: selectedValue,
           userInfo: {
             'name': _nameController.text,
-            // 'student_number': '123456',
+            'student_number': _idController.text,
             'classroom': selectedValue,
             'total_absence': 0,
             'total_presence': 0

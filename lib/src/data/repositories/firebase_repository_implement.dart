@@ -75,12 +75,7 @@ class FireBaseRepositoryImplement extends FirebaseRepository {
   }
 
   @override
-  Future<void> deleteAll(String collectionName) {
-    return dataSource.deleteAll(collectionName);
-  }
-
-  @override
-  Future<bool> isAlreadyPresence() {
-    return dataSource.isAlreadyPresence();
+  Stream<bool> isAlreadyPresenceStream() {
+    return dataSource.isAlreadyPresenceStream();
   }
 }

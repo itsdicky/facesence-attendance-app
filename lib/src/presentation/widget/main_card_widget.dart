@@ -4,15 +4,16 @@ import 'package:sistem_presensi/src/presentation/styles/color_style.dart';
 class MainCard extends StatelessWidget {
   final String grade;
   final String name;
+  final String idNumber;
   final int presence;
   final int absence;
 
-  const MainCard({super.key, required this.grade, required this.name, required this.presence, required this.absence});
+  const MainCard({super.key, required this.grade, required this.name, required this.idNumber, required this.presence, required this.absence});
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: ColorStyle.indigoPurple,
+      color: ColorStyle.indigoPurpleDark,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
@@ -38,7 +39,7 @@ class MainCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 4,),
                       Text(
-                        grade,
+                        '$grade | $idNumber',
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: ColorStyle.white),
                       ),
                       const SizedBox(height: 8,),

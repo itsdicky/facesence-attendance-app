@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sistem_presensi/constant/page_const.dart';
+import 'package:sistem_presensi/utils/string_util.dart';
 
 class CHomeAppBar extends StatelessWidget {
-  const CHomeAppBar({super.key});
+  final String name;
+
+  const CHomeAppBar({super.key, required this.name});
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: const Text('Halo!'),
+      title: Text('Halo ${name.firstWords()}!'),
       backgroundColor: Theme.of(context).canvasColor,
       elevation: 0,
       titleTextStyle: Theme.of(context).textTheme.titleSmall,
@@ -18,7 +21,7 @@ class CHomeAppBar extends StatelessWidget {
       leading: const Padding(
         padding: EdgeInsets.fromLTRB(12, 10, 0, 10),
         child: CircleAvatar(
-          backgroundImage: NetworkImage('https://images.unsplash.com/photo-1682965636199-091797901722?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'),
+          backgroundImage: NetworkImage('https://www.cornwallbusinessawards.co.uk/wp-content/uploads/2017/11/dummy450x450.jpg'),
           radius: 100,
         ),
       ),

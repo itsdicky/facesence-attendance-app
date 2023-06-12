@@ -13,7 +13,6 @@ class UserModel extends UserEntity{
     final String? password,
   }): super(
     userId: userId,
-    username: username,
     email: email,
     role: role,
     grade: grade,
@@ -25,7 +24,6 @@ class UserModel extends UserEntity{
   factory UserModel.fromSnapshot(DocumentSnapshot snapshot){
     return UserModel(
         userId: snapshot.get('user_id'),
-        username: snapshot.get('username'),
         email: snapshot.get('email'),
         role: snapshot.get('role'),
         grade: snapshot.get('classroom'),
@@ -38,7 +36,6 @@ class UserModel extends UserEntity{
   Map<String, dynamic> toDocument(){
     return {
       'user_id': userId,
-      'username': username,
       'email': email,
       'role': role,
       'classroom': grade,

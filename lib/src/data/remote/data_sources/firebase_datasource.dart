@@ -13,9 +13,8 @@ abstract class FirebaseDataSource {
   Future<String?> addNewPermission(PermissionEntity permissionEntity);
   Future<UserEntity> getCurrentUser();
   Future<List> getTodaySchedule();
-  Future<bool> isAlreadyPresence();
+  Stream<bool> isAlreadyPresenceStream();
   Future<void> incrementTotalPresence(String uid);
-  Future<void> deleteAll(String collectionName);
   Stream<List<PresenceEntity>> getUserPresences(String uid);
   Stream<List<PermissionEntity>> getUserWaitingPermission(String uid);
 }

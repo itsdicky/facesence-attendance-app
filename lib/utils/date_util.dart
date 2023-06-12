@@ -30,6 +30,13 @@ class CDateUtil {
     return result;
   }
 
+  static String getFormattedSimpleDate(DateTime dateTime) {
+    DateTime dateTimeWIB = dateTime.add(const Duration(hours: 7)); //UTC to WIB (+7)
+    DateFormat format = DateFormat("d/M/yy");
+    String formattedDate = format.format(dateTimeWIB);
+    return formattedDate;
+  }
+
   static String getTimeString(DateTime dateTime) {
     String hour = dateTime.hour.checkLength(1) ? dateTime.hour.addZeroPrefix(2):dateTime.hour.toString();
     String minute = dateTime.minute.checkLength(1) ? dateTime.minute.addZeroPrefix(2):dateTime.minute.toString();

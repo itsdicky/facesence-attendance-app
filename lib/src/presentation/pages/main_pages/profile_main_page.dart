@@ -21,7 +21,7 @@ class ProfileMainPage extends StatelessWidget {
             height: 100,
             width: 100,
             child: CircleAvatar(
-              backgroundImage: NetworkImage('https://images.unsplash.com/photo-1682965636199-091797901722?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'),
+              backgroundImage: NetworkImage('https://www.cornwallbusinessawards.co.uk/wp-content/uploads/2017/11/dummy450x450.jpg'),
               radius: 100,
             ),
           ),
