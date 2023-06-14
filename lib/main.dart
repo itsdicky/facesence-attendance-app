@@ -14,6 +14,7 @@ import 'package:sistem_presensi/routes/on_generate_route.dart';
 import 'firebase_options.dart';
 import 'injection_container.dart' as di;
 import 'src/presentation/cubit/permission/add_permission/add_permission_cubit.dart';
+import 'src/presentation/cubit/recognition/recognition_cubit.dart';
 
 late List<CameraDescription> cameras;
 
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<UserCubit>(create: (_) => di.sl<UserCubit>()),
         BlocProvider<AddPresenceCubit>(create: (_) => di.sl<AddPresenceCubit>()),
         BlocProvider<AddPermissionCubit>(create: (_) => di.sl<AddPermissionCubit>()),
+        BlocProvider<RecognitionCubit>(create: (_) => di.sl<RecognitionCubit>()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

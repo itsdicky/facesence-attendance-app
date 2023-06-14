@@ -44,7 +44,7 @@ class FireBaseRepositoryImplement extends FirebaseRepository {
       dataSource.signOut();
 
   @override
-  Future<void> signUp(UserEntity user) async =>
+  Future<String> signUp(UserEntity user) async =>
       dataSource.signUp(user);
 
   @override
@@ -77,5 +77,15 @@ class FireBaseRepositoryImplement extends FirebaseRepository {
   @override
   Stream<bool> isAlreadyPresenceStream() {
     return dataSource.isAlreadyPresenceStream();
+  }
+
+  @override
+  Future<void> storeFaceArray(String uid, List faceArray) {
+    return dataSource.storeFaceArray(uid, faceArray);
+  }
+
+  @override
+  Future<List> getFaceArray() {
+    return dataSource.getFaceArray();
   }
 }

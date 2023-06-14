@@ -37,9 +37,9 @@ class UserCubit extends Cubit<UserState> {
   Future<void> submitSignUp({required UserEntity user}) async {
     emit(UserLoading());
     try {
-      await signUpUseCase.call(user);
+      final uid = await signUpUseCase.call(user);
       await getCreateCurrentUseCase.call(user);
-      emit(UserSuccess());
+      emit(UserSuccess(uid: uid));
     } on FirebaseAuthException catch (e) {
       emit(UserFailure(message: e.message));
     } on SocketException catch (e) {

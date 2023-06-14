@@ -24,9 +24,10 @@ class UserFailure extends UserState {
 }
 
 class UserSuccess extends UserState {
+  final String? uid;
   final Map<String, dynamic>? userInfo;
 
-  UserSuccess({this.userInfo});
+  UserSuccess({this.uid ,this.userInfo});
 
   @override
   List<Object?> get props => [];
