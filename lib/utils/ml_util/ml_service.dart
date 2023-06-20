@@ -66,11 +66,10 @@ class MLService {
   }
 
   bool compareFaceArray(List faceArray1, List faceArray2) {
-    int minDist = 999;
-    double threshold = 1.5;
+    double threshold = 0.65;
     final dist = faceRecognition.euclideanDistance(faceArray1, faceArray2);
     print('EUCLIDEAN DIST: $dist');
-    if (dist <= threshold && dist < minDist) {
+    if (dist <= threshold) {
       return true;
     } else {
       return false;

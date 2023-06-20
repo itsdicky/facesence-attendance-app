@@ -90,7 +90,7 @@ class CFaceDetection {
 
     // final bytes = allBytes.done().buffer.asUint8List();
     // final imgFile = File.fromRawPath(bytes);
-    
+
     final ui.Size imageSize = ui.Size(cameraImage.width.toDouble(), cameraImage.height.toDouble());
     const InputImageRotation imageRotation = InputImageRotation.rotation0deg;
     // final inputImageFormat = InputImageFormatValue.fromRawValue(cameraImage.format.raw) ?? InputImageFormat.nv21;

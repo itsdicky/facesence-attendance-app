@@ -59,7 +59,7 @@ class CFaceRecognition {
 
     final predictedArray = List.from(output);
 
-    double threshold = 1.5;
+    double threshold = 0.65;
     var dist = euclideanDistance(predictedArray, userArray);
     if (dist <= threshold) {
       return true;
