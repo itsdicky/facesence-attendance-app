@@ -7,17 +7,19 @@ import 'package:sistem_presensi/constant/app_config.dart';
 import 'package:sistem_presensi/src/domain/entities/presence_entity.dart';
 import 'package:sistem_presensi/src/domain/use_case/add_new_presence_usecase.dart';
 import 'package:sistem_presensi/src/presentation/cubit/presence/add_presence/add_presence_state.dart';
-import 'package:sistem_presensi/utils/ml_kit.dart';
+import 'package:sistem_presensi/utils/ml_util/ml_service.dart';
 
 import '../../../../../utils/date_util.dart';
 import '../../../../../utils/geo_util.dart';
 import '../../../../domain/use_case/get_current_position_usecase.dart';
+import '../../../../domain/use_case/get_face_array_usecase.dart';
 
 class AddPresenceCubit extends Cubit<AddPresenceState> {
   final AddNewPresenceUseCase addNewPresenceUseCase;
   final GetCurrentPositionUseCase getCurrentPositionUseCase;
+  final GetFaceArrayUseCase getFaceArrayUseCase;
 
-  AddPresenceCubit({required this.addNewPresenceUseCase, required this.getCurrentPositionUseCase}) : super(AddPresenceInitial());
+  AddPresenceCubit({required this.addNewPresenceUseCase, required this.getCurrentPositionUseCase, required this.getFaceArrayUseCase}) : super(AddPresenceInitial());
 
   Future<void> addPresence({required PresenceEntity presence}) async {
     emit(AddPresenceLoading());
@@ -38,11 +40,12 @@ class AddPresenceCubit extends Cubit<AddPresenceState> {
 
   Future<void> capturePresenceSnapshot({required Future<XFile> image}) async {
     emit(AddPresenceLoading());
-    final faceDetector = CFaceDetection();
+    final ml = MLService()..initialize();
     Future<File> file = image.then((image) => File(image.path)); //convert to Future file
 
     try {
-      Future.wait([getCurrentPositionUseCase.call(), file, faceDetector.isContainFaceFromFuture(file)]).then((List responses) {
+      //get current position, get faceArr from database, and convert file image to faceArr
+      Future.wait([getCurrentPositionUseCase.call(), file, getFaceArrayUseCase.call(), ml.getFaceArrayFromFuture(file)]).then((List responses) {
         final location = CGeoUtil.toGeoPoint(responses[0]);
         final validLocation = CGeoUtil.isInsideArea(
           location,
@@ -54,14 +57,18 @@ class AddPresenceCubit extends Cubit<AddPresenceState> {
           emit(AddPresenceFailure(message: 'Lokasi diluar jangkauan'));
           return;
         }
-        
-        if(responses[2]) {
-          emit(AddPresencePreview(
-            timestamp: Timestamp.fromDate(responses[0].timestamp!),
-            geoPoint: location,
-            dateTimeString: CDateUtil.getFormattedDateTimeStringWIB(responses[0].timestamp!),
-            image: responses[1],
-          ));
+
+        if (responses[3] != null) {
+          if(ml.compareFaceArray(responses[2], responses[3])){
+            emit(AddPresencePreview(
+              timestamp: Timestamp.fromDate(responses[0].timestamp!),
+              geoPoint: location,
+              dateTimeString: CDateUtil.getFormattedDateTimeStringWIB(responses[0].timestamp!),
+              image: responses[1],
+            ));
+          } else {
+            emit(AddPresenceFailure(message: 'Wajah tidak cocok'));
+          }
         } else {
           emit(AddPresenceFailure(message: 'Wajah tidak terdeteksi'));
         }
@@ -71,7 +78,7 @@ class AddPresenceCubit extends Cubit<AddPresenceState> {
     } catch(_) {
       emit(const AddPresenceFailure());
     } finally {
-      await faceDetector.close();
+      ml.close();
     }
   }
 }

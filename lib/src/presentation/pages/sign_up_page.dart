@@ -68,9 +68,9 @@ class _SignUpPageState extends State<SignUpPage> {
         },
         listener: (context, userState) {
           if (userState is UserSuccess) {
-            print(userState);
-            BlocProvider.of<AuthCubit>(context).loggedIn();
-            Navigator.pushReplacementNamed(context, PageConst.signInPage);
+            // BlocProvider.of<AuthCubit>(context).loggedIn();
+            // Navigator.pushReplacementNamed(context, PageConst.signInPage);
+            Navigator.pushNamed(context, PageConst.cameraSignUpPage, arguments: [userState.uid]);
           }
           if (userState is UserFailure) {
             ScaffoldMessenger.of(context).showSnackBar(

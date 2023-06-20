@@ -12,6 +12,7 @@ import 'package:sistem_presensi/src/domain/use_case/add_new_presence_usecase.dar
 import 'package:sistem_presensi/src/domain/use_case/get_create_current_user_usecase.dart';
 import 'package:sistem_presensi/src/domain/use_case/get_current_position_usecase.dart';
 import 'package:sistem_presensi/src/domain/use_case/get_current_uid_usecase.dart';
+import 'package:sistem_presensi/src/domain/use_case/get_face_array_usecase.dart';
 import 'package:sistem_presensi/src/domain/use_case/get_presence_usecase.dart';
 import 'package:sistem_presensi/src/domain/use_case/get_today_schedule_usecase.dart';
 import 'package:sistem_presensi/src/domain/use_case/is_already_presence_usecase.dart';
@@ -31,8 +32,10 @@ import 'package:sistem_presensi/src/presentation/cubit/user/user_cubit.dart';
 import 'src/domain/use_case/add_new_permission_usecase.dart';
 import 'src/domain/use_case/get_current_user_usecase.dart';
 import 'src/domain/use_case/get_permission_usecase.dart';
+import 'src/domain/use_case/store_face_array_usecase.dart';
 import 'src/presentation/cubit/permission/load_permission/load_permission_cubit.dart';
 import 'src/presentation/cubit/presence/load_presence/load_presence_cubit.dart';
+import 'src/presentation/cubit/recognition/recognition_cubit.dart';
 
 // Class for dependency injection
 
@@ -61,7 +64,7 @@ Future<void> init() async {
 
   sl.registerFactory<CalendarCubit>(() => CalendarCubit());
 
-  sl.registerFactory<AddPresenceCubit>(() => AddPresenceCubit(addNewPresenceUseCase: sl.call(), getCurrentPositionUseCase: sl.call()));
+  sl.registerFactory<AddPresenceCubit>(() => AddPresenceCubit(addNewPresenceUseCase: sl.call(), getCurrentPositionUseCase: sl.call(), getFaceArrayUseCase: sl.call()));
 
   sl.registerFactory<LoadPresenceCubit>(() => LoadPresenceCubit(getPresenceUsecase: sl.call(), isAlreadyPresenceUseCase: sl.call()));
 
@@ -70,6 +73,8 @@ Future<void> init() async {
   sl.registerFactory<LoadPermissionCubit>(() => LoadPermissionCubit(getPermissionUsecase: sl.call(),));
 
   sl.registerFactory<NavbarCubit>(() => NavbarCubit());
+
+  sl.registerFactory<RecognitionCubit>(() => RecognitionCubit(storeFaceArrayUseCase: sl.call(), getFaceArrayUseCase: sl.call()));
 
   sl.registerFactory<LogObserver>(() => LogObserver());
   
@@ -88,6 +93,8 @@ Future<void> init() async {
   sl.registerLazySingleton<GetPermissionUsecase>(() => GetPermissionUsecase(repository: sl.call()));
   sl.registerLazySingleton<GetCurrentPositionUseCase>(() => GetCurrentPositionUseCase(repository: sl.call()));
   sl.registerLazySingleton<IsAlreadyPresenceUseCase>(() => IsAlreadyPresenceUseCase(repository: sl.call()));
+  sl.registerLazySingleton<StoreFaceArrayUseCase>(() => StoreFaceArrayUseCase(repository: sl.call()));
+  sl.registerLazySingleton<GetFaceArrayUseCase>(() => GetFaceArrayUseCase(repository: sl.call()));
 
   //repository
   sl.registerLazySingleton<FirebaseRepository>(() => FireBaseRepositoryImplement(dataSource: sl.call(), geoLoc: sl.call()));

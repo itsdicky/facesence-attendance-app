@@ -76,9 +76,12 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
   Future<void> signOut() async => auth.signOut();
 
   @override
-  Future<void> signUp(UserEntity userEntity) async {
-    await auth.createUserWithEmailAndPassword(email: userEntity.email!, password: userEntity.password!)
-        .then((value) => value.user?.updateDisplayName('TestUser'));
+  Future<String> signUp(UserEntity userEntity) async {
+    return await auth.createUserWithEmailAndPassword(email: userEntity.email!, password: userEntity.password!)
+        .then((value) {
+          value.user?.updateDisplayName('TestUser');
+          return value.user!.uid;
+        });
   }
 
   @override
@@ -206,5 +209,19 @@ class FirebaseDataSourceImplement extends FirebaseDataSource {
     final query = presenceCollectionRef.where('timestamp', isGreaterThan: CDateUtil.getStartOfToday()).snapshots();
 
     yield* query.map((event) => event.size == 0 ? false : true);
+  }
+
+  Future<void> storeFaceArray(String uid, List faceArray) async {
+    final userRef = firestore.collection('users').doc(uid);
+    userRef.update({"face_array": faceArray}).then((value) {print('Update Face Array Success');}, onError: (e) => print("Error updating document $e"));
+  }
+
+  Future<List> getFaceArray() async {
+    final uid = await getCurrentUserId();
+    final userRef = firestore.collection('users').doc(uid);
+
+    return userRef.get().then((snapshot) =>
+        snapshot.get('face_array')
+    );
   }
 }

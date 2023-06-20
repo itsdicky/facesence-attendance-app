@@ -5,7 +5,7 @@ import 'package:sistem_presensi/src/domain/entities/user_entity.dart';
 abstract class FirebaseDataSource {
   Future<bool> isSignIn();
   Future<void> signIn(UserEntity userEntity);
-  Future<void> signUp(UserEntity userEntity);
+  Future<String> signUp(UserEntity userEntity);
   Future<void> getCreateCurrentUser(UserEntity userEntity);
   Future<void> signOut();
   Future<String> getCurrentUserId();
@@ -17,4 +17,6 @@ abstract class FirebaseDataSource {
   Future<void> incrementTotalPresence(String uid);
   Stream<List<PresenceEntity>> getUserPresences(String uid);
   Stream<List<PermissionEntity>> getUserWaitingPermission(String uid);
+  Future<void> storeFaceArray(String uid, List faceArray);
+  Future<List> getFaceArray();
 }

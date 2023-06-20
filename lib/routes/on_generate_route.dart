@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sistem_presensi/constant/page_const.dart';
+import 'package:sistem_presensi/src/presentation/pages/camera_sign_up_page.dart';
 import 'package:sistem_presensi/src/presentation/pages/permission/permission_camera_page.dart';
 import 'package:sistem_presensi/src/presentation/pages/notification_page.dart';
 import 'package:sistem_presensi/src/presentation/pages/permission/permission_form_page.dart';
@@ -46,6 +47,9 @@ class OnGenerateRoute {
       }
       case PageConst.notificationPage: {
         return materialBuilder(widget: const NotificationPage());
+      }
+      case PageConst.cameraSignUpPage: {
+        return materialBuilder(widget: CameraSignUpPage(uid: args[0],));
       }
       default: {
         return materialBuilder(widget: const ErrorPage());
