@@ -6,7 +6,7 @@ Mobile app for record student's attendance with face recognition and geolocation
 
 This app using Flutter mobile app for client and Firebase for cloud backend provider. The client side consist of 2 Flutter mobile apps, for student and teacher. The backend side using several Firebase services such as Firebase Auth, Firestore, and Cloud Storage.
 Google ML Kit is used for face detection and Tensorflow Lite for face recognition.
-Geolocation in this app is using Flutter library such as Geolocator and Geocoding.
+Geolocation in this app is using Flutter library such as [Geolocator](https://pub.dev/packages/geolocator) and [Geocoding](https://pub.dev/packages/geocoding).
 
 ## Reference
 
